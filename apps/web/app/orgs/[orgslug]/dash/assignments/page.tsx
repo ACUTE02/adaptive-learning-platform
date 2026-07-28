@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import TestingArena from '@/components/assignments/TestingArena';
 import { Lock, AlertTriangle, CheckCircle2, XCircle, Trash2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useAuth } from '@components/Contexts/AuthContext';
 
 export default function AssignmentsHub() {
   const searchParams = useSearchParams();
@@ -15,9 +16,13 @@ export default function AssignmentsHub() {
   const [activeAssessment, setActiveAssessment] = useState<any | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
+  const { session } = useAuth();
+  const userId = session?.user?.email || session?.user?.id || session?.id || "unknown_user";
+
   // 1. Fetch all campaigns for the tabs
   useEffect(() => {
-    fetch('/api/v1/engine/campaigns?user_id=uuayush2@gmail.com')
+    if (userId === "unknown_user") return;
+    fetch(`/api/v1/engine/campaigns?user_id=${userId}`)
       .then(res => res.json())
       .then(data => {
         setCampaignsList(data);
@@ -25,12 +30,12 @@ export default function AssignmentsHub() {
           setSelectedCampaignId(data[0].id);
         }
       });
-  }, []);
+  }, [userId]);
 
   // 2. Fetch specific campaign details when tab changes
   useEffect(() => {
-    if (selectedCampaignId) {
-      fetch(`/api/v1/engine/campaigns/active?user_id=uuayush2@gmail.com&campaign_id=${selectedCampaignId}`)
+    if (selectedCampaignId && userId !== "unknown_user") {
+      fetch(`/api/v1/engine/campaigns/active?user_id=${userId}&campaign_id=${selectedCampaignId}`)
         .then(res => res.json())
         .then(data => {
           if (data.campaign) {
