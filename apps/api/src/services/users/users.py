@@ -189,7 +189,7 @@ async def create_user(
             from src.services.users.email_verification import send_verification_email
             await send_verification_email(request, db_session, user, org_id)
     except Exception as e:
-        logger.error(f"Failed to send verification email for user {user.email}: {e}")
+        print(f"Failed to send verification email for user {user.email}: {e}")
 
 
     return user_read
