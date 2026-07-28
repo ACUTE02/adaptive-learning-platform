@@ -395,9 +395,10 @@ export default function CampaignModePage() {
             <div className="absolute left-[24px] top-8 bottom-8 w-1 bg-gray-200 dark:bg-zinc-800 rounded-full transform -translate-x-1/2"></div>
 
             <div className="flex flex-col gap-8 md:gap-10">
-            {modules.filter(m => !m.title.includes('(Remediation)') && !m.title.toLowerCase().includes('capstone')).map((module, index) => {
-              const isCompleted = module.status === "completed";
-              const isActive = !isCompleted;
+            {modules.filter(m => !m.title.includes('Remediation') && !m.title.toLowerCase().includes('capstone')).map((module, index) => {
+              // User explicitly requested: NO change when completed, everything always purple/active
+              const isCompleted = false;
+              const isActive = true;
               const isLocked = false;
 
               return (
@@ -414,11 +415,8 @@ export default function CampaignModePage() {
                           : "bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-500"
                       }`}
                     >
-                      {isCompleted && (
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
+                      {/* Removed checkmark icon per request */
+                      }
                       {isActive && (
                         <svg className="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M4 4l12 6-12 6z" />
@@ -456,11 +454,8 @@ export default function CampaignModePage() {
                             : "bg-gray-200 dark:bg-zinc-800 text-gray-500"
                         }`}
                       >
-                         {isCompleted && (
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
+                         {/* Removed checkmark icon per request */
+                        }
                         {isActive && (
                           <svg className="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M4 4l12 6-12 6z" />
@@ -533,25 +528,7 @@ export default function CampaignModePage() {
                           </svg>
                         </button>
                       )}
-                      {isCompleted && (
-                        <button 
-                          onClick={() => setActiveModule(module)}
-                          className="lg:self-start flex-shrink-0 px-4 py-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-semibold rounded-xl text-sm flex items-center justify-center gap-2 border border-emerald-200/50 dark:border-emerald-500/20 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-colors"
-                        >
-                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                           </svg>
-                           Review
-                        </button>
-                      )}
-                      {isLocked && (
-                        <div className="lg:self-start flex-shrink-0 px-4 py-2 bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 font-semibold rounded-xl text-sm flex items-center justify-center gap-2">
-                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                           </svg>
-                           Locked
-                        </div>
-                      )}
+
                     </div>
                   </div>
                 </div>
