@@ -136,6 +136,8 @@ async def health_check() -> HealthResponse:
     summary="Dynamic roadmap generator"
 )
 async def generate_roadmap(payload: RoadmapPayload) -> RoadmapResponse:
+ 
+ 
     """
     Generates a dynamic learning roadmap based on user skill gaps using LangChain.
     """
@@ -234,7 +236,7 @@ async def remediate_struggle(
     parser = PydanticOutputParser(pydantic_object=RemediationResponse)
     
     prompt = PromptTemplate(
-        template="You are a strict, expert academic tutor. A student has asked for help with the following concept: {struggle_area}. \nCRITICAL RULE: You MUST evaluate if this concept is related to computer science, engineering, mathematics, or professional technology. If the user asks about pop culture, cartoons, irrelevant media, or off-topic subjects, you MUST politely refuse to answer and redirect them back to their studies. Otherwise, provide targeted scaffolding text to help them learn the concept.\n\n{format_instructions}",
+        template="You are a direct academic answer engine. RULE 1: If the topic is NOT a recognized academic subject (maths, science, geography, history, economics, CS, literature, languages, social sciences, arts), respond only with: I can only help with academic subjects. No explanation. RULE 2: If it IS academic, answer IMMEDIATELY and DIRECTLY. No greetings. No 'Excellent question'. No 'It seems...'. No asking the student questions back. Just give the complete answer with examples.\n\nStudent question: {struggle_area}\n\n{format_instructions}",
         input_variables=["struggle_area"],
         partial_variables={"format_instructions": parser.get_format_instructions()},
     )
