@@ -1,0 +1,95 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":disableRateLimiting",
+    "mergeConfidence:all-badges"
+  ],
+  "baseBranches": ["dev"],
+  "schedule": ["every 2 weeks on saturday"],
+  "timezone": "UTC",
+  "labels": ["dependencies", "renovate"],
+  "prBodyColumns": [
+    "Package",
+    "Type",
+    "Update",
+    "Change",
+    "Age",
+    "Adoption",
+    "Passing",
+    "Confidence",
+    "Pending"
+  ],
+  "prBodyNotes": [
+    "Please review the changelog and release notes before merging."
+  ],
+  "assignees": ["swve"],
+  "reviewers": ["swve"],
+  "fetchChangeLogs": "pr",
+  "minimumReleaseAge": "3 days",
+  "rebaseWhen": "behind-base-branch",
+  "vulnerabilityAlerts": {
+    "labels": ["security", "renovate"],
+    "schedule": ["at any time"]
+  },
+  "ignoreDeps": ["@icons-pack/react-simple-icons", "prosemirror-transform", "python"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["next", "@next/*", "eslint-config-next"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Next.js",
+      "groupSlug": "nextjs"
+    },
+    {
+      "matchPackageNames": ["react", "react-dom", "@types/react*", "react-*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "React",
+      "groupSlug": "react"
+    },
+    {
+      "matchPackageNames": ["typescript", "@types/*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "TypeScript & types",
+      "groupSlug": "typescript"
+    },
+    {
+      "matchPackageNames": ["eslint*", "@eslint/*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "ESLint",
+      "groupSlug": "eslint"
+    },
+    {
+      "matchPackageNames": [
+        "fastapi", "uvicorn", "pydantic", "python-multipart", "python-dotenv",
+        "sqlmodel", "sqlalchemy", "sqlalchemy-utils", "alembic", "alembic-postgresql-enum", "psycopg2-binary", "pgvector",
+        "boto3", "botocore",
+        "redis",
+        "stripe", "resend", "workos",
+        "httpx", "requests", "pyyaml", "beautifulsoup4", "pypdf",
+        "pyjwt", "pwdlib",
+        "sentry-sdk", "logfire",
+        "protobuf", "dnspython", "defusedxml", "typer", "faker",
+        "google-genai", "tiktoken", "llama-index-core",
+        "pytest", "pytest-cov", "pytest-asyncio"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Python backend",
+      "groupSlug": "python-backend"
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "groupName": "Docker base images",
+      "groupSlug": "docker"
+    },
+    {
+      "matchManagers": ["pep621"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    }
+  ]
+}

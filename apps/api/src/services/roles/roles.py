@@ -1,0 +1,558 @@
+from typing import Literal, List
+from uuid import uuid4
+from sqlmodel import select, text
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.exc import IntegrityError
+from src.security.rbac.rbac import (
+    authorization_verify_based_on_roles_and_authorship,
+    authorization_verify_if_user_is_anon,
+)
+from src.security.org_auth import require_org_role_permission, get_user_org_role
+from src.security.superadmin import is_user_superadmin
+from src.db.users import AnonymousUser, APITokenUser, PublicUser
+from src.security.auth import resolve_acting_user_id
+from src.db.roles import Role, RoleCreate, RoleRead, RoleUpdate, RoleTypeEnum
+from src.db.organizations import Organization
+from fastapi import HTTPException, Request
+from datetime import datetime
+
+
+async def create_role(
+    request: Request,
+    db_session: AsyncSession,
+    role_object: RoleCreate,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+):
+    role = Role.model_validate(role_object)
+
+    # RBAC check
+    await rbac_check(request, current_user, "create", "role_xxx", db_session)
+
+    # ============================================================================
+    # VERIFICATION 1: Ensure the role is created as TYPE_ORGANIZATION and has an org_id
+    # ============================================================================
+    if not role.org_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Organization ID is required for role creation",
+        )
+
+    # Force the role type to be TYPE_ORGANIZATION for user-created roles
+    role.role_type = RoleTypeEnum.TYPE_ORGANIZATION
+
+    # ============================================================================
+    # VERIFICATION 2: Check if the organization exists
+    # ============================================================================
+    statement = select(Organization).where(Organization.id == role.org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        raise HTTPException(
+            status_code=404,
+            detail="Organization not found",
+        )
+
+    # ============================================================================
+    # VERIFICATION 3+4: Membership + permission (superadmins bypass)
+    # ============================================================================
+    await require_org_role_permission(resolve_acting_user_id(current_user), role.org_id, db_session, "roles", "action_create")
+
+    # ============================================================================
+    # VERIFICATION 5: Check if a role with the same name already exists in this organization
+    # ============================================================================
+    statement = select(Role).where(
+        Role.name == role.name,
+        Role.org_id == role.org_id,
+        Role.role_type == RoleTypeEnum.TYPE_ORGANIZATION
+    )
+    existing_role = (await db_session.execute(statement)).scalars().first()
+
+    if existing_role:
+        raise HTTPException(
+            status_code=409,
+            detail=f"A role with the name '{role.name}' already exists in this organization",
+        )
+
+    # ============================================================================
+    # VERIFICATION 6: Validate role name and description
+    # ============================================================================
+    if not role.name or role.name.strip() == "":
+        raise HTTPException(
+            status_code=400,
+            detail="Role name is required and cannot be empty",
+        )
+
+    if len(role.name.strip()) > 100:  # Assuming a reasonable limit
+        raise HTTPException(
+            status_code=400,
+            detail="Role name cannot exceed 100 characters",
+        )
+
+    # ============================================================================
+    # VERIFICATION 7: Validate rights structure if provided
+    # ============================================================================
+    if role.rights:
+        # Convert Rights model to dict if needed
+        if isinstance(role.rights, dict):
+            # It's already a dict
+            rights_dict = role.rights
+        else:
+            # It's a Pydantic model, convert to dict
+            rights_dict = role.rights.model_dump()
+
+        # Validate rights structure - check for required top-level keys
+        required_rights = [
+            'courses', 'users', 'usergroups', 'collections',
+            'organizations', 'coursechapters', 'activities',
+            'roles', 'dashboard'
+        ]
+
+        for required_right in required_rights:
+            if required_right not in rights_dict:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Missing required right: {required_right}",
+                )
+
+            # Validate the structure of each right
+            right_data = rights_dict[required_right]
+            if not isinstance(right_data, dict):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Right '{required_right}' must be a JSON object",
+                )
+
+            # Validate courses permissions (has additional 'own' permissions)
+            if required_right == 'courses':
+                required_course_permissions = [
+                    'action_create', 'action_read', 'action_read_own',
+                    'action_update', 'action_update_own', 'action_delete', 'action_delete_own'
+                ]
+                for perm in required_course_permissions:
+                    if perm not in right_data:
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Missing required course permission: {perm}",
+                        )
+                    if not isinstance(right_data[perm], bool):
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Course permission '{perm}' must be a boolean",
+                        )
+
+            # Validate other permissions (standard permissions)
+            elif required_right in ['users', 'usergroups', 'collections', 'organizations', 'coursechapters', 'activities', 'roles']:
+                required_permissions = ['action_create', 'action_read', 'action_update', 'action_delete']
+                for perm in required_permissions:
+                    if perm not in right_data:
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Missing required permission '{perm}' for '{required_right}'",
+                        )
+                    if not isinstance(right_data[perm], bool):
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Permission '{perm}' for '{required_right}' must be a boolean",
+                        )
+
+            # Validate dashboard permissions
+            elif required_right == 'dashboard':
+                if 'action_access' not in right_data:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Missing required dashboard permission: action_access",
+                    )
+                if not isinstance(right_data['action_access'], bool):
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Dashboard permission 'action_access' must be a boolean",
+                    )
+
+        # Convert back to dict if it was a model
+        if not isinstance(role.rights, dict):
+            role.rights = rights_dict
+
+    # ============================================================================
+    # VERIFICATION 8: Ensure user cannot create a role with higher permissions than they have
+    # (superadmins skip this check — they can grant any permission)
+    # ============================================================================
+    create_role_user_id = resolve_acting_user_id(current_user)
+    if not await is_user_superadmin(create_role_user_id, db_session):
+        user_role = await get_user_org_role(create_role_user_id, role.org_id, db_session)
+        if role.rights and isinstance(role.rights, dict) and user_role and user_role.rights and isinstance(user_role.rights, dict):
+            for right_key, right_permissions in role.rights.items():
+                if right_key in user_role.rights:
+                    user_right_permissions = user_role.rights[right_key]
+                    for perm_key, perm_value in right_permissions.items():
+                        if isinstance(perm_value, bool) and perm_value:
+                            if isinstance(user_right_permissions, dict) and perm_key in user_right_permissions:
+                                user_has_perm = user_right_permissions[perm_key]
+                                if not user_has_perm:
+                                    raise HTTPException(
+                                        status_code=403,
+                                        detail=f"You cannot create a role with '{perm_key}' permission for '{right_key}' as you don't have this permission yourself",
+                                    )
+                            else:
+                                raise HTTPException(
+                                    status_code=403,
+                                    detail=f"You cannot create a role with '{perm_key}' permission for '{right_key}' as you don't have this permission yourself",
+                                )
+
+    # Complete the role object
+    role.role_uuid = f"role_{uuid4()}"
+    role.creation_date = str(datetime.now())
+    role.update_date = str(datetime.now())
+
+    # ============================================================================
+    # VERIFICATION 9: Handle ID sequence issue (existing logic)
+    # ============================================================================
+    try:
+        db_session.add(role)
+        await db_session.commit()
+        await db_session.refresh(role)
+    except IntegrityError as e:
+        if "duplicate key value violates unique constraint" in str(e) and "role_pkey" in str(e):
+            # Handle the sequence issue by finding the next available ID
+            await db_session.rollback()
+
+            # Get the maximum ID from the role table using raw SQL
+            result = await db_session.execute(text("SELECT COALESCE(MAX(id), 0) as max_id FROM role"))
+            max_id_result = result.scalar()
+            max_id = max_id_result if max_id_result is not None else 0
+
+            # Set the next available ID
+            role.id = max_id + 1
+
+            # Try to insert again
+            db_session.add(role)
+            await db_session.commit()
+            await db_session.refresh(role)
+
+            # Update the sequence to the correct value for future inserts
+            try:
+                # Use parameterized query to update the sequence safely
+                next_val = max_id + 1
+                await db_session.execute(text("SELECT setval('role_id_seq', :next_val, true)"), {"next_val": next_val})
+                await db_session.commit()
+            except Exception:
+                # If sequence doesn't exist or can't be updated, that's okay
+                # The manual ID assignment above will handle it
+                pass
+        else:
+            # Re-raise the original exception if it's not the sequence issue
+            raise e
+
+    # Create RoleRead object with all required fields
+    role_data = role.model_dump()
+    # Ensure org_id is properly handled
+    if role_data.get('org_id') is None:
+        role_data['org_id'] = 0
+    role = RoleRead(**role_data)
+
+    return role
+
+
+async def get_roles_by_organization(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> List[RoleRead]:
+    """
+    Get all roles for a specific organization, including global roles.
+
+    Args:
+        request: FastAPI request object
+        db_session: Database session
+        org_id: Organization ID
+        current_user: Current authenticated user
+
+    Returns:
+        List[RoleRead]: List of roles for the organization (including global roles)
+
+    Raises:
+        HTTPException: If organization not found or user lacks permissions
+    """
+    # ============================================================================
+    # VERIFICATION 1: Check if the organization exists
+    # ============================================================================
+    statement = select(Organization).where(Organization.id == org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        raise HTTPException(
+            status_code=404,
+            detail="Organization not found",
+        )
+
+    # ============================================================================
+    # VERIFICATION 2+3: Membership + permission (superadmins bypass)
+    # ============================================================================
+    await require_org_role_permission(resolve_acting_user_id(current_user), org_id, db_session, "roles", "action_read")
+
+    # ============================================================================
+    # GET ROLES: Fetch all roles for the organization AND global roles
+    # ============================================================================
+    # Get global roles first
+    global_roles_statement = select(Role).where(
+        Role.role_type == RoleTypeEnum.TYPE_GLOBAL
+    ).order_by(Role.id)  # type: ignore
+
+    global_roles = list((await db_session.execute(global_roles_statement)).scalars().all())
+
+    # Get organization-specific roles
+    org_roles_statement = select(Role).where(
+        Role.org_id == org_id,
+        Role.role_type == RoleTypeEnum.TYPE_ORGANIZATION
+    ).order_by(Role.id)  # type: ignore
+
+    org_roles = list((await db_session.execute(org_roles_statement)).scalars().all())
+
+    # Combine lists with global roles first, then organization roles
+    all_roles = global_roles + org_roles
+
+    # Convert to RoleRead objects
+    role_reads = []
+    for role in all_roles:
+        role_data = role.model_dump()
+        # Ensure org_id is properly handled
+        if role_data.get('org_id') is None:
+            role_data['org_id'] = 0
+        role_reads.append(RoleRead(**role_data))
+
+    return role_reads
+
+
+async def read_role(
+    request: Request, db_session: AsyncSession, role_id: int, current_user: PublicUser | AnonymousUser | APITokenUser
+):
+    statement = select(Role).where(Role.id == role_id)
+    result = await db_session.execute(statement)
+
+    role = result.scalars().first()
+
+    if not role:
+        raise HTTPException(
+            status_code=404,
+            detail="Role not found",
+        )
+
+    # RBAC check — scope permission to the role's own org to prevent cross-org IDOR.
+    # Global roles (org_id=None) are readable by any authenticated user.
+    acting_user_id = resolve_acting_user_id(current_user)
+    await authorization_verify_if_user_is_anon(acting_user_id)
+    if role.org_id is not None:
+        await require_org_role_permission(acting_user_id, role.org_id, db_session, "roles", "action_read")
+
+    role = RoleRead(**role.model_dump())
+
+    return role
+
+
+async def update_role(
+    request: Request,
+    db_session: AsyncSession,
+    role_object: RoleUpdate,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+):
+    statement = select(Role).where(Role.id == role_object.role_id)
+    result = await db_session.execute(statement)
+
+    role = result.scalars().first()
+
+    if not role:
+        raise HTTPException(
+            status_code=404,
+            detail="Role not found",
+        )
+
+    # ============================================================================
+    # VERIFICATION: Prevent updating TYPE_GLOBAL roles
+    # ============================================================================
+    if role.role_type == RoleTypeEnum.TYPE_GLOBAL:
+        raise HTTPException(
+            status_code=403,
+            detail="Global roles cannot be updated. These are system-defined roles that must remain unchanged.",
+        )
+
+    # RBAC check — scope to the role's own org to prevent cross-org IDOR.
+    # org_id is guaranteed non-None here because TYPE_GLOBAL roles are blocked above.
+    await require_org_role_permission(resolve_acting_user_id(current_user), role.org_id, db_session, "roles", "action_update")
+
+    # Complete the role object
+    role.update_date = str(datetime.now())
+
+    # Remove the role_id from the role_object
+    del role_object.role_id
+
+    # Update only the fields that were passed in
+    update_data = role_object.model_dump(exclude_unset=True)
+
+    # Update the role with the new data
+    for key, value in update_data.items():
+        if value is not None:
+            setattr(role, key, value)
+
+    # ============================================================================
+    # VALIDATE RIGHTS STRUCTURE if rights are being updated
+    # ============================================================================
+    if role.rights:
+        # Convert Rights model to dict if needed
+        if isinstance(role.rights, dict):
+            # It's already a dict
+            rights_dict = role.rights
+        else:
+            # It's a Pydantic model, convert to dict
+            rights_dict = role.rights.model_dump()
+
+        # Validate rights structure - check for required top-level keys
+        required_rights = [
+            'courses', 'users', 'usergroups', 'collections',
+            'organizations', 'coursechapters', 'activities',
+            'roles', 'dashboard'
+        ]
+
+        for required_right in required_rights:
+            if required_right not in rights_dict:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Missing required right: {required_right}",
+                )
+
+            # Validate the structure of each right
+            right_data = rights_dict[required_right]
+            if not isinstance(right_data, dict):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Right '{required_right}' must be a JSON object",
+                )
+
+            # Validate courses permissions (has additional 'own' permissions)
+            if required_right == 'courses':
+                required_course_permissions = [
+                    'action_create', 'action_read', 'action_read_own',
+                    'action_update', 'action_update_own', 'action_delete', 'action_delete_own'
+                ]
+                for perm in required_course_permissions:
+                    if perm not in right_data:
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Missing required course permission: {perm}",
+                        )
+                    if not isinstance(right_data[perm], bool):
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Course permission '{perm}' must be a boolean",
+                        )
+
+            # Validate other permissions (standard permissions)
+            elif required_right in ['users', 'usergroups', 'collections', 'organizations', 'coursechapters', 'activities', 'roles']:
+                required_permissions = ['action_create', 'action_read', 'action_update', 'action_delete']
+                for perm in required_permissions:
+                    if perm not in right_data:
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Missing required permission '{perm}' for '{required_right}'",
+                        )
+                    if not isinstance(right_data[perm], bool):
+                        raise HTTPException(
+                            status_code=400,
+                            detail=f"Permission '{perm}' for '{required_right}' must be a boolean",
+                        )
+
+            # Validate dashboard permissions
+            elif required_right == 'dashboard':
+                if 'action_access' not in right_data:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Missing required dashboard permission: action_access",
+                    )
+                if not isinstance(right_data['action_access'], bool):
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Dashboard permission 'action_access' must be a boolean",
+                    )
+
+        # Convert back to dict if it was a model
+        if not isinstance(role.rights, dict):
+            role.rights = rights_dict
+
+    db_session.add(role)
+    await db_session.commit()
+    await db_session.refresh(role)
+
+    # Invalidate session cache for all users with this role
+    from src.db.user_organizations import UserOrganization
+    from src.routers.users import _invalidate_session_cache
+    affected_users = (await db_session.execute(
+        select(UserOrganization.user_id).where(UserOrganization.role_id == role.id)
+    )).scalars().all()
+    for uid in affected_users:
+        _invalidate_session_cache(uid)
+
+    role = RoleRead(**role.model_dump())
+
+    return role
+
+
+async def delete_role(
+    request: Request, db_session: AsyncSession, role_id: int, current_user: PublicUser | AnonymousUser | APITokenUser
+):
+    # First, get the role to check if it exists and get its UUID
+    statement = select(Role).where(Role.id == role_id)
+    result = await db_session.execute(statement)
+
+    role = result.scalars().first()
+
+    if not role:
+        raise HTTPException(
+            status_code=404,
+            detail="Role not found",
+        )
+
+    # ============================================================================
+    # VERIFICATION: Prevent deleting TYPE_GLOBAL roles
+    # ============================================================================
+    if role.role_type == RoleTypeEnum.TYPE_GLOBAL:
+        raise HTTPException(
+            status_code=403,
+            detail="Global roles cannot be deleted. These are system-defined roles that must remain unchanged.",
+        )
+
+    # RBAC check — scope to the role's own org to prevent cross-org IDOR.
+    # org_id is guaranteed non-None here because TYPE_GLOBAL roles are blocked above.
+    await require_org_role_permission(resolve_acting_user_id(current_user), role.org_id, db_session, "roles", "action_delete")
+
+    # Invalidate session cache for all users with this role before deleting
+    from src.db.user_organizations import UserOrganization
+    from src.routers.users import _invalidate_session_cache
+    affected_users = (await db_session.execute(
+        select(UserOrganization.user_id).where(UserOrganization.role_id == role.id)
+    )).scalars().all()
+    for uid in affected_users:
+        _invalidate_session_cache(uid)
+
+    await db_session.delete(role)
+    await db_session.commit()
+
+    return "Role deleted"
+
+
+## 🔒 RBAC Utils ##
+
+
+async def rbac_check(
+    request: Request,
+    current_user: PublicUser | AnonymousUser,
+    action: Literal["create", "read", "update", "delete"],
+    role_uuid: str,
+    db_session: AsyncSession,
+):
+    await authorization_verify_if_user_is_anon(current_user.id)
+
+    await authorization_verify_based_on_roles_and_authorship(
+        request, current_user.id, action, role_uuid, db_session
+    )
+
+
+## 🔒 RBAC Utils ##

@@ -1,0 +1,23 @@
+# --- Core LearnHouse Backend ---
+fastapi>=0.111.0
+uvicorn>=0.29.0
+sqlmodel>=0.0.18
+alembic>=1.13.1
+python-dotenv>=1.0.1
+pydantic>=2.7.1
+
+# --- Database & Caching ---
+psycopg2-binary>=2.9.9
+asyncpg>=0.29.0
+redis>=5.0.4
+
+# --- Phase 2 & 3: Custom AI & Sniper Mode ---
+langchain>=0.2.0
+langchain-openai>=0.1.7
+langchain-google-genai>=1.0.5
+xgboost>=2.0.3
+tensorflow>=2.16.1
+scikit-learn>=1.4.2
+
+# --- Phase 4: Analytics ---
+apscheduler>=3.10.4

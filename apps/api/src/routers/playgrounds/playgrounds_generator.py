@@ -1,0 +1,288 @@
+﻿from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import StreamingResponse
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+import json
+import logging
+
+from src.db.organizations import Organization
+from src.db.playgrounds import Playground
+from src.core.events.database import get_db_session
+from src.db.users import PublicUser, AnonymousUser, APITokenUser
+from src.security.auth import get_current_user, resolve_acting_user_id
+from src.security.features_utils.usage import reserve_ai_credit
+from src.security.features_utils.plan_check import get_org_plan
+from src.security.features_utils.plans import plan_meets_requirement
+from src.security.features_utils.dependencies import require_playgrounds_feature
+from src.services.playgrounds.playgrounds_generator import (
+    get_playground_session,
+    create_playground_session,
+    generate_playground_stream,
+    MAX_ITERATIONS,
+)
+from src.services.playgrounds.schemas.playgrounds_generator import (
+    StartPlaygroundSession,
+    SendPlaygroundMessage,
+    PlaygroundSessionResponse,
+    PlaygroundMessage,
+)
+
+router = APIRouter(dependencies=[Depends(require_playgrounds_feature)])
+
+
+async def event_generator(generator, session_uuid: str):
+    """Convert async generator to SSE format."""
+    try:
+        async for chunk in generator:
+            yield f"data: {json.dumps({'type': 'chunk', 'content': chunk})}\n\n"
+        yield f"data: {json.dumps({'type': 'done', 'session_uuid': session_uuid})}\n\n"
+    except Exception:
+        logging.exception("Error in playground event stream for session %s", session_uuid)
+        yield f"data: {json.dumps({'type': 'error', 'message': 'An internal error occurred.'})}\n\n"
+
+
+async def get_org_ai_model(org_id: int, db_session: AsyncSession) -> str:
+    try:
+        current_plan = await get_org_plan(org_id, db_session)
+        if plan_meets_requirement(current_plan, "pro"):
+            return "gemini-3-flash-preview"
+        return "gemini-2.5-flash-lite"
+    except Exception:
+        return "gemini-2.5-flash-lite"
+
+
+async def _get_course_context(
+    course_uuid: Optional[str],
+    org_id: int,
+    db_session: AsyncSession,
+    prompt: str,
+) -> tuple[Optional[str], Optional[int]]:
+    """Return (course_context_str, course_id) or (None, None) if no course."""
+    if not course_uuid:
+        return None, None
+
+    course = (await db_session.execute(
+        select(Course).where(Course.course_uuid == course_uuid)
+    )).scalars().first()
+    if not course or course.org_id != org_id:
+        return None, None
+
+    try:
+        from src.services.ai.rag.query_service import query_course_rag
+        rag_result = await query_course_rag(
+            question=prompt,
+            org_id=org_id,
+            db_session=db_session,
+            course_id=course.id,
+        )
+        return rag_result.get("context") or None, course.id
+    except Exception as e:
+        logging.warning("Failed to fetch RAG context for playground: %s", e)
+        return None, course.id
+
+
+@router.post(
+    "/generate/start",
+    summary="Start a playground generation session",
+    description="Start a new Playground AI generation session with a server-sent events stream. Deducts AI credits and requires update permission on the target playground.",
+    responses={
+        200: {"description": "Server-sent events stream of generated playground content.", "content": {"text/event-stream": {}}},
+        401: {"description": "Authentication required"},
+        403: {"description": "Insufficient permissions to generate content"},
+        404: {"description": "Playground or organization not found"},
+    },
+)
+async def start_playground_session(
+    request: Request,
+    session_request: StartPlaygroundSession,
+    current_user: PublicUser | AnonymousUser | APITokenUser = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
+):
+    """Start a new Playground AI generation session with streaming response."""
+    playground = (await db_session.execute(
+        select(Playground).where(Playground.playground_uuid == session_request.playground_uuid)
+    )).scalars().first()
+    if not playground:
+        raise HTTPException(status_code=404, detail="Playground not found")
+
+    org = (await db_session.execute(
+        select(Organization).where(Organization.id == playground.org_id)
+    )).scalars().first()
+    if not org or org.id is None:
+        raise HTTPException(status_code=404, detail="Organization not found")
+
+    # Verify user can edit (must be creator or have update rights)
+    generate_acting_user_id = resolve_acting_user_id(current_user)
+    from src.services.playgrounds.playgrounds import _get_user_rights
+    rights = await _get_user_rights(generate_acting_user_id, playground.org_id, db_session)
+    pg_rights = rights.get("playgrounds", {})
+    is_owner = playground.created_by == generate_acting_user_id
+    can_edit = pg_rights.get("action_update", False) or (
+        is_owner and pg_rights.get("action_update_own", False)
+    )
+    if not can_edit:
+        raise HTTPException(status_code=403, detail="Insufficient permissions to generate content")
+
+    # F-9: per-user + per-org rate limit before any compute / credit spend.
+    from src.services.security.rate_limiting import enforce_ai_rate_limit
+    enforce_ai_rate_limit(generate_acting_user_id, org.id)
+    await reserve_ai_credit(org.id, db_session, amount=3)
+
+    ai_model = await get_org_ai_model(org.id, db_session)
+
+    # Fetch RAG context if course linked
+    course_context, _ = await _get_course_context(
+        session_request.context.course_uuid,
+        org.id,
+        db_session,
+        session_request.prompt,
+    )
+
+    session = create_playground_session(
+        playground_uuid=session_request.playground_uuid,
+        context=session_request.context,
+    )
+
+    stream = generate_playground_stream(
+        prompt=session_request.prompt,
+        session=session,
+        gemini_model_name=ai_model,
+        current_html=playground.html_content or None,
+        course_context=course_context,
+    )
+
+    return StreamingResponse(
+        event_generator(stream, session.session_uuid),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
+
+
+@router.post(
+    "/generate/iterate",
+    summary="Iterate on a playground generation session",
+    description="Continue an existing Playground session with a new message, streaming the updated output. Deducts AI credits and enforces the session's iteration limit.",
+    responses={
+        200: {"description": "Server-sent events stream of generated playground content.", "content": {"text/event-stream": {}}},
+        400: {"description": "Maximum iterations reached or playground UUID mismatch"},
+        401: {"description": "Authentication required"},
+        403: {"description": "Insufficient permissions"},
+        404: {"description": "Session, playground, or organization not found"},
+    },
+)
+async def iterate_playground_session(
+    request: Request,
+    message_request: SendPlaygroundMessage,
+    current_user: PublicUser | AnonymousUser | APITokenUser = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
+):
+    """Continue an existing Playground session with a new message."""
+    session = get_playground_session(message_request.session_uuid)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    if session.iteration_count >= session.max_iterations:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Maximum iterations ({MAX_ITERATIONS}) reached",
+        )
+
+    if session.playground_uuid != message_request.playground_uuid:
+        raise HTTPException(status_code=400, detail="Playground UUID mismatch")
+
+    playground = (await db_session.execute(
+        select(Playground).where(Playground.playground_uuid == message_request.playground_uuid)
+    )).scalars().first()
+    if not playground:
+        raise HTTPException(status_code=404, detail="Playground not found")
+
+    org = (await db_session.execute(
+        select(Organization).where(Organization.id == playground.org_id)
+    )).scalars().first()
+    if not org or org.id is None:
+        raise HTTPException(status_code=404, detail="Organization not found")
+
+    # Verify user can edit
+    iterate_acting_user_id = resolve_acting_user_id(current_user)
+    from src.services.playgrounds.playgrounds import _get_user_rights
+    rights = await _get_user_rights(iterate_acting_user_id, playground.org_id, db_session)
+    pg_rights = rights.get("playgrounds", {})
+    is_owner = playground.created_by == iterate_acting_user_id
+    can_edit = pg_rights.get("action_update", False) or (
+        is_owner and pg_rights.get("action_update_own", False)
+    )
+    if not can_edit:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+
+    # F-9: per-user + per-org rate limit before any compute / credit spend.
+    from src.services.security.rate_limiting import enforce_ai_rate_limit
+    enforce_ai_rate_limit(iterate_acting_user_id, org.id)
+    await reserve_ai_credit(org.id, db_session, amount=3)
+
+    ai_model = await get_org_ai_model(org.id, db_session)
+
+    # Fetch RAG context if course linked
+    course_context, _ = await _get_course_context(
+        session.context.course_uuid,
+        org.id,
+        db_session,
+        message_request.message,
+    )
+
+    html_to_iterate = message_request.current_html or session.current_html
+
+    stream = generate_playground_stream(
+        prompt=message_request.message,
+        session=session,
+        gemini_model_name=ai_model,
+        current_html=html_to_iterate,
+        course_context=course_context,
+    )
+
+    return StreamingResponse(
+        event_generator(stream, session.session_uuid),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
+
+
+@router.get(
+    "/generate/session/{session_uuid}",
+    response_model=PlaygroundSessionResponse,
+    summary="Get playground generation session state",
+    description="Retrieve the current state of a Playground generation session, including iteration count, current HTML, and message history.",
+    responses={
+        200: {"description": "Current state of the playground generation session.", "model": PlaygroundSessionResponse},
+        401: {"description": "Authentication required"},
+        404: {"description": "Session not found"},
+    },
+)
+async def get_session_state(
+    session_uuid: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
+) -> PlaygroundSessionResponse:
+    """Get the current state of a Playground session."""
+    session = get_playground_session(session_uuid)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    return PlaygroundSessionResponse(
+        session_uuid=session.session_uuid,
+        iteration_count=session.iteration_count,
+        max_iterations=session.max_iterations,
+        html_content=session.current_html,
+        message_history=[
+            PlaygroundMessage(role=msg.role, content=msg.content)
+            for msg in session.message_history
+        ],
+    )

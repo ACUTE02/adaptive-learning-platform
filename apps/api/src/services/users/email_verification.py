@@ -1,0 +1,297 @@
+"""
+Email verification service for verifying user email addresses.
+
+Uses Redis to store verification tokens with 1-hour TTL.
+Supports both org-based and org-less (platform) signups.
+"""
+from datetime import datetime, timezone
+import json
+import secrets
+import redis
+from fastapi import HTTPException, Request
+from pydantic import EmailStr
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+from src.db.organization_config import OrganizationConfig
+from src.db.organizations import Organization, OrganizationRead
+from src.db.users import User, UserRead
+from config.config import get_learnhouse_config
+from src.services.orgs.orgs import get_org_default_language
+from src.services.users.emails import send_email_verification_email
+from src.services.email.utils import get_base_url_from_request
+from src.services.security.rate_limiting import check_verification_resend_rate_limit
+from src.services.webhooks.dispatch import dispatch_webhooks
+
+
+# Token expiration time in seconds (1 hour)
+TOKEN_TTL_SECONDS = 60 * 60
+
+# Sentinel value for users who sign up without an organization
+NO_ORG_UUID = "none"
+
+
+def get_redis_connection() -> redis.Redis:
+    """Get Redis connection from config."""
+    LH_CONFIG = get_learnhouse_config()
+    redis_conn_string = LH_CONFIG.redis_config.redis_connection_string
+
+    if not redis_conn_string:
+        raise HTTPException(
+            status_code=500,
+            detail="Redis connection string not found",
+        )
+
+    r = redis.Redis.from_url(redis_conn_string)
+
+    if not r:
+        raise HTTPException(
+            status_code=500,
+            detail="Could not connect to Redis",
+        )
+
+    return r
+
+
+def generate_verification_token() -> str:
+    """Generate a secure verification token."""
+    return secrets.token_urlsafe(32)
+
+
+async def send_verification_email(
+    request: Request,
+    db_session: AsyncSession,
+    user: User,
+    org_id: int | None = None,
+) -> str:
+    """
+    Generate a verification token, store in Redis, and send verification email.
+
+    Args:
+        request: FastAPI request
+        db_session: Database session
+        user: User to send verification email to
+        org_id: Organization ID (None for platform signups without org)
+
+    Returns:
+        Success message
+    """
+    org = None
+    org_read = None
+    org_uuid = NO_ORG_UUID
+    lang = "en"
+
+    if org_id is not None:
+        statement = select(Organization).where(Organization.id == org_id)
+        org = (await db_session.execute(statement)).scalars().first()
+
+        if not org:
+            raise HTTPException(
+                status_code=400,
+                detail="Organization not found",
+            )
+        org_uuid = org.org_uuid
+        org_read = OrganizationRead.model_validate(org)
+
+        org_config_stmt = select(OrganizationConfig).where(OrganizationConfig.org_id == org.id)
+        org_config = (await db_session.execute(org_config_stmt)).scalars().first()
+        lang = get_org_default_language(org_config)
+
+    # Get Redis connection
+    r = get_redis_connection()
+
+    # Generate secure token
+    token = generate_verification_token()
+
+    # Create verification object
+    verification_data = {
+        "token": token,
+        "user_uuid": user.user_uuid,
+        "org_uuid": org_uuid,
+        "email": user.email,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "expires_at": (datetime.now(timezone.utc).timestamp() + TOKEN_TTL_SECONDS),
+    }
+
+    # Store in Redis with TTL
+    redis_key = f"email_verification:{user.user_uuid}:org:{org_uuid}:token:{token}"
+    r.setex(redis_key, TOKEN_TTL_SECONDS, json.dumps(verification_data))
+
+    # Convert to Read model for email function
+    user_read = UserRead.model_validate(user)
+
+    # Send verification email
+    base_url = get_base_url_from_request(request)
+    email_sent = send_email_verification_email(
+        token=token,
+        user=user_read,
+        organization=org_read,
+        email=user.email,
+        base_url=base_url,
+        lang=lang,
+    )
+
+    if not email_sent:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to send verification email",
+        )
+
+    return "Verification email sent"
+
+
+async def verify_email_token(
+    request: Request,
+    db_session: AsyncSession,
+    token: str,
+    user_uuid: str,
+    org_uuid: str,
+) -> str:
+    """
+    Verify an email verification token and mark email as verified.
+
+    Args:
+        request: FastAPI request
+        db_session: Database session
+        token: Verification token
+        user_uuid: User UUID
+        org_uuid: Organization UUID (or "none" for platform signups)
+
+    Returns:
+        Success message
+    """
+    # Get Redis connection
+    r = get_redis_connection()
+
+    # Look up token in Redis
+    redis_key = f"email_verification:{user_uuid}:org:{org_uuid}:token:{token}"
+    token_data = r.get(redis_key)
+
+    if not token_data:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid or expired verification token",
+        )
+
+    # Parse token data
+    verification_data = json.loads(token_data)
+
+    # Check if token has expired
+    if verification_data["expires_at"] < datetime.now(timezone.utc).timestamp():
+        r.delete(redis_key)
+        raise HTTPException(
+            status_code=400,
+            detail="Verification token has expired",
+        )
+
+    # Verify user UUID matches
+    if verification_data["user_uuid"] != user_uuid:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid verification token",
+        )
+
+    # Get user from database
+    statement = select(User).where(User.user_uuid == user_uuid)
+    user = (await db_session.execute(statement)).scalars().first()
+
+    if not user:
+        raise HTTPException(
+            status_code=400,
+            detail="User not found",
+        )
+
+    # Check if already verified
+    if user.email_verified:
+        # Delete token and return success
+        r.delete(redis_key)
+        return "Email already verified"
+
+    # Mark email as verified
+    user.email_verified = True
+    user.email_verified_at = datetime.now(timezone.utc).isoformat()
+
+    db_session.add(user)
+    await db_session.commit()
+    await db_session.refresh(user)
+
+    # Delete used token
+    r.delete(redis_key)
+
+    # Dispatch webhook — resolve org_id from org_uuid
+    if org_uuid != NO_ORG_UUID:
+        org_statement = select(Organization).where(Organization.org_uuid == org_uuid)
+        org = (await db_session.execute(org_statement)).scalars().first()
+        if org:
+            await dispatch_webhooks(
+                event_name="user_email_verified",
+                org_id=org.id,
+                data={
+                    "user_uuid": user.user_uuid,
+                    "email": user.email,
+                },
+            )
+
+    return "Email verified successfully"
+
+
+async def resend_verification_email(
+    request: Request,
+    db_session: AsyncSession,
+    email: EmailStr,
+    org_id: int | None = None,
+) -> str:
+    """
+    Resend verification email with rate limiting.
+
+    Args:
+        request: FastAPI request
+        db_session: Database session
+        email: User email
+        org_id: Organization ID (None for platform signups without org)
+
+    Returns:
+        Success message
+    """
+    # Check rate limit
+    is_allowed, retry_after = check_verification_resend_rate_limit(email)
+
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many verification email requests. Please try again in {retry_after // 60} minutes.",
+        )
+
+    # SECURITY: return the same generic response on every path so the
+    # endpoint cannot be used to enumerate accounts or to detect which
+    # accounts are already verified. We still only send email when the
+    # user exists and is unverified.
+    GENERIC_RESPONSE = (
+        "If an account with this email exists, a verification email has been sent"
+    )
+
+    statement = select(User).where(User.email == email)
+    user = (await db_session.execute(statement)).scalars().first()
+
+    if user and not user.email_verified:
+        await send_verification_email(request, db_session, user, org_id)
+
+    return GENERIC_RESPONSE
+
+
+def invalidate_verification_tokens(user_uuid: str, org_uuid: str) -> None:
+    """
+    Invalidate all verification tokens for a user.
+    Called when user changes email or for security reasons.
+
+    Args:
+        user_uuid: User UUID
+        org_uuid: Organization UUID
+    """
+    r = get_redis_connection()
+
+    # Find and delete all tokens for this user/org (use scan_iter to avoid blocking Redis)
+    pattern = f"email_verification:{user_uuid}:org:{org_uuid}:token:*"
+    keys = list(r.scan_iter(match=pattern, count=100))
+
+    if keys:
+        r.delete(*keys)

@@ -1,0 +1,615 @@
+import os
+import re
+import ssl
+import socket
+import secrets
+import logging
+from typing import List, Optional, Tuple
+from uuid import uuid4
+from datetime import datetime
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+from fastapi import HTTPException, Request, status
+
+from src.db.custom_domains import (
+    CustomDomain,
+    CustomDomainCreate,
+    CustomDomainRead,
+    CustomDomainVerificationInfo,
+    CustomDomainResolveResponse,
+)
+from src.db.organizations import Organization
+from src.db.users import PublicUser, AnonymousUser, APITokenUser
+from src.security.auth import resolve_acting_user_id
+from src.security.rbac.rbac import authorization_verify_if_user_is_anon
+from src.security.org_auth import require_org_membership, require_org_admin
+from src.services.utils.ssrf_guard import SSRFBlockedError, resolve_and_validate_url
+
+logger = logging.getLogger(__name__)
+
+# Reserved domains that cannot be used as custom domains
+RESERVED_DOMAIN_PATTERNS = [
+    r'.*\.learnhouse\.io$',
+    r'.*\.learnhouse\.app$',
+    r'^learnhouse\.io$',
+    r'^learnhouse\.app$',
+    r'^localhost$',
+    r'^127\.0\.0\.1$',
+]
+
+# Learnhouse domain for CNAME instructions
+LEARNHOUSE_DOMAIN = os.getenv('LEARNHOUSE_DOMAIN', 'learnhouse.io')
+
+
+def generate_verification_token() -> str:
+    """Generate a secure random verification token."""
+    return secrets.token_urlsafe(32)
+
+
+def is_valid_domain(domain: str) -> bool:
+    """Validate domain format."""
+    # Domain regex pattern
+    pattern = r'^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,}$'
+    return bool(re.match(pattern, domain))
+
+
+def is_reserved_domain(domain: str) -> bool:
+    """Check if domain matches any reserved patterns."""
+    for pattern in RESERVED_DOMAIN_PATTERNS:
+        if re.match(pattern, domain.lower()):
+            return True
+    return False
+
+
+def _get_subdomain_prefix(domain: str) -> str:
+    """
+    Extract the subdomain prefix from a domain.
+    e.g. 'learn.contribhub.com' -> 'learn'
+         'docs.learn.contribhub.com' -> 'docs.learn'
+         'contribhub.com' -> ''
+    """
+    parts = domain.split('.')
+    if len(parts) <= 2:
+        return ''
+    return '.'.join(parts[:-2])
+
+
+def get_verification_instructions(domain: str, token: str, org_slug: str) -> CustomDomainVerificationInfo:
+    """Generate DNS verification instructions for a domain."""
+    subdomain = _get_subdomain_prefix(domain)
+
+    if subdomain:
+        txt_record_host = f"_learnhouse-verification.{subdomain}"
+        cname_record_host = subdomain
+    else:
+        txt_record_host = "_learnhouse-verification"
+        cname_record_host = "@"
+
+    txt_record_value = f"learnhouse-verify={token}"
+    cname_record_value = f"{org_slug}.{LEARNHOUSE_DOMAIN}"
+
+    instructions = f"""
+To verify your domain, add the following DNS records at your domain provider:
+
+1. TXT Record (for verification):
+   Host: {txt_record_host}
+   Value: {txt_record_value}
+
+2. CNAME Record (for routing):
+   Host: {cname_record_host}
+   Value: {cname_record_value}
+
+After adding these records, click "Verify" to complete the setup.
+DNS propagation may take up to 48 hours, but usually completes within a few minutes.
+"""
+
+    return CustomDomainVerificationInfo(
+        domain=domain,
+        status="pending",
+        txt_record_host=txt_record_host,
+        txt_record_value=txt_record_value,
+        cname_record_host=cname_record_host,
+        cname_record_value=cname_record_value,
+        instructions=instructions.strip(),
+    )
+
+
+async def verify_domain_dns(domain: CustomDomain, db_session: AsyncSession, org_slug: str) -> Tuple[bool, str]:
+    """
+    Verify DNS configuration for a custom domain.
+    Returns (success, message) tuple.
+    """
+    # Development mode bypass
+    if os.getenv('LEARNHOUSE_CUSTOM_DOMAIN_DEV_MODE') == 'true':
+        logger.warning(f"DEV MODE: Skipping DNS verification for {domain.domain}")
+        domain.status = "verified"
+        domain.verified_at = str(datetime.now())
+        domain.last_check_at = str(datetime.now())
+        domain.check_error = None
+        db_session.add(domain)
+        await db_session.commit()
+        return True, "Verified (dev mode)"
+
+    try:
+        import dns.resolver
+
+        # Check TXT record
+        txt_host = f"_learnhouse-verification.{domain.domain}"
+        expected_txt = f"learnhouse-verify={domain.verification_token}"
+
+        try:
+            txt_answers = dns.resolver.resolve(txt_host, 'TXT')
+            txt_found = False
+            for rdata in txt_answers:
+                txt_value = str(rdata).strip('"')
+                if txt_value == expected_txt:
+                    txt_found = True
+                    break
+
+            if not txt_found:
+                domain.status = "pending"
+                domain.last_check_at = str(datetime.now())
+                domain.check_error = "TXT record found but value doesn't match"
+                db_session.add(domain)
+                await db_session.commit()
+                return False, "TXT record found but value doesn't match expected value"
+
+        except dns.resolver.NXDOMAIN:
+            domain.status = "pending"
+            domain.last_check_at = str(datetime.now())
+            domain.check_error = "TXT record not found"
+            db_session.add(domain)
+            await db_session.commit()
+            return False, "TXT record not found. Please add the verification TXT record and try again."
+        except dns.resolver.NoAnswer:
+            domain.status = "pending"
+            domain.last_check_at = str(datetime.now())
+            domain.check_error = "TXT record not found (no answer)"
+            db_session.add(domain)
+            await db_session.commit()
+            return False, "TXT record not found. Please add the verification TXT record and try again."
+
+        # TXT record verified - mark domain as verified
+        domain.status = "verified"
+        domain.verified_at = str(datetime.now())
+        domain.last_check_at = str(datetime.now())
+        domain.check_error = None
+        db_session.add(domain)
+        await db_session.commit()
+
+        return True, "Domain verified successfully"
+
+    except ImportError:
+        logger.error("dnspython not installed. Please install it with: pip install dnspython")
+        domain.status = "pending"
+        domain.last_check_at = str(datetime.now())
+        domain.check_error = "DNS verification unavailable"
+        db_session.add(domain)
+        await db_session.commit()
+        return False, "DNS verification is temporarily unavailable. Please try again later."
+    except Exception as e:
+        logger.error(f"DNS verification error for {domain.domain}: {str(e)}")
+        domain.status = "pending"
+        domain.last_check_at = str(datetime.now())
+        domain.check_error = str(e)
+        db_session.add(domain)
+        await db_session.commit()
+        return False, f"DNS verification failed: {str(e)}"
+
+
+async def add_custom_domain(
+    request: Request,
+    db_session: AsyncSession,
+    domain_data: CustomDomainCreate,
+    org_id: int,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> CustomDomainRead:
+    """Add a new custom domain for an organization."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Check if the organization exists
+    statement = select(Organization).where(Organization.id == org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found",
+        )
+
+    # VERIFICATION 3+4: Membership + admin permission (superadmins bypass)
+    await require_org_admin(acting_user_id, org_id, db_session)
+
+    # VERIFICATION 5: Validate domain format
+    domain = domain_data.domain.lower().strip()
+
+    # Remove protocol if present
+    if domain.startswith('http://'):
+        domain = domain[7:]
+    if domain.startswith('https://'):
+        domain = domain[8:]
+
+    # Remove trailing slash and path
+    domain = domain.split('/')[0]
+
+    if not is_valid_domain(domain):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid domain format. Please enter a valid domain (e.g., learn.mycompany.com)",
+        )
+
+    # VERIFICATION 6: Check if domain is reserved
+    if is_reserved_domain(domain):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This domain is reserved and cannot be used as a custom domain",
+        )
+
+    # VERIFICATION 7: Check if domain is already registered
+    statement = select(CustomDomain).where(CustomDomain.domain == domain)
+    existing_domain = (await db_session.execute(statement)).scalars().first()
+
+    if existing_domain:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This domain is already registered",
+        )
+
+    # Create the custom domain
+    now = str(datetime.now())
+    verification_token = generate_verification_token()
+
+    custom_domain = CustomDomain(
+        domain_uuid=f"domain_{uuid4()}",
+        domain=domain,
+        org_id=org_id,
+        status="pending",
+        verification_token=verification_token,
+        primary=False,
+        creation_date=now,
+        update_date=now,
+    )
+
+    db_session.add(custom_domain)
+    await db_session.commit()
+    await db_session.refresh(custom_domain)
+
+    return CustomDomainRead(**custom_domain.model_dump())
+
+
+async def list_custom_domains(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> List[CustomDomainRead]:
+    """List all custom domains for an organization."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Check if the organization exists
+    statement = select(Organization).where(Organization.id == org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found",
+        )
+
+    # VERIFICATION 3: Membership (superadmins bypass)
+    await require_org_membership(acting_user_id, org_id, db_session)
+
+    # Get all custom domains for the organization
+    statement = select(CustomDomain).where(
+        CustomDomain.org_id == org_id
+    ).order_by(CustomDomain.creation_date.desc())  # type: ignore
+
+    domains = (await db_session.execute(statement)).scalars().all()
+
+    return [CustomDomainRead(**domain.model_dump()) for domain in domains]
+
+
+async def get_custom_domain(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    domain_uuid: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> CustomDomainRead:
+    """Get a specific custom domain by UUID."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Membership (superadmins bypass)
+    await require_org_membership(acting_user_id, org_id, db_session)
+
+    # Get the custom domain
+    statement = select(CustomDomain).where(
+        CustomDomain.domain_uuid == domain_uuid,
+        CustomDomain.org_id == org_id
+    )
+    domain = (await db_session.execute(statement)).scalars().first()
+
+    if not domain:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom domain not found",
+        )
+
+    return CustomDomainRead(**domain.model_dump())
+
+
+async def get_domain_verification_info(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    domain_uuid: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> CustomDomainVerificationInfo:
+    """Get DNS verification instructions for a custom domain."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Membership (superadmins bypass)
+    await require_org_membership(acting_user_id, org_id, db_session)
+
+    # Get the organization for the slug
+    statement = select(Organization).where(Organization.id == org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found",
+        )
+
+    # Get the custom domain
+    statement = select(CustomDomain).where(
+        CustomDomain.domain_uuid == domain_uuid,
+        CustomDomain.org_id == org_id
+    )
+    domain = (await db_session.execute(statement)).scalars().first()
+
+    if not domain:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom domain not found",
+        )
+
+    info = get_verification_instructions(domain.domain, domain.verification_token, organization.slug)
+    info.status = domain.status
+    return info
+
+
+async def verify_custom_domain(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    domain_uuid: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> dict:
+    """Verify DNS configuration for a custom domain."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Membership + admin permission (superadmins bypass)
+    await require_org_admin(acting_user_id, org_id, db_session)
+
+    # Get the organization for the slug
+    statement = select(Organization).where(Organization.id == org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found",
+        )
+
+    # Get the custom domain
+    statement = select(CustomDomain).where(
+        CustomDomain.domain_uuid == domain_uuid,
+        CustomDomain.org_id == org_id
+    )
+    domain = (await db_session.execute(statement)).scalars().first()
+
+    if not domain:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom domain not found",
+        )
+
+    # Verify DNS
+    success, message = await verify_domain_dns(domain, db_session, organization.slug)
+
+    if success:
+        return {"success": True, "message": message, "status": domain.status}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=message,
+        )
+
+
+async def delete_custom_domain(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    domain_uuid: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> dict:
+    """Delete a custom domain."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Membership + admin permission (superadmins bypass)
+    await require_org_admin(acting_user_id, org_id, db_session)
+
+    # Get the custom domain
+    statement = select(CustomDomain).where(
+        CustomDomain.domain_uuid == domain_uuid,
+        CustomDomain.org_id == org_id
+    )
+    domain = (await db_session.execute(statement)).scalars().first()
+
+    if not domain:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom domain not found",
+        )
+
+    # Delete the domain
+    await db_session.delete(domain)
+    await db_session.commit()
+
+    return {"message": "Custom domain deleted successfully"}
+
+
+async def list_all_verified_domains(
+    db_session: AsyncSession,
+) -> List[dict]:
+    """
+    List all verified custom domains across all organizations.
+    Used internally by the domain sync controller for Kubernetes ingress provisioning.
+    """
+    statement = select(CustomDomain).where(
+        CustomDomain.status == "verified"
+    )
+    domains = (await db_session.execute(statement)).scalars().all()
+    return [{"domain": d.domain, "org_id": d.org_id, "domain_uuid": d.domain_uuid} for d in domains]
+
+
+async def check_domain_ssl_status(
+    request: Request,
+    db_session: AsyncSession,
+    org_id: int,
+    domain_uuid: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+) -> dict:
+    """Check SSL certificate status for a custom domain by attempting a TLS handshake."""
+    acting_user_id = resolve_acting_user_id(current_user)
+    # VERIFICATION 1: User must be authenticated
+    await authorization_verify_if_user_is_anon(acting_user_id)
+
+    # VERIFICATION 2: Membership (superadmins bypass)
+    await require_org_membership(acting_user_id, org_id, db_session)
+
+    # Get the custom domain
+    statement = select(CustomDomain).where(
+        CustomDomain.domain_uuid == domain_uuid,
+        CustomDomain.org_id == org_id
+    )
+    domain = (await db_session.execute(statement)).scalars().first()
+
+    if not domain:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom domain not found",
+        )
+
+    # Only check SSL for verified domains
+    if domain.status != "verified":
+        return {
+            "has_ssl": False,
+            "status": "pending_verification",
+            "message": "Domain must be verified before SSL can be provisioned.",
+        }
+
+    # SECURITY: resolve the domain and reject private / link-local / loopback
+    # addresses before opening a TCP connection. Without this, an admin can
+    # register (and then verify DNS via control over the target) a custom
+    # domain that points at 169.254.169.254 or 127.0.0.1 and probe internal
+    # services via this endpoint's response-differential timing.
+    try:
+        resolve_and_validate_url(f"https://{domain.domain}")
+    except SSRFBlockedError as exc:
+        logger.warning("SSL probe refused for %s: %s", domain.domain, exc)
+        return {
+            "has_ssl": False,
+            "status": "invalid",
+            "message": "Domain resolves to a non-public address and cannot be checked.",
+        }
+
+    # Attempt TLS handshake
+    try:
+        context = ssl.create_default_context()
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
+        with socket.create_connection((domain.domain, 443), timeout=5) as sock:
+            with context.wrap_socket(sock, server_hostname=domain.domain) as ssock:
+                cert = ssock.getpeercert()
+                not_after = cert.get("notAfter", "")
+                issuer_parts = cert.get("issuer", ())
+                issuer_cn = ""
+                for rdn in issuer_parts:
+                    for attr in rdn:
+                        if attr[0] == "commonName":
+                            issuer_cn = attr[1]
+
+                return {
+                    "has_ssl": True,
+                    "status": "active",
+                    "message": "SSL certificate is active.",
+                    "expires": not_after,
+                    "issuer": issuer_cn,
+                }
+    except ssl.SSLCertVerificationError as e:
+        return {
+            "has_ssl": False,
+            "status": "invalid",
+            "message": f"SSL certificate exists but is invalid: {str(e)}",
+        }
+    except (socket.timeout, socket.gaierror, ConnectionRefusedError, OSError):
+        return {
+            "has_ssl": False,
+            "status": "provisioning",
+            "message": "SSL certificate is being provisioned. This usually takes a few minutes after domain verification.",
+        }
+    except Exception as e:
+        logger.error(f"SSL check error for {domain.domain}: {str(e)}")
+        return {
+            "has_ssl": False,
+            "status": "unknown",
+            "message": "Could not determine SSL status.",
+        }
+
+
+async def resolve_org_by_domain(
+    db_session: AsyncSession,
+    domain: str,
+) -> Optional[CustomDomainResolveResponse]:
+    """
+    Resolve an organization by custom domain.
+    This is a public endpoint that doesn't require authentication.
+    """
+    # Normalize domain
+    domain = domain.lower().strip()
+
+    # Get the custom domain
+    statement = select(CustomDomain).where(
+        CustomDomain.domain == domain,
+        CustomDomain.status == "verified"
+    )
+    custom_domain = (await db_session.execute(statement)).scalars().first()
+
+    if not custom_domain:
+        return None
+
+    # Get the organization
+    statement = select(Organization).where(Organization.id == custom_domain.org_id)
+    organization = (await db_session.execute(statement)).scalars().first()
+
+    if not organization:
+        return None
+
+    return CustomDomainResolveResponse(
+        org_id=organization.id,
+        org_slug=organization.slug,
+        org_uuid=organization.org_uuid,
+    )

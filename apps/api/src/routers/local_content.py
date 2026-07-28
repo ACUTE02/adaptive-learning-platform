@@ -1,0 +1,268 @@
+﻿"""
+Local Content Files Router
+
+Serves static content files from the local filesystem with access control.
+Replaces the unauthenticated StaticFiles mount to enforce authorization
+on private course/podcast content while allowing public content through.
+
+SECURITY:
+- Activity content (videos, PDFs, blocks) for non-public courses requires auth
+- Course-level metadata (thumbnails) is always public (shown in listings)
+- Org-level content (logos, branding) is always public
+- Podcast episode content for non-public podcasts requires auth
+"""
+
+import os
+from pathlib import Path
+from urllib.parse import unquote
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import FileResponse
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.core.events.database import get_db_session
+from src.db.podcasts.podcasts import Podcast
+from src.db.users import AnonymousUser, PublicUser, APITokenUser
+from src.db.user_organizations import UserOrganization
+from src.security.auth import get_current_user
+
+router = APIRouter()
+
+CONTENT_DIR = Path("content")
+
+
+def _validate_content_path(file_path: str) -> Path | None:
+    """Validate path is safe and return the resolved path, or None if unsafe."""
+    # Decode URL-encoded characters (double-decode for double-encoding attacks)
+    decoded = unquote(unquote(file_path))
+    if '..' in decoded or decoded.startswith('/') or '\x00' in decoded:
+        return None
+    normalized = decoded.replace('\\', '/')
+    if '..' in normalized:  # pragma: no cover
+        return None
+
+    # Canonicalize via os.path.realpath (resolves symlinks, normalizes) and verify containment.
+    # realpath is used deliberately: it is a recognized path-injection sanitizer.
+    try:
+        base_real = os.path.realpath(str(CONTENT_DIR))
+        full_real = os.path.realpath(os.path.join(base_real, normalized))
+    except (OSError, ValueError):
+        return None
+
+    if not full_real.startswith(base_real + os.sep) and full_real != base_real:
+        return None
+
+    return Path(full_real)
+
+
+async def _check_content_access(
+    file_path: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser,
+    db_session: AsyncSession,
+) -> None:
+    """
+    Check if the user has access to the requested content.
+
+    Path patterns:
+    - orgs/{uuid}/courses/{uuid}/activities/{uuid}/... â†’ check course access
+    - orgs/{uuid}/courses/{uuid}/...                   â†’ course metadata (public)
+    - orgs/{uuid}/podcasts/{uuid}/episodes/{uuid}/...  â†’ check podcast access
+    - orgs/{uuid}/...                                  â†’ org-level (public)
+    """
+    parts = file_path.split('/')
+
+    # Activity content: requires course to be public or user to be org member
+    if (
+        len(parts) >= 6
+        and parts[0] == 'orgs'
+        and parts[2] == 'courses'
+        and parts[4] == 'activities'
+    ):
+        course_uuid = parts[3]
+        course = (await db_session.execute(
+            select(Course).where(Course.course_uuid == course_uuid)
+        )).scalars().first()
+        if not course:
+            raise HTTPException(status_code=403, detail="Access denied")
+        if course.public:
+            return  # Public course â€” allow anonymous
+        if isinstance(current_user, AnonymousUser):
+            raise HTTPException(status_code=401, detail="Authentication required")
+        # Verify API token is scoped to the correct org
+        if isinstance(current_user, APITokenUser):
+            if current_user.org_id != course.org_id:
+                raise HTTPException(status_code=403, detail="Access denied")
+            return
+        # Verify user belongs to the org that owns this course
+        membership = (await db_session.execute(
+            select(UserOrganization).where(
+                UserOrganization.user_id == current_user.id,
+                UserOrganization.org_id == course.org_id,
+            )
+        )).scalars().first()
+        if not membership:
+            raise HTTPException(status_code=403, detail="Access denied")
+        return
+
+    # Podcast episode content: requires podcast to be public or user to be org member
+    if (
+        len(parts) >= 6
+        and parts[0] == 'orgs'
+        and parts[2] == 'podcasts'
+        and parts[4] == 'episodes'
+    ):
+        podcast_uuid = parts[3]
+        podcast = (await db_session.execute(
+            select(Podcast).where(Podcast.podcast_uuid == podcast_uuid)
+        )).scalars().first()
+        if not podcast:
+            raise HTTPException(status_code=403, detail="Access denied")
+        if podcast.public:
+            return  # Public podcast â€” allow anonymous
+        if isinstance(current_user, AnonymousUser):
+            raise HTTPException(status_code=401, detail="Authentication required")
+        # Verify API token is scoped to the correct org
+        if isinstance(current_user, APITokenUser):
+            if current_user.org_id != podcast.org_id:
+                raise HTTPException(status_code=403, detail="Access denied")
+            return
+        # Verify user belongs to the org that owns this podcast
+        membership = (await db_session.execute(
+            select(UserOrganization).where(
+                UserOrganization.user_id == current_user.id,
+                UserOrganization.org_id == podcast.org_id,
+            )
+        )).scalars().first()
+        if not membership:
+            raise HTTPException(status_code=403, detail="Access denied")
+        return
+
+    # Course metadata (thumbnails, etc.) and org-level content â€” always public
+    # These are displayed on listing pages to all users
+    if len(parts) >= 2 and parts[0] == 'orgs':
+        return
+
+    # User content (avatars, profile images) â€” always public
+    # Paths: users/{user_uuid}/avatars/...
+    if len(parts) >= 2 and parts[0] == 'users':
+        return
+
+    # Unknown path pattern â€” require auth as a safe default
+    if isinstance(current_user, AnonymousUser):
+        raise HTTPException(status_code=401, detail="Authentication required")
+
+
+# MIME type mapping
+_MIME_TYPES = {
+    '.mp4': 'video/mp4',
+    '.webm': 'video/webm',
+    '.mp3': 'audio/mpeg',
+    '.wav': 'audio/wav',
+    '.ogg': 'audio/ogg',
+    '.m4a': 'audio/mp4',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.gif': 'image/gif',
+    '.webp': 'image/webp',
+    '.ico': 'image/x-icon',
+    '.pdf': 'application/pdf',
+    '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    '.zip': 'application/zip',
+    '.json': 'application/json',
+    '.txt': 'text/plain',
+}
+
+
+@router.get(
+    "/content/{file_path:path}",
+    summary="Serve a local content file",
+    description="Streams a content file from the local filesystem with access control. Public course and podcast content is accessible anonymously; private content requires authentication and org membership.",
+    responses={
+        200: {"description": "File served successfully"},
+        400: {"description": "Invalid or unsafe file path"},
+        401: {"description": "Authentication required to access this file"},
+        403: {"description": "User is not permitted to access this file"},
+        404: {"description": "File not found on disk"},
+    },
+)
+async def serve_local_content(
+    request: Request,
+    file_path: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
+):
+    """
+    Serve content files from local filesystem with access control.
+
+    SECURITY: Validates user access based on resource ownership.
+    Public courses/podcasts are accessible to anonymous users.
+    Private content requires authentication.
+    """
+    resolved = _validate_content_path(file_path)
+    if resolved is None:
+        raise HTTPException(status_code=400, detail="Invalid path")
+
+    await _check_content_access(file_path, current_user, db_session)
+
+    if not resolved.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    ext = resolved.suffix.lower()
+    media_type = _MIME_TYPES.get(ext, 'application/octet-stream')
+
+    return FileResponse(
+        path=str(resolved),
+        media_type=media_type,
+        headers={
+            "Cache-Control": "public, max-age=86400",
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
+
+
+@router.head(
+    "/content/{file_path:path}",
+    summary="Get local content file metadata",
+    description="Returns metadata for a local content file without the body. Used by clients to probe file size and MIME type before issuing a GET.",
+    responses={
+        200: {"description": "File metadata returned via response headers"},
+        400: {"description": "Invalid or unsafe file path"},
+        401: {"description": "Authentication required to access this file"},
+        403: {"description": "User is not permitted to access this file"},
+        404: {"description": "File not found on disk"},
+    },
+)
+async def head_local_content(
+    request: Request,
+    file_path: str,
+    current_user: PublicUser | AnonymousUser | APITokenUser = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
+):
+    """HEAD request for content files â€” returns metadata without body."""
+    resolved = _validate_content_path(file_path)
+    if resolved is None:
+        raise HTTPException(status_code=400, detail="Invalid path")
+
+    await _check_content_access(file_path, current_user, db_session)
+
+    if not resolved.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    ext = resolved.suffix.lower()
+    media_type = _MIME_TYPES.get(ext, 'application/octet-stream')
+    file_size = resolved.stat().st_size
+
+    from fastapi.responses import Response
+    return Response(
+        status_code=200,
+        headers={
+            "Accept-Ranges": "bytes",
+            "Content-Length": str(file_size),
+            "Content-Type": media_type,
+            "Cache-Control": "public, max-age=86400",
+            "X-Content-Type-Options": "nosniff",
+        },
+    )

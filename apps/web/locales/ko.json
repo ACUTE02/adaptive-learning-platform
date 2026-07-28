@@ -1,0 +1,4992 @@
+{
+  "common": {
+    "hello": "안녕하세요",
+    "home": "홈",
+    "back_to_home": "홈으로 돌아가기",
+    "your_organization": "내 조직",
+    "your_organizations": "내 조직 목록",
+    "no_orgs_message": "아직 소속된 조직이 없습니다. 조직에 가입하면 여기에 표시됩니다.",
+    "assignments": "과제",
+    "payments": "결제",
+    "organization": "조직",
+    "dashboard": "대시보드",
+    "settings": "설정",
+    "language": "언어",
+    "english": "영어",
+    "french": "프랑스어",
+    "german": "독일어",
+    "spanish": "스페인어",
+    "arabic": "아랍어",
+    "japanese": "일본어",
+    "portuguese": "포르투갈어",
+    "russian": "러시아어",
+    "chinese": "중국어(간체)",
+    "hindi": "힌디어",
+    "korean": "한국어",
+    "italian": "이탈리아어",
+    "turkish": "터키어",
+    "vietnamese": "베트남어",
+    "indonesian": "인도네시아어",
+    "polish": "폴란드어",
+    "dutch": "네덜란드어",
+    "thai": "태국어",
+    "bengali": "뱅골어",
+    "slovak": "슬로바키아어",
+    "loading": "로딩 중...",
+    "search": "검색",
+    "all": "전체",
+    "all_courses": "모든 코스",
+    "all_assignments": "모든 과제",
+    "recent": "최근",
+    "expand": "확장",
+    "help": "도움말",
+    "help_menu": {
+      "documentation": "문서",
+      "website": "LearnHouse 웹사이트",
+      "discord": "Discord",
+      "report_feedback": "문제 신고 또는 피드백",
+      "feedback_title": "피드백 보내기",
+      "feedback_description": "의견 공유, 버그 신고, 새 기능 제안을 통해 LearnHouse 개선에 도움을 주세요.",
+      "feedback_placeholder": "생각을 알려주세요...",
+      "feedback_success": "피드백 감사합니다!",
+      "send_feedback": "피드백 보내기",
+      "sending": "전송 중...",
+      "how_was_experience": "경험은 어떠셨나요?",
+      "reaction_happy": "좋음",
+      "reaction_neutral": "보통",
+      "reaction_sad": "나쁨",
+      "attach_image": "스크린샷 첨부"
+    },
+    "plans": {
+      "label": "플랜",
+      "upgrade_button": "{{plan}}으로 업그레이드",
+      "feature_restricted": {
+        "payments": {
+          "title": "스탠다드 기능",
+          "description": "결제는 스탠다드 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 업그레이드하여 결제 처리 및 수익화 기능을 잠금 해제하세요."
+        },
+        "usergroups": {
+          "title": "스탠다드 기능",
+          "description": "사용자 그룹은 스탠다드 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 업그레이드하여 더 나은 접근 관리를 위해 사용자를 그룹으로 구성하세요."
+        },
+        "roles": {
+          "title": "프로 기능",
+          "description": "사용자 정의 역할 생성은 프로 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 업그레이드하여 특정 권한을 가진 역할을 생성하세요."
+        },
+        "ai": {
+          "title": "스탠다드 기능",
+          "description": "AI 기능은 스탠다드 플랜 이상의 조직에서만 사용할 수 있습니다. 업그레이드하여 AI 기반 콘텐츠 생성 및 학습 지원을 이용하세요."
+        },
+        "audit_logs": {
+          "title": "엔터프라이즈 기능",
+          "description": "감사 로그는 엔터프라이즈 플랜의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 업그레이드하여 조직 활동에 대한 완전한 가시성을 확보하세요."
+        },
+        "certifications": {
+          "title": "프로 기능",
+          "description": "인증서는 프로 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 업그레이드하여 과정을 완료한 학습자에게 인증서를 발급하세요."
+        },
+        "communities": {
+          "title": "스탠다드 기능",
+          "description": "커뮤니티는 스탠다드 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 회원을 위한 토론 커뮤니티를 잠금 해제하려면 업그레이드하세요."
+        },
+        "analytics": {
+          "description": "분석은 Standard 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 학습자와 콘텐츠에 대한 인사이트를 얻으려면 업그레이드하세요.",
+          "title": "Standard 기능"
+        },
+        "course_analytics": {
+          "description": "코스 분석은 Pro 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 상세한 참여 데이터, 등록 추세, 개별 코스의 학습자 진행 상황을 확인하려면 업그레이드하세요.",
+          "title": "Pro 기능"
+        },
+        "custom_domains": {
+          "description": "커스텀 도메인은 Standard 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 브랜드 경험을 위해 자체 도메인을 사용하려면 업그레이드하세요.",
+          "title": "Standard 기능"
+        },
+        "podcasts": {
+          "description": "팟캐스트는 Standard 플랜 이상의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 멤버와 팟캐스트를 만들고 공유하려면 업그레이드하세요.",
+          "title": "Standard 기능"
+        },
+        "seo": {
+          "description": "SEO 최적화 도구는 Standard 플랜 이상의 조직에서만 사용할 수 있습니다. 코스의 검색 엔진 표시, 소셜 공유 미리보기, 구조화된 데이터를 사용자 정의하려면 업그레이드하세요.",
+          "title": "Standard 기능"
+        },
+        "sso": {
+          "description": "싱글 사인온(SSO)은 Enterprise 플랜의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 조직의 ID 제공자를 통한 보안 인증을 활성화하려면 업그레이드하세요.",
+          "title": "Enterprise 기능"
+        },
+        "boards": {
+          "title": "Standard Feature",
+          "description": "Boards is a premium feature available only to organizations on our Standard plan or higher. Upgrade to unlock collaborative boards for real-time brainstorming and planning."
+        },
+        "playgrounds": {
+          "title": "Standard Feature",
+          "description": "Playgrounds is a premium feature available only to organizations on our Standard plan or higher. Upgrade to create interactive AI-generated experiences for your learners."
+        },
+        "scorm": {
+          "title": "Enterprise Feature",
+          "description": "SCORM support is a premium feature available only to organizations on our Enterprise plan. Upgrade to import and deliver SCORM packages alongside your courses."
+        },
+        "webhooks": {
+          "title": "Pro Feature",
+          "description": "Automations is a premium feature available only to organizations on our Pro plan or higher. Upgrade to wire your courses up to webhooks and external integrations."
+        }
+      },
+      "current_plan": "현재 플랜",
+      "upgrade_to": "업그레이드"
+    },
+    "features": {
+      "disabled": {
+        "status": "기능 비활성화됨",
+        "enable_feature": "설정으로 이동",
+        "names": {
+          "courses": "코스",
+          "collections": "컬렉션",
+          "communities": "커뮤니티",
+          "podcasts": "팟캐스트",
+          "payments": "결제",
+          "trail": "진행 상황 추적",
+          "boards": "보드",
+          "playgrounds": "Playgrounds"
+        },
+        "public": {
+          "title": "{{feature}} 사용 불가",
+          "description": "이 기능은 현재 이 조직에서 사용할 수 없습니다. 액세스가 필요하시면 관리자에게 문의하세요."
+        },
+        "dashboard": {
+          "title": "{{feature}} 비활성화됨",
+          "description": "이 기능은 귀하의 조직에서 비활성화되어 있습니다. 사용자가 사용할 수 있도록 설정에서 활성화하세요."
+        }
+      }
+    },
+    "enterprise": "엔터프라이즈",
+    "version": "버전",
+    "users": "사용자",
+    "save": "저장",
+    "save_changes": "변경 사항 저장",
+    "saving": "저장 중...",
+    "cancel": "취소",
+    "submit": "제출",
+    "delete": "삭제",
+    "previous": "이전",
+    "next": "다음",
+    "status": "상태",
+    "complete": "완료하기",
+    "completed": "완료됨",
+    "created_at": "생성일",
+    "updated": "업데이트됨",
+    "or": "또는",
+    "just_now": "방금 전",
+    "unknown": "알 수 없음",
+    "hi": "안녕하세요",
+    "about": "정보",
+    "present": "출석",
+    "made_with": "제작:",
+    "something_went_wrong": "문제가 발생했습니다",
+    "something_wrong_happened": "예기치 않은 오류가 발생했습니다",
+    "error_request": "요청을 처리하는 동안 오류가 발생했습니다",
+    "processing": "처리 중...",
+    "show_less": "간략히 보기",
+    "show_more": "자세히 보기",
+    "price": "가격:",
+    "back": "뒤로",
+    "of": "/",
+    "creating": "생성 중...",
+    "view_details": "상세 보기",
+    "boards": "보드",
+    "close": "닫기",
+    "optional": "선택사항",
+    "playgrounds": "플레이그라운드",
+    "analytics": "분석",
+    "add": "추가",
+    "choose_an_organization_to_continue": "계속하려면 조직을 선택하세요",
+    "for": "대상",
+    "powered_by": "제공",
+    "results": "결과",
+    "no_content_yet": "아직 콘텐츠가 없습니다",
+    "other": "Other",
+    "disabled": "Disabled",
+    "store": "Store"
+  },
+  "banner": {
+    "viewing_as_guest": "{{name}}을(를) 게스트로 보고 있습니다.",
+    "join_organization": "이 조직에 가입",
+    "to_access_features": "하여 모든 기능을 이용하세요.",
+    "free_plan_upgrade": "무료 플랜을 사용 중입니다. 업그레이드하여 전체 경험을 잠금 해제하세요.",
+    "free_plan_upgrade_button": "업그레이드"
+  },
+  "auth": {
+    "login": "로그인",
+    "email": "이메일",
+    "password": "비밀번호",
+    "forgot_password": "비밀번호를 잊으셨나요?",
+    "login_to": "다시 오신 것을 환영합니다",
+    "sign_up": "회원가입",
+    "sign_in_with_google": "Google로 로그인",
+    "wrong_email_password": "이메일 또는 비밀번호가 잘못되었습니다",
+    "invited_to_join": "학습 여정을 시작하세요",
+    "join": "가입하기",
+    "invite_code_required": "가입하려면 초대 코드가 필요합니다",
+    "enter_invite_code": "초대 코드를 입력하세요",
+    "invite_code_valid": "초대 코드가 확인되었습니다. 잠시 후 가입 페이지로 이동합니다.",
+    "invite_code_invalid": "유효하지 않은 초대 코드입니다",
+    "forgot_password_title": "비밀번호 찾기",
+    "forgot_password_description": "이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다",
+    "send_reset_link": "재설정 링크 전송",
+    "check_email_message": "이메일을 확인해 주세요",
+    "reset_password_title": "비밀번호 재설정",
+    "reset_password_description": "이메일과 재설정 코드를 입력하여 비밀번호를 재설정하세요",
+    "reset_code": "재설정 코드",
+    "new_password": "새 비밀번호",
+    "confirm_password": "비밀번호 확인",
+    "passwords_do_not_match": "비밀번호가 일치하지 않습니다",
+    "change_password": "비밀번호 변경",
+    "login_again_message": "새 비밀번호로 다시 로그인해 주세요",
+    "signup_to": "회원가입 대상:",
+    "create_account": "계정 생성",
+    "create_account_and_join": "계정 생성 및 가입",
+    "account_created_success": "계정이 성공적으로 생성되었습니다",
+    "login_to_your_account": "계정에 로그인",
+    "authenticate_to_contribute": "기여하려면 로그인하세요",
+    "sign_up_to_contribute": "기여하려면 가입하세요",
+    "verify_email_title": "이메일 인증",
+    "verifying_email": "이메일 주소를 확인하는 중...",
+    "verification_failed": "인증 실패",
+    "verification_missing_params": "인증 매개변수가 누락되었습니다. 인증 링크를 확인해 주세요.",
+    "verification_trouble": "문제가 있으신가요? 로그인 페이지에서 새 인증 이메일을 요청해 보세요.",
+    "back_to_login": "로그인으로 돌아가기",
+    "email_verified_success": "이메일이 인증되었습니다!",
+    "email_verified_message": "이메일이 성공적으로 인증되었습니다. 이제 계정에 로그인할 수 있습니다.",
+    "proceed_to_login": "로그인으로 이동",
+    "check_email_for_verification": "이메일을 확인하세요",
+    "verification_email_sent_message": "받은 편지함으로 인증 이메일을 보냈습니다. 이메일의 링크를 클릭하여 계정을 인증해 주세요.",
+    "email_not_verified": "이메일 미인증",
+    "email_not_verified_message": "로그인하기 전에 이메일 주소를 인증해 주세요. 받은 편지함에서 인증 이메일을 확인하세요.",
+    "resend_verification_email": "인증 이메일 다시 보내기",
+    "resend_verification_failed": "인증 이메일 재전송에 실패했습니다. 다시 시도해 주세요.",
+    "verification_email_resent": "인증 이메일이 전송되었습니다",
+    "check_inbox_message": "받은 편지함을 확인하고 인증 링크를 클릭해 주세요.",
+    "account_locked": "계정 잠김",
+    "account_locked_message": "로그인 시도 실패가 너무 많아 계정이 일시적으로 잠겼습니다. 나중에 다시 시도해 주세요.",
+    "rate_limited": "요청이 너무 많습니다",
+    "rate_limited_message": "로그인 시도가 너무 많습니다. 몇 분 후에 다시 시도해 주세요.",
+    "password_requirements_not_met": "비밀번호가 요구사항을 충족하지 않습니다",
+    "password_strength": "비밀번호 강도",
+    "password_strength_weak": "약함",
+    "password_strength_fair": "보통",
+    "password_strength_good": "좋음",
+    "password_strength_strong": "강함",
+    "password_req_min_length": "최소 8자 이상",
+    "password_req_uppercase": "대문자 1개 이상 (A-Z)",
+    "password_req_lowercase": "소문자 1개 이상 (a-z)",
+    "password_req_number": "숫자 1개 이상 (0-9)",
+    "password_req_special": "특수문자 1개 이상 (!@#$%...)",
+    "welcome_back": "다시 오신 것을 환영합니다",
+    "enter_credentials": "계정에 액세스하려면 자격 증명을 입력하세요",
+    "no_account": "계정이 없으신가요?",
+    "already_have_account": "이미 계정이 있으신가요?",
+    "fill_in_details": "시작하려면 세부 정보를 입력하세요",
+    "reset_your_password": "비밀번호 재설정",
+    "create_new_password": "새 비밀번호 만들기",
+    "remember_password": "비밀번호가 기억나셨나요?",
+    "verifying_your_email": "이메일 확인 중",
+    "join_organization": "조직 가입",
+    "join_organization_desc": "이 조직에 가입하려고 합니다",
+    "join_organization_success": "조직에 성공적으로 가입했습니다",
+    "joining": "가입 중",
+    "invite_required": "초대 필요",
+    "invite_required_desc": "{{org}}에 가입하려면 초대 코드가 필요합니다",
+    "invite_code": "초대 코드",
+    "validate_invite": "초대 확인",
+    "create_your_account": "계정 만들기",
+    "email_verification_required": "이메일 인증 필요",
+    "email_verification_required_join": "조직에 참여하기 전에 이메일 주소를 인증해 주세요. 받은 편지함에서 인증 이메일을 확인하세요.",
+    "login_failed": "로그인 실패",
+    "sign_in_with_sso": "SSO로 로그인",
+    "sso_callback": {
+      "auth_failed": "인증 실패",
+      "authenticating": "인증 중...",
+      "copied": "복사됨!",
+      "copy_details": "클립보드에 복사",
+      "error": "SSO 인증에 실패했습니다. 다시 시도해 주세요.",
+      "error_code": "오류 코드",
+      "go_home": "홈으로 이동",
+      "hide_details": "기술 세부사항 숨기기",
+      "missing_params": "잘못된 SSO 콜백입니다. 필수 매개변수가 누락되었습니다.",
+      "please_wait": "신원 확인 중입니다. 잠시 기다려 주세요",
+      "provider": "제공자",
+      "redirecting": "애플리케이션으로 리디렉션 중...",
+      "show_details": "기술 세부사항 표시",
+      "success": "인증 성공",
+      "tips": {
+        "access_denied": "실수로 로그인 요청을 거부한 경우 다시 시도하고 권한을 수락하세요.",
+        "domain_not_allowed": "이메일 도메인이 허용되는지 조직 관리자에게 문의하세요.",
+        "invalid_state": "세션이 만료되었을 수 있습니다. 다시 로그인해 주세요.",
+        "server_error": "ID 제공자에 문제가 발생했습니다. 나중에 다시 시도해 주세요."
+      },
+      "try_again": "다시 시도"
+    },
+    "sso_error": "SSO 인증에 실패했습니다. 다시 시도해 주세요.",
+    "try_again_in": "{{minutes}}분 후에 다시 시도해 주세요",
+    "error_generic": "문제가 발생했습니다. 다시 시도해 주세요.",
+    "sign_in": "로그인"
+  },
+  "verify_email": {
+    "title": "이메일 인증",
+    "verifying": "이메일을 확인하는 중...",
+    "success": "이메일이 성공적으로 인증되었습니다",
+    "success_description": "이메일이 인증되었습니다. 이제 로그인할 수 있습니다.",
+    "error": "인증 실패",
+    "error_description": "인증 링크가 유효하지 않거나 만료되었습니다.",
+    "go_to_login": "로그인으로 이동",
+    "request_new_link": "새 인증 링크 요청"
+  },
+  "validation": {
+    "required": "필수 항목입니다",
+    "invalid_email": "유효하지 않은 이메일 주소입니다",
+    "password_min_length": "비밀번호는 최소 8자 이상이어야 합니다",
+    "username_min_length": "사용자 이름은 최소 4자 이상이어야 합니다",
+    "title_required": "제목은 필수입니다",
+    "content_required": "내용은 필수입니다"
+  },
+  "courses": {
+    "my_courses": "내 코스",
+    "courses": "코스 목록",
+    "no_courses": "아직 코스가 없습니다",
+    "create_courses_placeholder": "코스를 생성하여 콘텐츠를 추가해 보세요",
+    "loading_courses": "코스를 불러오는 중...",
+    "no_featured_courses": "추천 코스가 선택되지 않았습니다",
+    "start_course": "코스 시작",
+    "leave_course": "코스 나가기",
+    "leave_course_success": "성공적으로 코스에서 나갔습니다",
+    "start_course_success": "성공적으로 코스를 시작했습니다",
+    "leave_course_error": "코스 나가기 실패. 나중에 다시 시도해 주세요.",
+    "start_course_error": "코스 시작 실패. 나중에 다시 시도해 주세요.",
+    "you_own_this_course": "이 코스를 소유하고 있습니다",
+    "you_own_this_course_description": "이 코스를 구매하셨으며 모든 콘텐츠에 대한 전체 권한이 있습니다.",
+    "paid_course": "유료 코스",
+    "paid_course_description": "이 코스의 콘텐츠에 액세스하려면 구매가 필요합니다.",
+    "join_org_required": "조직 가입 필요",
+    "join_org_required_description": "코스에 등록하려면 이 조직에 가입해야 합니다.",
+    "join_organization": "조직 가입",
+    "purchase_course_title": "코스 구매",
+    "purchase_course_description": "결제 옵션을 선택하여 코스를 시작하세요",
+    "ready_to_begin": "시작할 준비가 되셨나요?",
+    "start_learning_journey": "{{count}}개의 흥미로운 활동으로 학습을 시작해 보세요",
+    "course_progress": "학습 진도",
+    "progress": "진척도",
+    "completed_of": "{{total}} 중 {{completed}} 완료",
+    "quit_all_courses": "모든 코스 나가기",
+    "quitting_courses": "코스 나가는 중 ({{progress}}%)",
+    "quit_all_courses_confirm": "정말로 모든 코스에서 나가시겠습니까? 이 작업은 취소할 수 없으며 모든 진도 데이터가 삭제됩니다.",
+    "quit_all_courses_title": "모든 코스에서 나가시겠습니까?",
+    "no_courses_available": "이용 가능한 코스가 아직 없습니다",
+    "new_course": "새 코스",
+    "create_course": "코스 생성",
+    "create_new_course": "새 코스 생성",
+    "course_name": "코스 이름",
+    "course_thumbnail": "코스 썸네일",
+    "course_learnings": "학습 목표",
+    "course_learnings_desc": "무엇을 가르칠 예정인가요? (Enter 키로 추가)",
+    "course_tags": "코스 태그",
+    "course_visibility": "코스 공개 설정",
+    "create_course_btn": "코스 생성",
+    "creating_course": "코스 생성 중...",
+    "course_created_success": "코스가 성공적으로 생성되었습니다",
+    "failed_to_create_course": "코스 생성 실패",
+    "course_name_required": "코스 이름은 필수입니다",
+    "deleting_course": "코스 삭제 중...",
+    "course_deleted_success": "코스가 성공적으로 삭제되었습니다",
+    "course_deleted_error": "코스 삭제 실패",
+    "delete_course": "코스 삭제",
+    "failed_load_courses": "코스 로드 실패",
+    "start_learning": "학습 시작",
+    "edit_content": "콘텐츠 편집",
+    "delete_course_confirm": "정말로 이 코스를 삭제하시겠습니까?",
+    "delete_course_title": "{{name}} 코스를 삭제하시겠습니까?",
+    "course_count": "{{count}}개 코스",
+    "course_count_plural": "{{count}}개 코스",
+    "authors_and_updates": "작성자 및 업데이트",
+    "course_updates": "코스 업데이트",
+    "no_updates_yet": "아직 업데이트가 없습니다",
+    "no_updates_desc": "이 코스에 대한 업데이트가 여기에 표시됩니다",
+    "quit_course": "코스 나가기",
+    "course_content": "코스 구성",
+    "course_completion": "코스 수료",
+    "course_completed_exclamation": "코스를 수료했습니다!",
+    "what_you_will_learn": "학습 내용",
+    "course_lessons": "코스 레슨",
+    "share_course": "코스 공유",
+    "copy_link": "링크 복사",
+    "unlock_certificate_message": "모든 활동을 완료하여 수료증을 받으세요",
+    "chapter": "장",
+    "chapters": "장",
+    "co_created_by": "공동 제작:",
+    "created_on": "생성일:",
+    "last_updated": "최근 업데이트:",
+    "public": "공개",
+    "public_desc": "웹에서 누구나 볼 수 있음",
+    "private": "비공개",
+    "private_desc": "특정 사용자만 볼 수 있음",
+    "image": "이미지",
+    "upload_image": "이미지 업로드",
+    "choose_from_gallery": "갤러리에서 선택",
+    "enter_to_add": "Enter 키로 추가...",
+    "select_visibility": "공개 설정 선택",
+    "and_x_more": "외 {{count}}건",
+    "update": "업데이트",
+    "updates": "업데이트",
+    "new_update": "새 업데이트",
+    "update_added_success": "업데이트가 성공적으로 추가되었습니다",
+    "failed_add_update": "업데이트 추가 실패",
+    "update_title": "업데이트 제목",
+    "update_title_placeholder": "이번 업데이트의 새로운 기능은 무엇인가요?",
+    "update_content": "업데이트 내용",
+    "update_content_placeholder": "업데이트 상세 내용을 공유하세요...",
+    "publish_update": "업데이트 게시",
+    "deleting_update": "업데이트 삭제 중...",
+    "update_deleted_success": "업데이트가 성공적으로 삭제되었습니다",
+    "failed_delete_update": "업데이트 삭제 실패",
+    "delete_update": "업데이트 삭제",
+    "delete_update_confirm": "정말로 이 업데이트를 삭제하시겠습니까?",
+    "delete_update_title": "업데이트를 삭제하시겠습니까?",
+    "congratulations": "축하합니다! 🎉",
+    "successfully_completed": "성공적으로 완료했습니다:",
+    "keep_going": "계속 노력하세요! 💪",
+    "keep_going_description": "잘하고 계십니다! 나머지 활동을 완료하여 코스 수료증을 받으세요.",
+    "making_great_progress": "훌륭한 진척도를 보이고 있습니다:",
+    "continue_learning": "학습 계속하기",
+    "back_to_course": "코스로 돌아가기",
+    "view_course_progress": "진도 확인하기",
+    "no_courses_found": "코스를 찾을 수 없습니다",
+    "add_new_course_update": "새로운 코스 업데이트 추가",
+    "add_update": "업데이트 추가",
+    "apply_to_contribute": "기여자 신청하기",
+    "you_are_contributor": "당신은 기여자입니다",
+    "contributor_application_pending": "기여자 신청이 대기 중입니다",
+    "submitting_contributor_application": "기여자 신청서 제출 중...",
+    "contributor_application_success": "기여자 신청서가 성공적으로 제출되었습니다",
+    "contributor_application_error": "신청서 제출 실패. 나중에 다시 시도해 주세요.",
+    "contribute": "기여하기",
+    "scorm": {
+      "upload_package": "SCORM 패키지 업로드",
+      "package_file": "패키지 파일 (.zip)",
+      "click_to_upload": "클릭하여 업로드하거나 드래그 앤 드롭",
+      "supported_versions": "SCORM 1.2 또는 SCORM 2004 패키지",
+      "import_info": "SCORM 패키지를 업로드하여 내용을 분석하세요. 코스를 구성하고 활동을 챕터에 할당할 수 있습니다.",
+      "analyze_package": "패키지 분석",
+      "package_analyzed": "패키지 분석 성공",
+      "assign_scos": "챕터에 활동 할당",
+      "activity_name": "활동",
+      "chapter_name": "챕터",
+      "upload_different": "다른 패키지 업로드",
+      "selected": "선택됨",
+      "create_course": "코스 만들기",
+      "configure": "구성",
+      "ready_to_analyze": "분석 준비 완료",
+      "course_details": "코스 세부 정보"
+    },
+    "clone_course": "코스 복제",
+    "clone_course_title": "\"{{name}}\" 복제",
+    "clone_course_confirm": "모든 장, 활동 및 파일을 포함한 코스의 전체 복사본이 생성됩니다. 복제된 코스는 비공개로 설정됩니다.",
+    "cloning_course": "코스 복제 중...",
+    "course_cloned_success": "코스가 성공적으로 복제되었습니다",
+    "course_cloned_error": "코스 복제 실패",
+    "published": "게시됨",
+    "unpublished": "미게시",
+    "search_courses": "코스 검색...",
+    "search_results": "\"{{query}}\"에 대해 {{count}}개의 코스를 찾았습니다",
+    "no_search_results": "코스를 찾을 수 없습니다",
+    "try_different_search": "다른 검색어를 시도해 보세요",
+    "select_courses": "선택",
+    "select_all": "전체 선택",
+    "clear_selection": "선택 해제",
+    "selected_count": "{{count}}개 선택됨",
+    "clone_selected": "선택 복제",
+    "clone_selected_confirm": "{{count}}개 코스의 복사본이 생성됩니다. 모든 복제된 코스는 비공개로 설정됩니다. 계속하시겠습니까?",
+    "delete_selected": "선택 삭제",
+    "delete_selected_confirm": "{{count}}개의 코스가 영구 삭제됩니다. 이 작업은 취소할 수 없습니다. 계속하시겠습니까?",
+    "course_description_required": "코스 설명은 필수입니다",
+    "export_course": "코스 내보내기",
+    "export_selected": "선택 항목 내보내기",
+    "exporting_course": "코스 내보내는 중...",
+    "exporting_courses": "{{count}}개 코스 내보내는 중...",
+    "course_exported_success": "코스를 성공적으로 내보냈습니다",
+    "courses_exported_success": "{{count}}개 코스를 성공적으로 내보냈습니다",
+    "course_exported_error": "코스 내보내기 실패",
+    "courses_exported_error": "코스 내보내기 실패",
+    "clone_courses_title": "코스 복제",
+    "delete_courses_title": "코스 삭제",
+    "deleting_courses": "{{count}}개 코스 삭제 중...",
+    "courses_deleted_success": "{{count}}개 코스가 성공적으로 삭제되었습니다",
+    "courses_deleted_partial": "{{success}}개 코스 삭제됨, {{error}}개 실패",
+    "cloning_courses": "{{count}}개 코스 복제 중...",
+    "courses_cloned_success": "{{count}}개 코스가 성공적으로 복제되었습니다",
+    "courses_cloned_partial": "{{success}}개 코스 복제됨, {{error}}개 실패",
+    "import": {
+      "scorm_package": "SCORM 패키지",
+      "scorm_description": "SCORM 1.2 또는 SCORM 2004 패키지 가져오기",
+      "learnhouse_courses": "LearnHouse 코스",
+      "learnhouse_description": "LearnHouse에서 내보낸 코스 가져오기",
+      "upload_package": "패키지 업로드",
+      "configure": "구성",
+      "complete": "완료",
+      "click_to_upload": "클릭하여 업로드하거나 드래그 앤 드롭",
+      "learnhouse_format": "LearnHouse 코스 내보내기 (.zip)",
+      "learnhouse_info": "LearnHouse 코스 내보내기 패키지 (.zip)를 업로드하세요. 가져올 코스를 선택하고 가져오기 옵션을 구성할 수 있습니다.",
+      "analyze_package": "패키지 분석",
+      "ready_to_analyze": "분석 준비 완료",
+      "invalid_file_format": ".zip 파일을 업로드해 주세요",
+      "analysis_failed": "패키지 분석 실패",
+      "package_analyzed": "패키지 분석 성공",
+      "select_courses": "가져올 코스 선택",
+      "select_all": "전체 선택",
+      "deselect_all": "전체 해제",
+      "chapters": "챕터",
+      "activities": "활동",
+      "has_thumbnail": "썸네일 있음",
+      "selected": "선택됨",
+      "options": "가져오기 옵션",
+      "name_prefix": "코스 이름 접두사",
+      "name_prefix_placeholder": "예: 가져옴 -",
+      "set_private": "비공개로 설정",
+      "set_unpublished": "미발행으로 설정",
+      "select_at_least_one": "가져오려면 최소 하나의 코스를 선택하세요",
+      "import_courses": "{{count}}개 코스 가져오기",
+      "upload_different": "다른 패키지 업로드",
+      "importing_courses": "코스 가져오는 중...",
+      "please_wait": "잠시 기다려 주세요",
+      "import_complete": "가져오기 완료!",
+      "import_failed": "가져오기 실패",
+      "import_partial": "부분 가져오기 완료",
+      "import_summary": "{{total}}개 중 {{successful}}개 코스를 성공적으로 가져왔습니다",
+      "created": "생성됨",
+      "done": "완료"
+    },
+    "create": {
+      "choose_type": "새 코스 만들기",
+      "choose_type_description": "코스를 만드는 방법을 선택하세요",
+      "from_scratch": "처음부터 시작",
+      "from_scratch_description": "코스 구조와 콘텐츠를 직접 만듭니다",
+      "with_ai": "AI로 시작",
+      "with_ai_description": "AI가 코스 계획과 콘텐츠 생성을 도와드립니다",
+      "ai": {
+        "title": "AI 코스 크리에이터",
+        "creating_structure": "생성 중...",
+        "create_course": "코스 만들기",
+        "course_created_success": "코스가 생성되었습니다!",
+        "failed_to_create": "코스 생성 실패",
+        "open_in_editor": "편집기에서 열기",
+        "tab_plan": "계획",
+        "tab_content": "콘텐츠",
+        "chat_description": "만들고 싶은 코스를 설명하거나 템플릿을 선택하세요:",
+        "max_iterations_reached": "반복 횟수 한도에 도달했습니다. 계획을 수동으로 편집할 수 있습니다.",
+        "content_step_info": "콘텐츠 탭을 사용하여 활동의 콘텐츠를 생성하세요.",
+        "input_placeholder_initial": "만들고 싶은 코스를 설명하세요...",
+        "input_placeholder_iterate": "계획 변경을 요청하세요...",
+        "generating": "계획 생성 중...",
+        "plan_generated": "계획이 업데이트됨",
+        "plan_generated_hint": "계획 탭에서 검토하고 편집하세요.",
+        "describe_course": "코스 설명",
+        "describe_course_hint": "오른쪽 채팅으로 원하는 코스를 설명하세요 — 주제, 대상, 목표.",
+        "generating_plan": "코스 계획 생성 중...",
+        "chapters": "챕터",
+        "activities": "활동",
+        "add_chapter": "챕터 추가",
+        "add_activity": "활동 추가",
+        "generate_content": "콘텐츠 생성",
+        "generate_content_description": "각 활동의 AI 콘텐츠를 생성합니다.",
+        "generated": "생성됨",
+        "generate_all": "전체 생성",
+        "generate": "생성",
+        "generating_short": "생성 중...",
+        "done": "완료",
+        "content_generated_success": "콘텐츠가 생성되었습니다!",
+        "content_parse_error": "생성된 콘텐츠 파싱 실패",
+        "content_empty_hint": "채팅에서 코스를 설명하여 계획을 만드세요. 활동이 여기에 표시됩니다.",
+        "all_content_generated": "모든 콘텐츠 생성됨!",
+        "all_content_generated_hint": "편집기를 열어 코스를 검토하고 게시하세요.",
+        "attach_image": "사진",
+        "attach_youtube": "YouTube 동영상",
+        "attach_file": "문서",
+        "attach": "첨부",
+        "send": "보내기",
+        "retry": "다시 시도",
+        "processing_video": "동영상 분석 중...",
+        "video_processing_hint": "동영상 첨부 파일 처리 중",
+        "still_working": "아직 처리 중...",
+        "video_takes_time": "동영상 분석에 1-2분 소요될 수 있습니다",
+        "video_hint": "동영상 처리에 1-2분 걸릴 수 있습니다"
+      },
+      "from_existing": "기존 콘텐츠에서",
+      "from_existing_description": "다른 플랫폼에서 파일을 업로드하고 코스로 구성"
+    },
+    "usergroup_filter": {
+      "all_courses": "모든 코스",
+      "filter_by_group": "그룹별 필터",
+      "info_title": "사용자 그룹 필터",
+      "info_description": "사용자 그룹별로 코스를 필터링하여 특정 그룹에 할당된 코스만 표시합니다. 동일한 조직을 공유하는 가족이나 팀에 유용합니다."
+    },
+    "copied": "복사됨!",
+    "quit_course_confirm": "이 코스를 그만두시겠습니까? 모든 진행 상황이 사라집니다.",
+    "quit_course_title": "코스를 그만두시겠습니까?",
+    "courses_load_error": "코스를 불러오지 못했습니다. 다시 시도해 주세요.",
+    "view_all_courses": "모든 코스 보기"
+  },
+  "communities": {
+    "title": "커뮤니티",
+    "new_community": "새 커뮤니티",
+    "no_communities": "아직 커뮤니티가 없습니다",
+    "no_communities_description": "커뮤니티를 만들어 토론을 시작하세요",
+    "public": "공개",
+    "private": "비공개",
+    "discussions": "토론",
+    "discussion": "토론",
+    "created": "생성일",
+    "linked_course": "연결된 코스",
+    "community_guidelines": "커뮤니티 가이드라인",
+    "community_guidelines_text": "존중하고 건설적으로 행동해 주세요. 다른 사람들을 돕고 커뮤니티와 지식을 나누세요.",
+    "new_discussion": "새 토론",
+    "manage": "관리",
+    "sidebar": {
+      "posted_by": "작성자",
+      "upvotes": "추천수",
+      "category": "카테고리",
+      "created": "생성일",
+      "pinned": "고정됨",
+      "locked": "잠김",
+      "reactions": "반응",
+      "community": "커뮤니티"
+    },
+    "discussion_list": {
+      "search_placeholder": "토론 검색...",
+      "sort_by": "정렬:",
+      "latest_activity": "최근 활동",
+      "top": "인기",
+      "hot": "트렌딩",
+      "new_discussion": "새 토론",
+      "select": "선택",
+      "cancel": "취소",
+      "select_all": "전체 선택",
+      "deselect_all": "선택 해제",
+      "selected": "선택됨",
+      "delete": "삭제",
+      "delete_discussions_title": "{{count}}개 토론을 삭제하시겠습니까?",
+      "delete_discussions_title_plural": "{{count}}개 토론을 삭제하시겠습니까?",
+      "delete_discussions_confirm": "{{count}}개의 {{type}}을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+      "no_results": "결과를 찾을 수 없습니다",
+      "no_results_description": "검색어를 조정하거나 필터를 지워보세요",
+      "clear_search": "검색 지우기",
+      "no_discussions": "아직 토론이 없습니다",
+      "no_discussions_description": "이 커뮤니티에서 첫 번째 토론을 시작해 보세요!",
+      "start_discussion": "토론 시작",
+      "delete_failed": "토론 삭제에 실패했습니다"
+    },
+    "discussion_detail": {
+      "edit": "수정",
+      "delete": "삭제",
+      "delete_title": "토론을 삭제하시겠습니까?",
+      "delete_confirm": "이 토론을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+      "delete_button": "토론 삭제",
+      "no_details": "추가 세부 정보가 없습니다.",
+      "delete_failed": "토론 삭제에 실패했습니다"
+    },
+    "discussion_card": {
+      "pin_discussion": "토론 고정",
+      "unpin_discussion": "고정 해제",
+      "lock_discussion": "토론 잠금",
+      "unlock_discussion": "잠금 해제",
+      "delete_discussion": "토론 삭제",
+      "delete_title": "토론을 삭제하시겠습니까?",
+      "delete_confirm": "이 토론을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+      "votes": "표",
+      "delete_failed": "토론 삭제에 실패했습니다",
+      "lock_failed": "잠금 상태 업데이트에 실패했습니다",
+      "pin_failed": "고정 상태 업데이트에 실패했습니다"
+    },
+    "comments": {
+      "no_replies": "아직 답글이 없습니다",
+      "locked": "이 토론은 잠겨 있습니다",
+      "join_org_to_reply": "토론에 참여하려면 이 조직에 가입하세요",
+      "sign_in_to_reply": "로그인",
+      "to_reply": "하여 답글 달기",
+      "write_reply": "답글 작성...",
+      "reply": "답글",
+      "edit": "수정",
+      "delete": "삭제",
+      "save": "저장",
+      "cancel": "취소",
+      "failed_to_post": "답글 게시에 실패했습니다. 다시 시도해 주세요.",
+      "content_not_allowed": "답글에 허용되지 않는 콘텐츠가 포함되어 있습니다.",
+      "failed_to_update": "업데이트에 실패했습니다. 다시 시도해 주세요.",
+      "failed_to_delete": "댓글 삭제에 실패했습니다"
+    },
+    "label_filter": {
+      "label": "라벨:",
+      "all": "전체",
+      "all_discussions": "모든 토론",
+      "clear_filter": "필터 지우기"
+    },
+    "labels": {
+      "general": "일반",
+      "question": "질문",
+      "idea": "아이디어",
+      "announcement": "공지",
+      "showcase": "쇼케이스"
+    },
+    "create_discussion": {
+      "title": "토론 시작",
+      "description": "커뮤니티와 생각을 나누세요",
+      "category_label": "카테고리",
+      "title_label": "토론 제목",
+      "title_placeholder": "무엇에 대해 토론하고 싶으신가요?",
+      "emoji_selected": "사용자 정의 이모지 선택됨",
+      "emoji_hint": "+를 클릭하여 사용자 정의 이모지 추가 (선택사항)",
+      "details_label": "세부 정보 (선택사항)",
+      "details_placeholder": "토론에 더 많은 맥락이나 세부 정보를 추가하세요...",
+      "editor_hint": "도구 모음을 사용하여 굵게, 기울임꼴, 목록 등으로 텍스트 서식을 지정하세요.",
+      "cancel": "취소",
+      "submit": "토론 게시",
+      "title_required": "제목은 필수입니다",
+      "title_min_length": "제목은 최소 5자 이상이어야 합니다",
+      "title_max_length": "제목은 200자 미만이어야 합니다",
+      "content_not_allowed": "토론에 허용되지 않는 콘텐츠가 포함되어 있습니다.",
+      "failed_to_create": "토론 생성에 실패했습니다. 다시 시도해 주세요."
+    },
+    "edit_discussion": {
+      "title": "토론 수정",
+      "description": "토론 업데이트",
+      "save": "변경 사항 저장",
+      "cancel": "취소",
+      "close": "닫기",
+      "failed_to_update": "업데이트에 실패했습니다. 다시 시도해 주세요.",
+      "content_not_allowed": "토론에 허용되지 않는 콘텐츠가 포함되어 있습니다.",
+      "max_edits_reached": "최대 수정 횟수({{count}}회)에 도달했습니다. 더 이상 이 토론을 수정할 수 없습니다.",
+      "edits_remaining": "{{count}}회 수정할 수 있습니다.",
+      "no_edits_remaining": "남은 수정 횟수가 없습니다({{count}}회)."
+    },
+    "course_section": {
+      "title": "커뮤니티 토론",
+      "view_all": "모두 보기",
+      "no_discussions": "아직 토론이 없습니다",
+      "start_first": "첫 번째 토론을 시작하세요"
+    }
+  },
+  "podcasts": {
+    "podcasts": "팟캐스트",
+    "browse_description": "이 조직의 팟캐스트를 들으세요",
+    "new_podcast": "새 팟캐스트",
+    "search_placeholder": "팟캐스트 검색...",
+    "no_podcasts": "팟캐스트가 없습니다",
+    "no_podcasts_description": "현재 이용 가능한 팟캐스트가 없습니다",
+    "no_search_results": "팟캐스트를 찾을 수 없습니다",
+    "try_different_search": "다른 검색어를 시도해보세요",
+    "episodes": "에피소드",
+    "no_episodes": "에피소드가 없습니다",
+    "hosted_by": "진행자",
+    "tags": "태그",
+    "manage_podcast": "팟캐스트 관리",
+    "published": "게시됨",
+    "unpublished": "미게시",
+    "public": "공개",
+    "private": "비공개",
+    "listen_now": "지금 듣기",
+    "delete_podcast": "팟캐스트 삭제",
+    "delete_podcast_title": "팟캐스트를 삭제하시겠습니까?",
+    "delete_podcast_confirm": "이 팟캐스트를 삭제하시겠습니까? 이 작업은 취소할 수 없으며 모든 에피소드가 삭제됩니다.",
+    "deleting_podcast": "팟캐스트 삭제 중...",
+    "podcast_deleted_success": "팟캐스트가 성공적으로 삭제되었습니다",
+    "podcast_deleted_error": "팟캐스트 삭제 실패",
+    "edit_content": "콘텐츠 편집",
+    "create_new_podcast": "조직의 새 팟캐스트 만들기",
+    "create_podcast": "팟캐스트 만들기",
+    "create_podcast_btn": "팟캐스트 만들기",
+    "create_podcasts_placeholder": "청중과 오디오 콘텐츠를 공유할 팟캐스트 만들기",
+    "creating_podcast": "팟캐스트 생성 중...",
+    "dashboard": {
+      "episodes": {
+        "audio_hint": "MP3, WAV 또는 M4A 파일 지원",
+        "audio_label": "오디오 파일",
+        "create": "에피소드 만들기",
+        "create_error": "에피소드 생성 실패",
+        "create_first": "첫 에피소드 만들기",
+        "created": "에피소드 생성됨",
+        "creating": "에피소드 생성 중...",
+        "delete": "삭제",
+        "delete_confirm": "이 에피소드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "delete_error": "에피소드 삭제 실패",
+        "delete_title": "에피소드를 삭제하시겠습니까?",
+        "deleted": "에피소드 삭제됨",
+        "deleting": "에피소드 삭제 중...",
+        "description_label": "설명",
+        "description_placeholder": "에피소드 설명 입력",
+        "edit": "편집",
+        "edit_episode": "에피소드 편집",
+        "edit_episode_description": "에피소드 세부정보 업데이트",
+        "new_episode": "새 에피소드",
+        "new_episode_description": "이 팟캐스트에 새 에피소드 추가",
+        "no_audio": "오디오 파일 없음",
+        "no_episodes_description": "첫 에피소드를 추가하여 시작하세요",
+        "publish": "게시",
+        "replace_audio": "오디오 파일 교체",
+        "save": "변경사항 저장",
+        "title_label": "제목",
+        "title_placeholder": "에피소드 제목 입력",
+        "unpublish": "게시 취소",
+        "update_error": "에피소드 업데이트 실패",
+        "updated": "에피소드 업데이트됨",
+        "updating": "에피소드 업데이트 중...",
+        "upload_audio": "오디오 파일 업로드"
+      },
+      "form": {
+        "about": "소개",
+        "about_max_length": "소개는 최대 2000자입니다",
+        "about_placeholder": "이 팟캐스트에 대해 청취자에게 더 알려주세요...",
+        "public_hint": "누구나 이 팟캐스트를 찾아 들을 수 있습니다",
+        "published_hint": "이 팟캐스트를 조직 페이지에 표시",
+        "tags_hint": "태그를 쉼표로 구분하세요",
+        "tags_placeholder": "음악, 교육, 기술",
+        "thumbnail": "썸네일",
+        "thumbnail_hint": "권장 크기: 1400x1400px. JPG 또는 PNG.",
+        "upload_thumbnail": "썸네일 업로드",
+        "visibility": "공개 설정"
+      },
+      "save_changes": "변경사항 저장",
+      "save_error": "변경사항 저장 실패",
+      "saved": "변경사항 저장됨",
+      "saving": "저장 중...",
+      "tabs": {
+        "episodes": "에피소드",
+        "general": "일반"
+      },
+      "view_podcast": "팟캐스트 보기"
+    },
+    "failed_to_create_podcast": "팟캐스트 생성 실패",
+    "form": {
+      "description_max_length": "설명은 최대 500자입니다",
+      "name_max_length": "이름은 최대 100자입니다",
+      "name_min_length": "이름은 최소 3자입니다",
+      "name_required": "팟캐스트 이름은 필수입니다"
+    },
+    "modals": {
+      "create": {
+        "cancel": "취소",
+        "description": "새 팟캐스트를 만들기 위한 세부정보를 입력하세요",
+        "form": {
+          "description_label": "설명",
+          "description_placeholder": "팟캐스트 설명 입력",
+          "name_label": "팟캐스트 이름",
+          "name_placeholder": "팟캐스트 이름 입력",
+          "public_label": "이 팟캐스트를 공개로 설정"
+        },
+        "submit": "팟캐스트 만들기",
+        "title": "새 팟캐스트 만들기"
+      }
+    },
+    "podcast_created_success": "팟캐스트가 성공적으로 생성되었습니다",
+    "podcast_name": "팟캐스트 이름",
+    "podcast_name_required": "팟캐스트 이름은 필수입니다",
+    "podcast_tags": "태그",
+    "podcast_thumbnail": "팟캐스트 썸네일",
+    "podcast_visibility": "공개 설정",
+    "search_results": "\"{{query}}\"에 대해 {{count}}개의 팟캐스트를 찾았습니다"
+  },
+  "collections": {
+    "collections": "컬렉션",
+    "no_collections": "아직 컬렉션이 없습니다",
+    "create_collections_placeholder": "컬렉션을 생성하여 코스를 그룹화해 보세요",
+    "collection": "컬렉션",
+    "new_collection": "새 컬렉션",
+    "enter_collection_name": "컬렉션 이름을 입력하세요",
+    "collection_created_success": "컬렉션이 성공적으로 생성되었습니다!",
+    "failed_to_create_collection": "컬렉션 생성 실패. 다시 시도해 주세요.",
+    "create_new_collection": "새 컬렉션 생성",
+    "create_collection_desc": "코스를 컬렉션으로 묶어 더 쉽게 찾고 관리할 수 있습니다.",
+    "collection_name": "컬렉션 이름",
+    "enter_collection_name_placeholder": "컬렉션 이름 입력",
+    "public_collection_desc": "공개 컬렉션 - 모든 사용자에게 표시",
+    "private_collection_desc": "비공개 컬렉션 - 조직 멤버에게만 표시",
+    "description": "설명",
+    "enter_collection_description_placeholder": "컬렉션 설명 입력",
+    "select_courses": "코스 선택",
+    "no_courses_available_desc": "이용 가능한 코스가 없습니다. 먼저 코스를 생성해 주세요.",
+    "selected_courses_count": "선택된 코스: {{count}}",
+    "create_collection_btn": "컬렉션 생성",
+    "delete_collection_confirm": "정말로 이 컬렉션을 삭제하시겠습니까?",
+    "delete_collection_title": "{{name}} 컬렉션을 삭제하시겠습니까?",
+    "delete_collection": "컬렉션 삭제",
+    "enter_description": "설명을 입력해 주세요",
+    "select_at_least_one_course": "적어도 하나의 코스를 선택해 주세요",
+    "visibility": "공개 설정",
+    "empty_collection": "빈 컬렉션"
+  },
+  "activities": {
+    "video": "동영상",
+    "document": "문서",
+    "page": "페이지",
+    "assignment": "과제",
+    "learning_material": "학습 자료",
+    "current": "현재",
+    "quiz": "퀴즈",
+    "file_submission": "파일 제출",
+    "form": "폼",
+    "code": "코드",
+    "interactive": "인터랙티브",
+    "activities": "활동",
+    "current_activity": "현재 활동",
+    "previous_activity": "이전 활동",
+    "next_activity": "다음 활동",
+    "no_previous_activity": "이전 활동이 없습니다",
+    "no_next_activity": "다음 활동이 없습니다",
+    "mark_as_complete": "완료로 표시",
+    "unmark_activity": "완료 취소",
+    "unmark_activity_confirm": "정말로 이 활동의 완료를 취소하시겠습니까? 학습 진도에 영향을 미칩니다.",
+    "unmark_activity_title": "활동 완료 취소",
+    "marking": "업데이트 중...",
+    "not_published_yet": "이 활동은 아직 게시되지 않았습니다",
+    "focus_mode": "집중 모드",
+    "exit_focus_mode": "집중 모드 종료",
+    "not_started": "시작 전",
+    "teacher_view": "교사용 뷰",
+    "dont_forget_to_save": "진도 저장을 잊지 마세요",
+    "save_your_progress": "진도 저장하기",
+    "unmark_tooltip": "클릭하면 미완료 상태로 돌아갑니다",
+    "mark_tooltip": "클릭하면 완료 상태로 표시됩니다",
+    "failed_mark_complete": "활동 완료 표시 실패",
+    "failed_unmark_complete": "활동 완료 취소 실패",
+    "click_to_flip": "클릭하여 뒤집기",
+    "click_to_flip_back": "클릭하여 되돌리기",
+    "enter_question": "질문을 입력하세요...",
+    "enter_answer": "답변을 입력하세요...",
+    "align_left": "왼쪽 정렬",
+    "align_center": "가운데 정렬",
+    "align_right": "오른쪽 정렬",
+    "size_small": "작게",
+    "size_medium": "중간",
+    "size_large": "크게",
+    "change_color": "색상 변경",
+    "preview_flip": "뒤집기 미리보기",
+    "activities_count": "{{count}}개 활동",
+    "copy_link": "링크 복사",
+    "embed": "임베드",
+    "embed_code_copied": "임베드 코드가 복사되었습니다!",
+    "link_copied": "링크가 복사되었습니다!",
+    "share": "공유"
+  },
+  "assignments": {
+    "submit_assignment": "과제 제출",
+    "submit_assignment_confirm": "정말로 채점을 위해 과제를 제출하시겠습니까? 제출 후에는 수정할 수 없습니다.",
+    "submit_assignment_title": "채점을 위해 과제 제출",
+    "submit_for_grading": "채점 요청",
+    "grading_in_progress": "채점 중",
+    "graded": "채점 완료",
+    "assignment_submitted_success": "채점을 위해 과제가 제출되었습니다",
+    "failed_submit_assignment": "과제 제출 실패",
+    "assignment_description": "과제 설명",
+    "task": "태스크",
+    "hint": "힌트",
+    "reference_document": "참고 자료",
+    "points": "점수",
+    "current_points": "현재 점수: {{points}}",
+    "grade": "성적",
+    "run_autograde": "자동 채점 실행",
+    "due_date": "제출 기한",
+    "task_breakdown": "과제별 내역",
+    "no_grade_details": "아직 성적 세부 정보가 없습니다.",
+    "task_passed": "통과",
+    "task_not_passed": "미통과",
+    "score": "점수",
+    "form": {
+      "expected_answer": "예상 답변"
+    },
+    "quiz": {
+      "correct_answer": "정답",
+      "incorrect_answer": "오답"
+    }
+  },
+  "certificate": {
+    "certificate": "수료증",
+    "my_certificates": "취득한 수료증",
+    "failed_load_certificates": "수료증 로드 실패",
+    "no_certificates_earned": "아직 취득한 수료증이 없습니다",
+    "complete_courses_to_earn": "코스를 수료하고 수료증을 받으세요",
+    "awarded": "발급일:",
+    "download_certificate": "수료증 (PDF) 다운로드",
+    "verify_certificate": "수료증 검증",
+    "loading_certificate": "수료증을 불러오는 중...",
+    "your_certificate": "나의 수료증",
+    "view_certificate": "수료증 보기",
+    "certificate_id": "수료증 ID",
+    "certificate_verify_message": "이 수료증은 다음에서 검증 가능합니다:",
+    "no_certificate_available": "이 코스에는 수료증이 제공되지 않습니다. 자세한 내용은 강사에게 문의하세요.",
+    "verify": "검증",
+    "no_certificate": "수료증 없음",
+    "achievement_based": "성과 기반",
+    "assessment_based": "평가 기반",
+    "participation": "참여 증명",
+    "skill_mastery": "기술 숙달 증명",
+    "professional_development": "전문성 개발",
+    "continuing_education": "계속 교육",
+    "workshop_attendance": "워크숍 참석 증명",
+    "specialization": "전문 분야 인증",
+    "dedication_message": "당신의 노력과 헌신이 결실을 맺었습니다. 이 코스의 모든 과정을 마스터했습니다."
+  },
+  "search": {
+    "search_placeholder": "코스, 사용자, 컬렉션 검색...",
+    "no_results_found": "검색 결과가 없습니다",
+    "no_results_description": "「{{query}}」에 일치하는 결과가 없습니다. 검색어를 변경하거나 추천 콘텐츠를 확인해 보세요.",
+    "found_results": "「{{query}}」에 대한 {{count}}개의 결과",
+    "discover_next_journey": "다음 학습 여정을 찾아보세요",
+    "start_typing_to_search": "검색어를 입력하여 콘텐츠 검색",
+    "search_suggestions": "검색 제안",
+    "quick_results": "빠른 결과",
+    "view_all_results": "모든 결과 보기",
+    "course": "코스",
+    "user": "사용자",
+    "start_heading": "무엇을 찾고 계신가요?",
+    "start_subtitle": "이 조직의 모든 공간을 한 곳에서 검색하세요.",
+    "all_results": "모든 결과",
+    "filter_heading": "유형별 필터",
+    "empty_section": "아직 아무것도 없어요",
+    "previous": "이전",
+    "next": "다음",
+    "types": {
+      "all": "전체",
+      "courses": "코스",
+      "collections": "컬렉션",
+      "users": "멤버",
+      "communities": "커뮤니티",
+      "discussions": "토론",
+      "playgrounds": "플레이그라운드",
+      "podcasts": "팟캐스트"
+    }
+  },
+  "ai": {
+    "ask_ai": "AI에게 질문",
+    "ask_ai_placeholder": "이 강의에 대해 AI에게 물어보세요",
+    "experimental": "실험적 기능",
+    "how_can_we_help": "오늘은 무엇을 도와드릴까요?",
+    "about_question": "이 활동은 무엇에 관한 것인가요?",
+    "flashcards_question": "이 활동에 대한 플래시카드 생성",
+    "examples_question": "이 활동을 구체적인 예시로 설명해 줘"
+  },
+  "payments": {
+    "paid_content": "유료 콘텐츠",
+    "paid_content_description": "이 콘텐츠에 액세스하려면 코스를 구매해야 합니다.",
+    "failed_load_products": "제품 옵션 로드 실패",
+    "one_time_payment": "일시불",
+    "per_month": "(월별)",
+    "per_month_short": "/월",
+    "subscribe_now": "지금 구독",
+    "purchase_now": "지금 구매",
+    "failed_checkout": "체크아웃 시작 실패",
+    "stripe_success": "Stripe에 성공적으로 연결되었습니다!",
+    "stripe_failed": "Stripe 연결을 완료하지 못했습니다",
+    "stripe_completing": "Stripe 연결 완료 중",
+    "stripe_wait": "Stripe 연동 설정이 완료될 때까지 잠시만 기다려 주세요...",
+    "stripe_return": "이제 대시보드로 돌아가 결제 기능을 사용할 수 있습니다.",
+    "stripe_retry": "다시 시도하거나 문제가 지속되면 고객 지원에 문의하세요.",
+    "subscription": "구독",
+    "benefits": "혜택:",
+    "min_price": "최저 가격:",
+    "choose_price": "가격 선택",
+    "stripe_denied": "Stripe 연결이 취소되었습니다."
+  },
+  "account": {
+    "title": "계정",
+    "general": "일반",
+    "profile": "프로필",
+    "security": "보안",
+    "my_courses": "내 강좌",
+    "no_purchased_courses": "구매한 강좌가 없습니다",
+    "purchased_courses_description": "구매하거나 구독한 강좌가 여기에 표시됩니다",
+    "purchases": "구매 내역"
+  },
+  "user": {
+    "user_settings": "사용자 설정",
+    "settings": {
+      "title": "계정 설정",
+      "tabs": {
+        "general": "일반",
+        "profile": "프로필",
+        "security": "비밀번호"
+      },
+      "general": {
+        "title": "계정 설정",
+        "subtitle": "개인 정보 및 기본 설정 관리",
+        "email": "이메일",
+        "email_placeholder": "이메일 주소",
+        "username": "사용자 이름",
+        "username_placeholder": "사용자 이름",
+        "first_name": "이름",
+        "first_name_placeholder": "이름",
+        "last_name": "성",
+        "last_name_placeholder": "성",
+        "bio": "소개",
+        "bio_placeholder": "자신에 대해 알려주세요",
+        "characters_left": "{{count}}자 남음",
+        "additional_details": "추가 정보",
+        "clear_all": "모두 지우기",
+        "add_detail": "정보 추가",
+        "add_general": "일반 추가",
+        "add_academic": "학술 추가",
+        "add_professional": "전문 추가",
+        "profile_picture": "프로필 사진",
+        "change_avatar": "아바타 변경",
+        "recommended_size": "권장 크기 100x100",
+        "save_changes": "변경 사항 저장",
+        "saving": "저장 중...",
+        "uploading": "업로드 중",
+        "avatar_updated": "아바타 업데이트됨",
+        "profile_updated": "프로필이 성공적으로 업데이트되었습니다",
+        "relogin_message": "새 이메일로 다시 로그인하세요: {{email}}",
+        "logout_warning": "이메일을 변경하면 로그아웃됩니다",
+        "detail_label_placeholder": "라벨 입력 (예: 직책, 위치)",
+        "remove": "제거",
+        "icon": "아이콘",
+        "select_icon": "아이콘 선택",
+        "text": "텍스트",
+        "text_placeholder": "정보 텍스트 입력",
+        "icons": {
+          "briefcase": "서류가방",
+          "education": "교육",
+          "location": "위치",
+          "organization": "조직",
+          "speciality": "전문 분야",
+          "website": "웹사이트",
+          "tech": "기술",
+          "achievement": "성과",
+          "book": "책",
+          "link": "링크",
+          "community": "커뮤니티",
+          "calendar": "캘린더"
+        },
+        "labels": {
+          "title": "직책",
+          "affiliation": "소속",
+          "location": "위치",
+          "website": "웹사이트",
+          "linkedin": "LinkedIn",
+          "institution": "기관",
+          "department": "부서",
+          "research": "연구 분야",
+          "academic_title": "학술 직함",
+          "company": "회사",
+          "industry": "산업",
+          "expertise": "전문성",
+          "community": "커뮤니티"
+        }
+      },
+      "password": {
+        "title": "비밀번호 변경",
+        "subtitle": "계정 보안을 위해 비밀번호 업데이트",
+        "current_password": "현재 비밀번호",
+        "new_password": "새 비밀번호",
+        "update_password": "비밀번호 업데이트",
+        "updating": "업데이트 중...",
+        "password_updated": "비밀번호가 성공적으로 업데이트되었습니다",
+        "relogin_message": "새 비밀번호로 다시 로그인하세요",
+        "logout_warning": "비밀번호를 변경하면 로그아웃됩니다"
+      },
+      "profile_builder": {
+        "title": "프로필 빌더",
+        "subtitle": "전문 프로필 사용자 정의",
+        "sections": "섹션",
+        "add_section": "섹션 추가",
+        "save_changes": "변경 사항 저장",
+        "saving": "저장 중...",
+        "select_section": "편집할 섹션을 선택하거나 새로 추가",
+        "beta": "베타",
+        "section_types": {
+          "image_gallery": {
+            "label": "이미지 갤러리",
+            "description": "이미지 컬렉션 추가"
+          },
+          "text": {
+            "label": "텍스트",
+            "description": "포맷된 텍스트 콘텐츠 추가"
+          },
+          "links": {
+            "label": "링크",
+            "description": "소셜 또는 전문 링크 추가"
+          },
+          "skills": {
+            "label": "기술",
+            "description": "기술 및 전문성 소개"
+          },
+          "experience": {
+            "label": "경력",
+            "description": "직장 또는 프로젝트 경력 추가"
+          },
+          "education": {
+            "label": "교육",
+            "description": "교육 배경 추가"
+          },
+          "affiliation": {
+            "label": "소속",
+            "description": "조직 소속 추가"
+          },
+          "courses": {
+            "label": "코스",
+            "description": "작성한 코스 표시"
+          }
+        },
+        "editors": {
+          "section_title": "섹션 제목",
+          "enter_section_title": "섹션 제목 입력",
+          "image_gallery": {
+            "title": "이미지 갤러리",
+            "images": "이미지",
+            "image_url": "이미지 URL",
+            "enter_image_url": "이미지 URL 입력",
+            "caption": "캡션",
+            "image_caption": "이미지 캡션",
+            "add_image": "이미지 추가"
+          },
+          "text": {
+            "title": "텍스트 콘텐츠",
+            "content": "콘텐츠",
+            "enter_content": "여기에 콘텐츠를 입력하세요..."
+          },
+          "links": {
+            "title": "링크",
+            "links": "링크",
+            "link_title": "링크 제목",
+            "url": "URL",
+            "add_link": "링크 추가"
+          },
+          "skills": {
+            "title": "기술",
+            "skills": "기술",
+            "skill_name": "기술 이름",
+            "select_level": "수준 선택",
+            "category": "카테고리 (선택사항)",
+            "add_skill": "기술 추가",
+            "levels": {
+              "beginner": "초급",
+              "intermediate": "중급",
+              "advanced": "고급",
+              "expert": "전문가"
+            }
+          },
+          "experience": {
+            "title": "경력",
+            "items": "경력 항목",
+            "role_title": "직책",
+            "role_placeholder": "직위 또는 역할",
+            "organization": "조직",
+            "organization_placeholder": "회사 또는 조직",
+            "start_date": "시작일",
+            "end_date": "종료일",
+            "current": "현재",
+            "description": "설명",
+            "description_placeholder": "역할과 성과 설명",
+            "add_experience": "경력 추가"
+          },
+          "education": {
+            "title": "교육",
+            "items": "교육 항목",
+            "institution": "기관",
+            "institution_placeholder": "학교 또는 대학",
+            "degree": "학위",
+            "degree_placeholder": "학위 유형",
+            "field": "전공 분야",
+            "field_placeholder": "전공 또는 집중 분야",
+            "start_date": "시작일",
+            "end_date": "종료일",
+            "current": "현재",
+            "description": "설명",
+            "description_placeholder": "교육에 대한 추가 정보",
+            "add_education": "교육 추가"
+          },
+          "affiliation": {
+            "title": "소속",
+            "affiliations": "소속",
+            "name": "이름",
+            "name_placeholder": "조직 이름",
+            "logo_url": "로고 URL",
+            "logo_url_placeholder": "조직 로고 URL",
+            "description": "설명",
+            "description_placeholder": "조직 설명",
+            "add_affiliation": "소속 추가"
+          },
+          "courses": {
+            "title": "코스",
+            "info": "작성한 코스가 이 섹션에 자동으로 표시됩니다."
+          }
+        },
+        "toasts": {
+          "loading_error": "프로필 데이터 로드 실패",
+          "save_success": "프로필이 성공적으로 업데이트되었습니다",
+          "save_error": "프로필 업데이트 중 오류 발생"
+        },
+        "unknown_section": "알 수 없는 섹션"
+      }
+    },
+    "sign_out": "로그아웃",
+    "username": "사용자 이름",
+    "first_name": "이름",
+    "last_name": "성",
+    "bio": "소개",
+    "no_biography": "소개글이 없습니다",
+    "my_progress": "나의 진도",
+    "no_courses_in_progress": "진행 중인 코스가 없습니다",
+    "start_course_to_see_progress": "코스를 시작하면 여기에 진도가 표시됩니다",
+    "bio_placeholder": "자기소개를 입력해 주세요..."
+  },
+  "roles": {
+    "custom_role": "커스텀 역할",
+    "role_admin": "관리자",
+    "role_admin_desc": "모든 권한을 가진 플랫폼 전체 제어",
+    "role_maintainer": "유지관리자",
+    "role_maintainer_desc": "광범위한 권한을 가진 중간 관리자",
+    "role_instructor": "강사",
+    "role_instructor_desc": "본인의 콘텐츠 관리 가능",
+    "role_user": "사용자",
+    "role_user_desc": "수강생 (읽기 전용)",
+    "instructor": "강사"
+  },
+  "time": {
+    "years_ago": "{{count}}년 전",
+    "months_ago": "{{count}}개월 전",
+    "weeks_ago": "{{count}}주일 전",
+    "days_ago": "{{count}}일 전",
+    "hours_ago": "{{count}}시간 전",
+    "minutes_ago": "{{count}}분 전"
+  },
+  "dashboard": {
+    "home": {
+      "cards": {
+        "courses": {
+          "title": "강좌",
+          "description": "강좌, 챕터 및 활동을 생성하고 관리합니다"
+        },
+        "organization": {
+          "title": "조직",
+          "description": "조직의 일반 설정을 구성합니다"
+        },
+        "users": {
+          "title": "사용자",
+          "description": "조직의 사용자와 역할을 관리합니다"
+        },
+        "account_settings": {
+          "title": "계정 설정",
+          "description": "개인 설정, 비밀번호, 이메일을 구성합니다"
+        }
+      },
+      "learnhouse_university": "LearnHouse 대학교",
+      "welcome_back": "다시 오신 것을 환영합니다",
+      "plan": "플랜",
+      "create_course": "강좌 만들기",
+      "analytics": "분석",
+      "members": "멤버",
+      "settings": "설정",
+      "courses": "강좌",
+      "communities": "커뮤니티",
+      "podcasts": "팟캐스트",
+      "boards": "게시판",
+      "published": "게시됨",
+      "draft": "초안",
+      "total_users": "전체 사용자",
+      "public": "공개",
+      "episodes": "에피소드",
+      "participants": "참가자",
+      "loading": "로딩 중...",
+      "enable_analytics_description": "분석을 활성화하여 실시간 사용자, 가입 현황 등을 확인하세요.",
+      "enable": "활성화",
+      "quick_stats": "빠른 통계",
+      "full_analytics": "전체 분석",
+      "live_now": "현재 접속 중",
+      "signups_30d": "가입 (30일)",
+      "enrollments_30d": "등록 (30일)",
+      "completions_30d": "수료 (30일)",
+      "recent_courses": "최근 강좌",
+      "view_all": "모두 보기",
+      "no_courses_yet": "아직 강좌가 없습니다",
+      "create_your_first_course": "첫 번째 강좌를 만들어 보세요",
+      "chapter": "챕터",
+      "chapters": "챕터",
+      "recent_members": "최근 멤버",
+      "total": "전체",
+      "no_members_yet": "아직 멤버가 없습니다",
+      "unverified": "미인증",
+      "plan_and_usage": "플랜 및 사용량",
+      "unlimited": "무제한",
+      "admin_seats": "관리자 시트",
+      "limit_reached": "한도에 도달했습니다",
+      "remaining": "남음",
+      "usage_data_unavailable": "사용량 데이터를 사용할 수 없습니다",
+      "features": "기능",
+      "off": "꺼짐",
+      "ai_credits": "AI 크레딧",
+      "used": "사용됨",
+      "no_credits_remaining": "남은 크레딧이 없습니다",
+      "includes_purchased": "구매한 {{count}}개 포함"
+    },
+    "courses": {
+      "title": "코스",
+      "rights_guide": "권한 가이드",
+      "create_course": "코스 생성",
+      "create_new_course": "새 코스 생성",
+      "import_course": "코스 가져오기",
+      "import_scorm": "SCORM 패키지 가져오기",
+      "import_scorm_description": "SCORM 패키지를 가져와 새 코스 만들기",
+      "import_learnhouse": "LearnHouse 코스 가져오기",
+      "import_learnhouse_description": "LearnHouse 내보내기 패키지에서 코스 가져오기",
+      "import_select_type": "가져올 패키지 유형 선택",
+      "no_courses": "아직 코스가 없습니다",
+      "create_course_placeholder": "코스를 생성하여 콘텐츠를 추가해 보세요",
+      "no_courses_available": "이용 가능한 코스가 아직 없습니다",
+      "publishing": "코스 게시 중...",
+      "unpublishing": "코스 게시 취소 중...",
+      "published_success": "코스가 성공적으로 게시되었습니다",
+      "unpublished_success": "코스 게시가 성공적으로 취소되었습니다",
+      "publish_error": "게시 상태 업데이트 실패",
+      "published": "게시됨",
+      "unpublished": "미게시",
+      "processing": "처리 중...",
+      "click_to_publish": "클릭하여 게시",
+      "click_to_unpublish": "클릭하여 게시 취소",
+      "preview": "미리보기",
+      "save": {
+        "success": "변경 사항이 성공적으로 저장되었습니다",
+        "error": "변경 사항 저장에 실패했습니다",
+        "partial_success": "일부 문제가 있지만 저장되었습니다: {{failed}}",
+        "partial_error": "부분적으로 저장됨 ({{success}}), 실패: {{failed}}",
+        "certification_error": "인증 설정 저장에 실패했습니다",
+        "saving": "저장 중...",
+        "saved": "저장됨",
+        "save": "저장",
+        "unsaved": "저장되지 않은 변경 사항",
+        "retry": "오류 - 클릭하여 재시도",
+        "retry_button": "재시도"
+      },
+      "overview_top": {
+        "course_label": "코스",
+        "rights_guide_button": "권한 가이드"
+      },
+      "settings": {
+        "tabs": {
+          "general": "일반",
+          "content": "콘텐츠",
+          "access": "액세스",
+          "contributors": "기여자",
+          "certification": "인증",
+          "analytics": "분석",
+          "seo": "SEO"
+        },
+        "access_denied": {
+          "title": "액세스 거부",
+          "message": "이 코스에 액세스할 권한이 없습니다."
+        },
+        "access_restricted": {
+          "title": "액세스 제한",
+          "message": "{{tab}}에 액세스할 권한이 없습니다"
+        },
+        "loading": "로딩 중..."
+      },
+      "general": {
+        "form": {
+          "name_label": "이름",
+          "name_required": "필수 항목입니다",
+          "name_max_length": "100자 이하로 입력해 주세요",
+          "description_label": "설명",
+          "description_required": "필수 항목입니다",
+          "description_max_length": "1000자 이하로 입력해 주세요",
+          "about_label": "정보",
+          "learnings_label": "학습 내용",
+          "learnings_required": "필수 항목입니다",
+          "learnings_invalid_format": "유효하지 않은 형식입니다",
+          "learnings_min_items": "최소 하나 이상의 학습 항목이 필요합니다",
+          "learnings_empty_text": "모든 학습 항목에 텍스트가 있어야 합니다",
+          "learnings_invalid_json": "유효하지 않은 JSON 형식입니다",
+          "tags_label": "태그",
+          "tags_placeholder": "Enter 키로 추가...",
+          "thumbnail_type_label": "썸네일 유형",
+          "thumbnail_type_image": "이미지",
+          "thumbnail_type_video": "동영상",
+          "thumbnail_type_both": "둘 다",
+          "thumbnail_label": "썸네일",
+          "image_search_placeholder": "이미지 검색..."
+        },
+        "thumbnail": {
+          "upload_image": "이미지 업로드",
+          "upload_video": "동영상 업로드",
+          "gallery": "갤러리",
+          "tabs": {
+            "image": "이미지",
+            "video": "동영상"
+          },
+          "supported_formats": {
+            "image": "지원 형식: PNG, JPG/JPEG (최대 8MB)",
+            "video": "지원 형식: MP4, WebM (최대 100MB)"
+          }
+        },
+        "errors": {
+          "save_failed": "코스 구조 저장에 실패했습니다."
+        }
+      },
+      "access": {
+        "title": "코스 액세스",
+        "subtitle": "코스를 인터넷에 공개할지 또는 로그인한 사용자만 액세스할 수 있게 할지 선택합니다",
+        "public": {
+          "title": "공개",
+          "description": "코스가 인터넷에 공개적으로 제공되며, 검색 엔진에 의해 인덱싱되고 누구나 액세스할 수 있습니다",
+          "active": "활성",
+          "confirmation_title": "공개로 변경하시겠습니까?",
+          "confirmation_message": "정말로 이 코스를 인터넷에 공개하시겠습니까?",
+          "confirmation_button": "공개로 변경"
+        },
+        "users_only": {
+          "title": "사용자 전용",
+          "description": "코스는 로그인한 사용자만 액세스할 수 있으며, 추가적으로 이 코스에 액세스할 수 있는 사용자 그룹을 선택할 수 있습니다",
+          "active": "활성",
+          "confirmation_title": "사용자 전용으로 변경하시겠습니까?",
+          "confirmation_message": "정말로 이 코스를 로그인한 사용자만 액세스할 수 있게 하시겠습니까?",
+          "confirmation_button": "사용자 전용으로 변경"
+        },
+        "usergroups": {
+          "title": "사용자 그룹",
+          "subtitle": "특정 사용자 그룹에만 이 코스에 대한 액세스 권한을 부여하려면 사용자 그룹과 연결할 수 있습니다",
+          "table": {
+            "name": "이름",
+            "actions": "작업"
+          },
+          "actions": {
+            "delete_link": "연결 삭제",
+            "link_to_usergroup": "사용자 그룹에 연결"
+          },
+          "modals": {
+            "link_title": "코스를 사용자 그룹에 연결",
+            "link_description": "이 코스를 연결할 사용자 그룹을 선택하세요. 해당 사용자 그룹의 사용자가 이 코스에 액세스할 수 있습니다.",
+            "unlink_title": "사용자 그룹 연결을 해제하시겠습니까?",
+            "unlink_message": "이 사용자 그룹의 사용자는 더 이상 이 코스에 액세스할 수 없습니다",
+            "unlink_button": "연결 삭제",
+            "warning": "사용자 그룹에 속하지 않은 사용자는 더 이상 이 코스에 액세스할 수 없습니다",
+            "usergroup_name": "사용자 그룹 이름",
+            "no_usergroups": "이용 가능한 사용자 그룹이 없습니다",
+            "create_usergroup": "사용자 그룹 생성",
+            "link_button": "연결"
+          },
+          "toasts": {
+            "link_success": "사용자 그룹에 성공적으로 연결되었습니다",
+            "link_error": "오류 {{status}}: {{detail}}",
+            "unlink_success": "사용자 그룹 연결이 성공적으로 해제되었습니다",
+            "unlink_error": "사용자 그룹 연결 해제 중 오류가 발생했습니다."
+          }
+        }
+      },
+      "contributors": {
+        "title": "코스 기여자",
+        "subtitle": "기여자를 관리하고 코스에 새 기여자를 추가합니다",
+        "open_to_contributors": {
+          "title": "기여자 모집 중",
+          "description": "코스가 기여자에게 열려 있습니다. 사용자는 기여자를 신청하고 코스 콘텐츠 개선을 도울 수 있습니다.",
+          "active": "활성",
+          "confirmation_title": "기여자에게 개방하시겠습니까?",
+          "confirmation_message": "정말로 이 코스를 기여자에게 개방하시겠습니까?",
+          "confirmation_button": "기여자에게 개방"
+        },
+        "closed_to_contributors": {
+          "title": "기여자 모집 마감",
+          "description": "코스가 기여자에게 닫혀 있습니다. 기존 기여자만 코스 콘텐츠를 수정할 수 있습니다.",
+          "active": "활성",
+          "confirmation_title": "기여자 모집을 마감하시겠습니까?",
+          "confirmation_message": "정말로 이 코스의 기여자 모집을 마감하시겠습니까?",
+          "confirmation_button": "모집 마감"
+        },
+        "search": {
+          "placeholder": "기여자로 추가할 사용자를 이름 또는 사용자 이름으로 검색...",
+          "searching": "검색 중...",
+          "no_results": "사용자를 찾을 수 없습니다"
+        },
+        "table": {
+          "name": "이름",
+          "username": "사용자 이름",
+          "email": "이메일",
+          "role": "역할",
+          "status": "상태",
+          "added_on": "추가된 날짜"
+        },
+        "roles": {
+          "creator": "생성자",
+          "contributor": "기여자",
+          "maintainer": "유지관리자",
+          "reporter": "리포터"
+        },
+        "statuses": {
+          "active": "활성",
+          "inactive": "비활성",
+          "pending": "대기 중"
+        },
+        "actions": {
+          "selected_users": "{{count}}명의 사용자 선택됨",
+          "selected_users_plural": "{{count}}명의 사용자 선택됨",
+          "clear": "지우기",
+          "add_selected": "선택 항목 추가",
+          "selected_contributors": "{{count}}명의 기여자 선택됨",
+          "selected_contributors_plural": "{{count}}명의 기여자 선택됨",
+          "remove_selected": "선택 항목 제거",
+          "already_contributor": "이미 기여자입니다"
+        },
+        "toasts": {
+          "add_success": "{{count}}명의 기여자를 성공적으로 추가했습니다",
+          "add_error": "{{username}} 추가 실패: {{reason}}",
+          "add_failed": "기여자 추가 실패",
+          "update_success": "기여자가 성공적으로 업데이트되었습니다",
+          "update_error": "오류: {{detail}}",
+          "update_failed": "기여자 업데이트 중 오류가 발생했습니다.",
+          "remove_success": "{{count}}명의 기여자를 성공적으로 제거했습니다",
+          "remove_failed": "기여자 제거 실패",
+          "cannot_modify_creator": "생성자의 역할이나 상태는 수정할 수 없습니다"
+        }
+      },
+      "certification": {
+        "title": "코스 인증",
+        "subtitle": "이 코스를 완료한 학생들을 위한 수료증을 활성화하고 구성합니다",
+        "form": {
+          "certification_name_label": "인증 명칭",
+          "certification_name_required": "인증 활성화 시 필수 항목입니다",
+          "certification_name_max_length": "100자 이하로 입력해 주세요",
+          "certification_name_placeholder": "예: 고급 JavaScript 인증",
+          "certification_type_label": "인증 유형",
+          "certification_description_label": "인증 설명",
+          "certification_description_required": "인증 활성화 시 필수 항목입니다",
+          "certification_description_max_length": "500자 이하로 입력해 주세요",
+          "certification_description_placeholder": "이 인증이 무엇을 나타내고 어떤 가치가 있는지 설명해 주세요...",
+          "certificate_pattern_label": "수료증 패턴",
+          "certificate_instructor_label": "강사 이름 (선택 사항)",
+          "certificate_instructor_placeholder": "예: Dr. Jane Smith"
+        },
+        "types": {
+          "completion": "코스 수료",
+          "achievement": "성과 기반",
+          "assessment": "평가 기반",
+          "participation": "참여",
+          "mastery": "기술 숙달",
+          "professional": "전문성 개발",
+          "continuing": "평생 교육",
+          "workshop": "워크숍 참석",
+          "specialization": "전공"
+        },
+        "patterns": {
+          "royal": {
+            "name": "로열",
+            "description": "왕관 모티브의 화려한 스타일"
+          },
+          "tech": {
+            "name": "테크",
+            "description": "회로에서 영감을 받은 패턴"
+          },
+          "nature": {
+            "name": "네이처",
+            "description": "유기적인 잎 패턴"
+          },
+          "geometric": {
+            "name": "지오메트릭",
+            "description": "추상적인 도형 및 선"
+          },
+          "vintage": {
+            "name": "빈티지",
+            "description": "아르데코 스타일링"
+          },
+          "waves": {
+            "name": "웨이브",
+            "description": "흐르는 물 패턴"
+          },
+          "minimal": {
+            "name": "미니멀",
+            "description": "깨끗하고 단순함"
+          },
+          "professional": {
+            "name": "프로페셔널",
+            "description": "비즈니스용 디자인"
+          },
+          "academic": {
+            "name": "아카데믹",
+            "description": "전통적인 대학 스타일"
+          },
+          "modern": {
+            "name": "모던",
+            "description": "현대적인 깔끔한 라인"
+          }
+        },
+        "sections": {
+          "basic_info": {
+            "title": "기본 정보",
+            "subtitle": "인증의 기본 세부 정보를 구성합니다"
+          },
+          "certificate_design": {
+            "title": "수료증 디자인",
+            "subtitle": "수료증을 위한 장식 패턴을 선택하세요"
+          },
+          "preview": {
+            "title": "수료증 미리보기",
+            "subtitle": "수료증 실시간 미리보기"
+          }
+        },
+        "states": {
+          "disabled": {
+            "title": "인증이 구성되지 않음",
+            "message": "코스 수료 시 학생들에게 수료증을 제공하려면 인증을 활성화하세요.",
+            "button": "인증 활성화",
+            "creating": "생성 중..."
+          },
+          "creating": {
+            "title": "인증 생성 중...",
+            "message": "코스 인증을 설정하는 동안 잠시만 기다려 주세요."
+          }
+        },
+        "errors": {
+          "loading": "인증 로드 중 오류 발생",
+          "create_failed": "인증 생성에 실패했습니다.",
+          "remove_failed": "인증 제거에 실패했습니다."
+        },
+        "toasts": {
+          "create_success": "인증이 성공적으로 생성되었습니다",
+          "create_error": "인증 생성에 실패했습니다",
+          "remove_success": "인증이 성공적으로 제거되었습니다",
+          "remove_error": "인증 제거에 실패했습니다"
+        }
+      },
+      "communities": {
+        "title": "커뮤니티",
+        "new_community": "새 커뮤니티",
+        "no_communities": "아직 커뮤니티가 없습니다",
+        "no_communities_description": "첫 번째 커뮤니티를 만들어 토론을 시작하세요",
+        "card": {
+          "open_settings": "설정 열기",
+          "view_community": "커뮤니티 보기",
+          "quick_edit": "빠른 편집"
+        },
+        "settings": {
+          "tabs": {
+            "general": "일반",
+            "thumbnail": "썸네일",
+            "course": "연결된 코스",
+            "moderation": "관리",
+            "access": "액세스"
+          },
+          "general": {
+            "title": "일반 설정",
+            "subtitle": "커뮤니티 이름, 설명 및 공개 여부 관리"
+          },
+          "thumbnail": {
+            "title": "썸네일",
+            "subtitle": "커뮤니티 커버 이미지 업데이트"
+          },
+          "course": {
+            "title": "연결된 코스",
+            "subtitle": "이 커뮤니티를 코스에 연결"
+          },
+          "moderation": {
+            "title": "관리",
+            "subtitle": "콘텐츠 관리 설정 구성"
+          },
+          "access": {
+            "subtitle": "이 커뮤니티에 액세스할 수 있는 사용자 제어",
+            "title": "액세스 설정"
+          }
+        },
+        "course": {
+          "title": "연결된 코스",
+          "subtitle": "코스 전용 토론을 위해 이 커뮤니티를 코스에 연결",
+          "currently_linked": "현재 연결됨",
+          "unlink": "연결 해제",
+          "link_button": "코스 연결",
+          "search_placeholder": "코스 검색...",
+          "no_courses": "코스를 찾을 수 없습니다",
+          "course_linked_id": "코스가 연결됨 (ID: {{id}})",
+          "course_not_found": "연결된 코스가 더 이상 존재하지 않거나 접근 권한이 없습니다",
+          "toasts": {
+            "linking": "코스 연결 중...",
+            "link_success": "코스가 성공적으로 연결되었습니다",
+            "link_error": "코스 연결에 실패했습니다",
+            "unlinking": "코스 연결 해제 중...",
+            "unlink_success": "코스 연결이 성공적으로 해제되었습니다",
+            "unlink_error": "코스 연결 해제에 실패했습니다"
+          }
+        },
+        "general": {
+          "title": "커뮤니티 설정",
+          "subtitle": "커뮤니티 기본 정보 업데이트",
+          "form": {
+            "name_label": "커뮤니티 이름",
+            "name_required": "커뮤니티 이름은 필수입니다",
+            "name_min_length": "이름은 최소 3자 이상이어야 합니다",
+            "name_max_length": "이름은 100자 미만이어야 합니다",
+            "name_placeholder": "커뮤니티 이름 입력",
+            "description_label": "설명",
+            "description_max_length": "설명은 500자 미만이어야 합니다",
+            "description_placeholder": "이 커뮤니티가 무엇에 관한 것인지 설명하세요",
+            "public_label": "공개 커뮤니티",
+            "public_description": "이 커뮤니티를 모든 사람에게 공개",
+            "characters_left": "{{count}}자 남음"
+          },
+          "toasts": {
+            "updating": "커뮤니티 업데이트 중...",
+            "update_success": "커뮤니티가 성공적으로 업데이트되었습니다",
+            "update_error": "커뮤니티 업데이트에 실패했습니다"
+          }
+        },
+        "thumbnail": {
+          "title": "커뮤니티 썸네일",
+          "subtitle": "커뮤니티 커버 이미지 업로드",
+          "no_thumbnail": "썸네일이 설정되지 않음",
+          "upload_image": "이미지 업로드",
+          "browse_unsplash": "Unsplash 둘러보기",
+          "uploading": "업로드 중...",
+          "supported_formats": "지원 형식: JPG, JPEG, PNG. 최대 크기: 8MB. 권장 비율: 16:9",
+          "toasts": {
+            "update_success": "썸네일이 성공적으로 업데이트되었습니다",
+            "update_error": "썸네일 업데이트에 실패했습니다",
+            "invalid_type": "유효하지 않은 파일 형식입니다. PNG 또는 JPG/JPEG 이미지만 업로드하세요",
+            "file_too_large": "파일 크기가 8MB 제한을 초과했습니다"
+          }
+        },
+        "moderation": {
+          "title": "콘텐츠 관리",
+          "subtitle": "차단 단어, 속도 제한 및 콘텐츠 규칙 구성",
+          "info_title": "커뮤니티 중재",
+          "info_description": "이 규칙을 위반하는 콘텐츠는 오류 메시지와 함께 거부되며 게시되지 않습니다.",
+          "restrictions_title": "콘텐츠 제한",
+          "length_title": "길이 제한",
+          "rate_limits_title": "속도 제한",
+          "account_requirements_title": "계정 요구사항",
+          "blocked_words_section_title": "차단된 단어",
+          "block_links_label": "외부 링크 차단",
+          "block_links_description": "URL이 포함된 토론 또는 답글을 거부합니다.",
+          "disable_reactions_label": "반응 비활성화",
+          "disable_reactions_description": "이 커뮤니티의 토론에서 이모지 반응을 끕니다.",
+          "min_post_length_label": "게시물 최소 길이",
+          "max_post_length_label": "게시물 최대 길이",
+          "max_comment_length_label": "답글 최대 길이",
+          "zero_disables": "비활성화하려면 0으로 두세요.",
+          "slow_mode_label": "저속 모드(초)",
+          "slow_mode_hint": "동일 사용자의 게시물 간 최소 대기 시간. 0으로 비활성화.",
+          "max_posts_per_day_label": "사용자당 일일 최대 게시물 수",
+          "auto_lock_days_label": "오래된 스레드 자동 잠금(일)",
+          "auto_lock_days_hint": "이 기간 동안 활동이 없는 토론을 잠급니다. 0으로 비활성화.",
+          "min_account_age_label": "최소 계정 나이(일)",
+          "min_account_age_hint": "더 최근의 계정을 가진 사용자는 게시할 수 없습니다. 0으로 비활성화.",
+          "require_email_verified_label": "이메일 인증 필수",
+          "require_email_verified_description": "인증된 이메일이 있는 사용자만 이 커뮤니티에 게시할 수 있습니다.",
+          "add_word_label": "차단 단어 추가",
+          "add_word_placeholder": "단어 또는 문구 입력...",
+          "add_button": "추가",
+          "batch_add_label": "일괄 추가",
+          "batch_add_description": "쉼표로 구분하여 여러 단어를 한 번에 추가",
+          "batch_add_placeholder": "단어1, 단어2, 단어3...",
+          "add_all_button": "모두 추가",
+          "blocked_words_label": "차단 단어",
+          "no_blocked_words": "아직 차단 단어가 없습니다",
+          "no_blocked_words_description": "콘텐츠 관리를 활성화하려면 단어를 추가하세요",
+          "word_exists_error": "이 단어는 이미 목록에 있습니다",
+          "all_words_exist_error": "모든 단어가 이미 목록에 있거나 입력이 비어 있습니다",
+          "toasts": {
+            "saving": "관리 설정 저장 중...",
+            "save_success": "관리 설정이 저장되었습니다",
+            "save_error": "관리 설정 저장에 실패했습니다"
+          }
+        },
+        "modals": {
+          "create": {
+            "title": "커뮤니티 만들기",
+            "description": "토론을 위한 새 커뮤니티 만들기",
+            "form": {
+              "name_label": "커뮤니티 이름",
+              "name_placeholder": "커뮤니티 이름 입력",
+              "description_label": "설명",
+              "description_placeholder": "이 커뮤니티가 무엇에 관한 것인지 설명하세요",
+              "public_label": "이 커뮤니티를 공개로 설정 (모든 사람에게 표시)"
+            },
+            "cancel": "취소",
+            "submit": "커뮤니티 만들기"
+          },
+          "edit": {
+            "title": "커뮤니티 편집",
+            "description": "커뮤니티 설정 업데이트"
+          },
+          "delete": {
+            "title": "{{name}} 삭제하시겠습니까?",
+            "message": "이 커뮤니티를 삭제하시겠습니까? 모든 토론이 영구적으로 삭제됩니다.",
+            "button": "커뮤니티 삭제"
+          }
+        },
+        "toasts": {
+          "creating": "커뮤니티 생성 중...",
+          "create_success": "커뮤니티가 성공적으로 생성되었습니다",
+          "create_error": "커뮤니티 생성에 실패했습니다",
+          "deleting": "커뮤니티 삭제 중...",
+          "delete_success": "커뮤니티가 성공적으로 삭제되었습니다",
+          "delete_error": "커뮤니티 삭제에 실패했습니다"
+        },
+        "access": {
+          "public": {
+            "active": "활성",
+            "confirmation_button": "공개로 변경",
+            "confirmation_message": "이 커뮤니티를 공개하시겠습니까?",
+            "confirmation_title": "공개로 변경하시겠습니까?",
+            "description": "커뮤니티가 공개되어 있습니다. 누구나 토론을 보고 참여할 수 있습니다.",
+            "title": "공개"
+          },
+          "restricted": {
+            "active": "활성",
+            "confirmation_button": "제한으로 변경",
+            "confirmation_message": "이 커뮤니티를 제한하시겠습니까? 연결된 사용자 그룹의 구성원만 액세스할 수 있습니다.",
+            "confirmation_title": "제한으로 변경하시겠습니까?",
+            "description": "커뮤니티는 선택된 사용자 그룹의 구성원만 액세스할 수 있습니다. 액세스를 부여하려면 사용자 그룹을 연결하세요.",
+            "title": "제한됨"
+          },
+          "subtitle": "커뮤니티를 공개할지 특정 사용자 그룹만 액세스 가능하게 할지 선택",
+          "title": "액세스 설정",
+          "toasts": {
+            "update_error": "액세스 설정 업데이트 실패",
+            "update_success": "액세스 설정이 성공적으로 업데이트되었습니다"
+          },
+          "usergroups": {
+            "actions": {
+              "delete_link": "제거",
+              "link_to_usergroup": "사용자 그룹에 연결"
+            },
+            "modals": {
+              "create_usergroup": "사용자 그룹 만들기",
+              "link_button": "연결",
+              "link_description": "이 커뮤니티에 연결할 사용자 그룹을 선택하세요. 이 그룹의 사용자가 액세스할 수 있습니다.",
+              "link_title": "커뮤니티를 사용자 그룹에 연결",
+              "no_usergroups": "사용 가능한 사용자 그룹이 없습니다",
+              "unlink_button": "액세스 제거",
+              "unlink_message": "이 사용자 그룹의 사용자는 더 이상 이 커뮤니티에 액세스할 수 없습니다.",
+              "unlink_title": "사용자 그룹 액세스를 제거하시겠습니까?",
+              "usergroup_name": "사용자 그룹 이름",
+              "warning": "연결된 사용자 그룹에 속하지 않은 사용자는 이 커뮤니티에 대한 액세스를 잃게 됩니다"
+            },
+            "subtitle": "사용자 그룹에 연결하여 이 커뮤니티에 대한 액세스를 부여합니다. 이 그룹의 사용자가 보고 참여할 수 있습니다.",
+            "table": {
+              "actions": "작업",
+              "name": "이름"
+            },
+            "title": "사용자 그룹",
+            "toasts": {
+              "link_error": "오류 {{status}}: {{detail}}",
+              "link_success": "사용자 그룹이 성공적으로 연결되었습니다",
+              "unlink_error": "사용자 그룹 액세스 제거 중 오류가 발생했습니다",
+              "unlink_success": "사용자 그룹 액세스가 성공적으로 제거되었습니다"
+            }
+          }
+        }
+      },
+      "structure": {
+        "loading": "로딩 중...",
+        "add_chapter_button": "장 추가",
+        "modals": {
+          "new_chapter": {
+            "title": "장 생성",
+            "description": "코스에 새 장을 추가합니다",
+            "form": {
+              "name_label": "장 이름",
+              "name_required": "장 이름을 입력해 주세요",
+              "description_label": "장 설명",
+              "description_required": "장 설명을 입력해 주세요",
+              "submit": "장 생성"
+            }
+          },
+          "delete_chapter": {
+            "title": "{{name}}을(를) 삭제하시겠습니까?",
+            "message": "정말로 이 장을 삭제하시겠습니까?",
+            "button": "장 삭제"
+          },
+          "new_activity": {
+            "title": "활동 생성",
+            "description": "코스에 추가할 활동 유형 중에서 선택하세요"
+          },
+          "delete_activity": {
+            "title": "{{name}}을(를) 삭제하시겠습니까?",
+            "message": "정말로 이 활동을 삭제하시겠습니까?",
+            "button": "활동 삭제"
+          }
+        },
+        "actions": {
+          "add_chapter": "장 추가",
+          "add_activity": "활동 추가",
+          "publish": "게시",
+          "unpublish": "게시 취소",
+          "preview_activity": "활동 미리보기",
+          "edit_page": "페이지 편집",
+          "edit_assignment": "과제 편집",
+          "rename": "이름 변경",
+          "publishing": "게시 중...",
+          "publish_all": "전체 게시 ({{count}})",
+          "publishing_all": "전체 게시 중...",
+          "publish_all_success": "모든 활동이 게시되었습니다",
+          "unpublish_all": "전체 게시 취소",
+          "unpublish_all_success": "모든 활동의 게시가 취소되었습니다",
+          "publish_all_error": "일부 활동 업데이트에 실패했습니다"
+        },
+        "bulk_actions": {
+          "selected": "{{count}}개 선택됨",
+          "clear": "선택 해제",
+          "delete": "삭제",
+          "delete_title": "선택한 활동 삭제",
+          "delete_confirm": "선택한 {{count}}개의 활동을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+          "delete_button": "활동 삭제",
+          "delete_success": "{{count}}개의 활동이 삭제되었습니다",
+          "delete_error": "일부 활동 삭제에 실패했습니다",
+          "publish_success": "{{count}}개의 활동이 게시되었습니다",
+          "publish_error": "일부 활동 게시에 실패했습니다",
+          "unpublish_success": "{{count}}개의 활동이 게시 취소되었습니다",
+          "unpublish_error": "일부 활동 게시 취소에 실패했습니다",
+          "partial_error": "{{total}}개 중 {{failed}}개의 활동 업데이트에 실패했습니다"
+        },
+        "chapter_element": {
+          "chapter_name_placeholder": "장 이름"
+        },
+        "activity": {
+          "name_placeholder": "활동 이름",
+          "status": {
+            "published": "게시됨",
+            "draft": "임시저장"
+          },
+          "types": {
+            "video": "동영상",
+            "document": "문서",
+            "assignment": "과제",
+            "assignments": "과제",
+            "dynamic": "동적",
+            "dynamic_page": "동적 페이지",
+            "scorm": "Scorm",
+            "markdown": "Markdown",
+            "embed": "Embed"
+          },
+          "toasts": {
+            "deleting": "활동 삭제 중...",
+            "delete_success": "활동이 성공적으로 삭제되었습니다",
+            "updating": "과제 업데이트 중...",
+            "update_success": "활동이 성공적으로 업데이트되었습니다",
+            "name_update_success": "활동 이름이 성공적으로 업데이트되었습니다",
+            "name_update_error": "활동 이름 업데이트에 실패했습니다",
+            "creating": "활동 생성 중...",
+            "create_success": "활동이 성공적으로 생성되었습니다",
+            "uploading": "파일 업로드 및 활동 생성 중...",
+            "upload_success": "파일이 성공적으로 업로드되었습니다",
+            "creating_uploading": "활동 생성 및 파일 업로드 중...",
+            "update_error": "활동 업데이트에 실패했습니다"
+          },
+          "versioning": {
+            "version_history": "버전 기록",
+            "current_version": "현재 버전:",
+            "versions_info": "저장 시 자동으로 버전이 생성됩니다. 최대 20개의 버전이 보관됩니다.",
+            "no_history": "버전 기록이 없습니다",
+            "versions_created_on_save": "저장 시 버전이 생성됩니다",
+            "version": "버전 {{number}}",
+            "previous": "이전",
+            "just_now": "방금",
+            "minutes_ago": "{{count}}분 전",
+            "hours_ago": "{{count}}시간 전",
+            "days_ago": "{{count}}일 전",
+            "preview": "미리보기",
+            "restore_version": "이 버전 복원",
+            "close": "닫기",
+            "loading_preview": "미리보기 로딩 중...",
+            "failed_load_history": "기록 로드 실패",
+            "restored_success": "버전 {{number}}으로 복원됨",
+            "restore_failed": "복원 실패",
+            "by_author": "{{author}} 작성",
+            "conflict": {
+              "title": "다른 사람이 변경했습니다",
+              "choose_version": "유지할 버전을 선택하세요",
+              "keep_mine": "내 버전 유지",
+              "keep_theirs": "상대방 버전 유지",
+              "keep_both": "둘 다 유지",
+              "keep_both_info": "내 콘텐츠가 유지되고, 상대방의 변경 사항이 아래에 추가됩니다",
+              "your_version": "내 버전",
+              "their_version": "상대방 버전",
+              "author_version": "{{author}}의 버전",
+              "apply_save": "적용 및 저장",
+              "cancel": "취소",
+              "changes_from": "{{author}}의 변경 사항",
+              "another_teacher": "다른 강사",
+              "detected": "충돌 감지! {{author}}이(가) 변경했습니다. 저장 버튼을 사용하여 옵션을 확인하세요.",
+              "checking": "확인 중...",
+              "newer_version": "새 버전 사용 가능",
+              "reload_changes": "변경 사항을 보려면 새로고침",
+              "merge_changes": "변경 사항 병합",
+              "remote_detected": "원격 변경 사항 감지됨",
+              "editing_notice": "{{author}}이(가) 편집 중 변경했습니다"
+            }
+          },
+          "descriptions": {
+            "scorm": "SCORM 호환 학습 패키지"
+          }
+        }
+      },
+      "limit_reached": "코스 제한 도달 ({{limit}})",
+      "seo": {
+        "errors": {
+          "save_failed": "SEO 설정 저장 실패"
+        },
+        "form": {
+          "canonical_url_hint": "이 코스가 다른 곳에 복제된 경우 사용. 기본 URL의 경우 비워두세요",
+          "canonical_url_label": "정규 URL",
+          "canonical_url_placeholder": "https://example.com/course/your-course",
+          "description_hint": "비워두면 코스 설명이 사용됩니다. 권장: 150-160자",
+          "description_label": "메타 설명",
+          "description_placeholder": "검색 결과를 위한 매력적인 설명 입력",
+          "enable_jsonld_hint": "검색 결과의 리치 스니펫을 위한 Course schema.org 마크업 추가",
+          "enable_jsonld_label": "JSON-LD 구조화 데이터 활성화",
+          "keywords_hint": "코스와 관련된 키워드를 쉼표로 구분하여 입력",
+          "keywords_label": "키워드",
+          "keywords_placeholder": "키워드1, 키워드2, 키워드3",
+          "og_description_label": "OG 설명",
+          "og_description_placeholder": "소셜 미디어 공유를 위한 사용자 정의 설명",
+          "og_image_hint": "소셜 공유를 위한 사용자 정의 이미지 URL. 비워두면 코스 썸네일이 사용됩니다",
+          "og_image_label": "OG 이미지 URL",
+          "og_image_placeholder": "https://example.com/image.jpg",
+          "og_title_label": "OG 제목",
+          "og_title_placeholder": "소셜 미디어 공유를 위한 사용자 정의 제목",
+          "robots_nofollow_hint": "활성화하면 검색 엔진이 이 페이지의 링크를 따르지 않습니다",
+          "robots_nofollow_label": "링크 팔로우 방지 (nofollow)",
+          "robots_noindex_hint": "활성화하면 검색 엔진이 이 코스를 인덱싱하지 않습니다",
+          "robots_noindex_label": "검색 엔진 인덱싱 방지 (noindex)",
+          "title_hint": "비워두면 코스 이름이 사용됩니다. 권장: 50-60자",
+          "title_label": "SEO 제목",
+          "title_placeholder": "검색 엔진을 위한 사용자 정의 제목 입력",
+          "twitter_card_label": "카드 유형",
+          "twitter_card_summary": "요약",
+          "twitter_card_summary_large": "대형 이미지 포함 요약",
+          "twitter_description_label": "Twitter 설명",
+          "twitter_description_placeholder": "Twitter 공유를 위한 사용자 정의 설명",
+          "twitter_title_label": "Twitter 제목",
+          "twitter_title_placeholder": "Twitter 공유를 위한 사용자 정의 제목"
+        },
+        "sections": {
+          "basic": {
+            "subtitle": "검색 엔진 결과에서 코스가 표시되는 방식 구성",
+            "title": "기본 SEO"
+          },
+          "opengraph": {
+            "subtitle": "소셜 미디어(Facebook, LinkedIn 등)에서 공유될 때 코스가 표시되는 방식 사용자 정의",
+            "title": "Open Graph"
+          },
+          "robots": {
+            "subtitle": "검색 엔진 인덱싱 제어 및 리치 스니펫 활성화",
+            "title": "로봇 및 구조화 데이터"
+          },
+          "twitter": {
+            "subtitle": "Twitter/X에서 공유될 때 코스가 표시되는 방식 사용자 정의",
+            "title": "Twitter 카드"
+          }
+        },
+        "subtitle": "검색 엔진 및 소셜 미디어 공유를 위한 코스 최적화",
+        "title": "SEO 설정",
+        "validation": {
+          "description_max_length": "메타 설명은 160자 이하여야 합니다",
+          "invalid_url": "유효한 URL을 입력해 주세요",
+          "og_description_max_length": "OG 설명은 200자 이하여야 합니다",
+          "og_title_max_length": "OG 제목은 70자 이하여야 합니다",
+          "title_max_length": "SEO 제목은 70자 이하여야 합니다",
+          "twitter_description_max_length": "Twitter 설명은 200자 이하여야 합니다",
+          "twitter_title_max_length": "Twitter 제목은 70자 이하여야 합니다"
+        }
+      }
+    },
+    "organization": {
+      "settings": {
+        "title": "조직 설정",
+        "subtitle": "조직의 프로필 및 설정을 관리합니다",
+        "tabs": {
+          "general": "일반",
+          "landing": "랜딩 페이지",
+          "branding": "브랜딩",
+          "ai": "AI",
+          "features": "기능",
+          "other": "기타",
+          "domains": "도메인",
+          "sso": "SSO",
+          "usage": "사용량",
+          "seo": "SEO",
+          "automations": "자동화"
+        },
+        "pages": {
+          "general": {
+            "title": "일반",
+            "subtitle": "조직 설정을 관리합니다"
+          },
+          "branding": {
+            "title": "브랜딩",
+            "subtitle": "조직의 시각적 아이덴티티와 소셜 미디어 활동을 관리합니다"
+          },
+          "landing": {
+            "title": "랜딩 페이지",
+            "subtitle": "조직 랜딩 페이지를 맞춤 설정합니다"
+          },
+          "other": {
+            "title": "기타",
+            "subtitle": "추가 조직 설정을 관리합니다"
+          },
+          "ai": {
+            "title": "AI 기능",
+            "subtitle": "조직의 AI 기능을 구성합니다"
+          },
+          "features": {
+            "title": "기능",
+            "subtitle": "조직의 기능을 활성화 또는 비활성화"
+          },
+          "domains": {
+            "subtitle": "조직의 커스텀 도메인 구성",
+            "title": "커스텀 도메인"
+          },
+          "sso": {
+            "subtitle": "조직의 SSO 구성",
+            "title": "싱글 사인온"
+          },
+          "usage": {
+            "subtitle": "조직의 리소스 사용량 및 플랜 제한 모니터링",
+            "title": "사용량"
+          }
+        },
+        "name": "조직 이름",
+        "name_placeholder": "조직 이름",
+        "short_description": "짧은 설명",
+        "short_description_placeholder": "조직에 대한 간단한 설명",
+        "label": "조직 레이블",
+        "label_placeholder": "조직 레이블 선택",
+        "about": "조직 정보",
+        "about_placeholder": "조직에 대한 상세 설명",
+        "showcase_explore": "LearnHouse Explore에 표시",
+        "showcase_description": "조직의 코스 및 콘텐츠를 LearnHouse 커뮤니티와 공유합니다. 이를 활성화하여 학습자가 귀중한 교육 리소스를 찾을 수 있도록 도와주세요.",
+        "save_changes": "변경 사항 저장",
+        "saving": "저장 중...",
+        "update_success": "조직 정보가 업데이트되었습니다",
+        "update_error": "조직 정보 업데이트에 실패했습니다",
+        "updating": "조직 정보를 업데이트하는 중...",
+        "footer_text": "푸터 텍스트",
+        "footer_text_placeholder": "푸터 텍스트 입력...",
+        "footer_text_desc": "조직 페이지 하단에 표시되는 사용자 지정 텍스트",
+        "default_language": "기본 언어",
+        "default_language_desc": "새 방문자에게 기본으로 표시되는 언어이며, 이 조직을 대신해 발송되는 이메일에 사용되는 언어입니다. 구성원은 자신의 UI 언어를 계속 전환할 수 있습니다.",
+        "watermark_desc": "조직 페이지에 LearnHouse 브랜드 워터마크 표시",
+        "watermark_free_plan": "무료 플랜에서는 워터마크가 항상 표시됩니다",
+        "watermark_label": "\"Made with LearnHouse\" 워터마크",
+        "watermark_ee": "Enterprise Edition 라이선스에 의해 숨겨짐"
+      },
+      "images": {
+        "title": "이미지 및 미리보기",
+        "subtitle": "조직의 로고, 썸네일 및 미리보기 이미지를 관리합니다",
+        "tabs": {
+          "logo": "로고",
+          "thumbnail": "썸네일",
+          "previews": "미리보기"
+        },
+        "upload_logo": "새 로고 업로드",
+        "upload_thumbnail": "새 썸네일 업로드",
+        "uploading": "업로드 중...",
+        "uploading_logo": "로고 업로드 중...",
+        "uploading_thumbnail": "썸네일 업로드 중...",
+        "uploading_previews": "{{count}}개의 미리보기를 업로드 중...",
+        "uploading_previews_plural": "{{count}}개의 미리보기를 업로드 중...",
+        "accepted_files": "PNG, JPG 지원 (최대 5MB)",
+        "recommended_size": "권장 크기: 200x100 픽셀",
+        "add_preview": "미리보기 추가",
+        "drag_to_reorder": "드래그하여 순서 변경 • 최대 4개의 미리보기 • 이미지 및 동영상 지원",
+        "video_modal": {
+          "title": "미리보기 추가",
+          "images": "이미지 업로드",
+          "youtube": "YouTube",
+          "youtube_desc": "YouTube 동영상 추가",
+          "loom": "Loom",
+          "loom_desc": "Loom 동영상 추가",
+          "url_placeholder": "{{service}} 동영상 URL을 붙여넣으세요",
+          "add_button": "동영상 추가"
+        },
+        "toasts": {
+          "logo_success": "로고가 업데이트되었습니다",
+          "logo_error": "로고 업로드에 실패했습니다",
+          "thumbnail_success": "썸네일이 업데이트되었습니다",
+          "thumbnail_error": "썸네일 업로드에 실패했습니다",
+          "preview_added": "{{count}}개의 미리보기가 추가되었습니다",
+          "preview_added_plural": "{{count}}개의 미리보기가 추가되었습니다",
+          "preview_error": "미리보기 업로드에 실패했습니다",
+          "preview_removed": "미리보기가 삭제되었습니다",
+          "preview_remove_error": "미리보기 삭제에 실패했습니다",
+          "order_updated": "미리보기 순서가 업데이트되었습니다",
+          "order_update_error": "미리보기 순서 업데이트에 실패했습니다",
+          "max_previews": "미리보기는 {{count}}개 더 업로드할 수 있습니다",
+          "max_previews_plural": "미리보기는 {{count}}개 더 업로드할 수 있습니다",
+          "invalid_url": "유효하지 않은 {{type}} URL입니다",
+          "video_exists": "이 동영상은 이미 추가되었습니다",
+          "adding_video": "동영상 미리보기를 추가하는 중...",
+          "video_preview_added": "동영상 미리보기가 추가되었습니다",
+          "video_preview_error": "동영상 미리보기 추가에 실패했습니다",
+          "updating_order": "미리보기 순서를 업데이트하는 중..."
+        },
+        "favicon_preview": "파비콘 미리보기 (32×32)"
+      },
+      "branding": {
+        "title": "브랜딩",
+        "subtitle": "조직의 시각적 아이덴티티와 소셜 미디어 활동을 관리합니다",
+        "tabs": {
+          "images": "이미지 및 미리보기",
+          "social": "소셜 링크",
+          "theme": "테마",
+          "auth": "인증"
+        }
+      },
+      "auth_branding": {
+        "title": "인증 페이지 브랜딩",
+        "subtitle": "로그인 및 가입 페이지의 모양을 사용자 지정하세요",
+        "welcome_message": "환영 메시지",
+        "welcome_placeholder": "사용자 지정 환영 메시지를 입력하세요...",
+        "welcome_desc": "이 메시지는 로그인 및 가입 페이지에 표시됩니다. 기본값을 사용하려면 비워두세요.",
+        "default_welcome": "학습 콘텐츠에 액세스하려면 로그인하세요",
+        "background_type": "배경 유형",
+        "bg_gradient": "그라데이션",
+        "bg_custom": "사용자 지정",
+        "bg_unsplash": "Unsplash",
+        "text_color": "텍스트 색상",
+        "text_light": "밝은색",
+        "text_dark": "어두운색",
+        "text_color_desc": "어두운 배경에는 밝은 텍스트를, 밝은 배경에는 어두운 텍스트를 선택하세요.",
+        "preview": "실시간 미리보기",
+        "preview_hint": "로그인 및 가입 페이지가 이렇게 표시됩니다",
+        "saving": "저장 중...",
+        "save_success": "브랜딩 설정이 저장되었습니다",
+        "save_error": "설정 저장에 실패했습니다",
+        "uploading": "배경 업로드 중...",
+        "upload_success": "배경 이미지가 업로드되었습니다",
+        "upload_error": "이미지 업로드에 실패했습니다"
+      },
+      "socials": {
+        "title": "소셜 링크",
+        "subtitle": "조직의 소셜 미디어 활동을 관리합니다",
+        "labels": {
+          "social_links": "소셜 링크",
+          "custom_links": "사용자 정의 링크"
+        },
+        "placeholders": {
+          "twitter": "Twitter 프로필 URL",
+          "facebook": "Facebook 프로필 URL",
+          "instagram": "Instagram 프로필 URL",
+          "youtube": "YouTube 채널 URL",
+          "label": "레이블",
+          "url": "URL"
+        },
+        "add_link": "링크 추가",
+        "custom_links_desc": "조직 프로필에 표시될 사용자 정의 링크를 최대 3개까지 추가할 수 있습니다"
+      },
+      "scripts": {
+        "title": "스크립트",
+        "subtitle": "조직에 사용자 정의 JavaScript 스크립트를 추가합니다",
+        "warning": "조직의 보안을 위해 추가하기 전에 스크립트를 신뢰하고 이해하는지 확인하세요. 스크립트는 조직의 페이지와 상호 작용할 수 있습니다.",
+        "add_script": "스크립트 추가",
+        "no_scripts": "추가된 스크립트가 없습니다",
+        "add_first_script": "시작하려면 첫 번째 스크립트를 추가하세요",
+        "script_name": "스크립트 이름",
+        "script_content": "스크립트 내용",
+        "placeholders": {
+          "name": "스크립트 이름 입력",
+          "content": "JavaScript 코드를 입력하세요"
+        },
+        "save_script": "스크립트 저장",
+        "toasts": {
+          "save_success": "스크립트가 성공적으로 저장되었습니다",
+          "delete_success": "스크립트가 성공적으로 삭제되었습니다"
+        }
+      },
+      "ai": {
+        "title": "AI 기능",
+        "subtitle": "조직의 AI 기능을 구성합니다",
+        "enable_ai": "AI 기능 활성화",
+        "enable_ai_description": "조직의 콘텐츠 및 학습 경험에서 AI 기반 기능을 허용합니다",
+        "admin_only": "관리자만 AI 설정을 수정할 수 있습니다.",
+        "features_enabled": "사용 가능한 AI 기능",
+        "feature_editor": "AI 콘텐츠 편집기 지원",
+        "feature_activity": "AI 학습 활동 상호작용",
+        "feature_canvas": "AI 캔버스 및 디자인 도구",
+        "toasts": {
+          "save_success": "AI 설정이 성공적으로 업데이트되었습니다",
+          "save_error": "AI 설정 업데이트에 실패했습니다"
+        }
+      },
+      "features": {
+        "title": "기능 설정",
+        "subtitle": "조직의 기능을 활성화 또는 비활성화",
+        "admin_only": "조직 관리자만 기능 설정을 수정할 수 있습니다.",
+        "upgrade_notice": "이 기능을 활성화하려면 {{plan}} 플랜으로 업그레이드하세요",
+        "toggles": {
+          "communities": {
+            "title": "커뮤니티",
+            "description": "조직 구성원을 위한 토론 커뮤니티 활성화"
+          },
+          "payments": {
+            "title": "결제",
+            "description": "코스 및 구독에 대한 결제 처리 활성화"
+          },
+          "collections": {
+            "title": "컬렉션",
+            "description": "코스를 컬렉션으로 정리 허용"
+          },
+          "courses": {
+            "description": "조직의 코스 및 진행 추적 활성화",
+            "title": "코스"
+          },
+          "podcasts": {
+            "description": "조직의 팟캐스트 제작 및 오디오 콘텐츠 활성화",
+            "title": "팟캐스트"
+          },
+          "boards": {
+            "title": "Boards",
+            "description": "Create collaborative boards with lists and cards for project management"
+          },
+          "playgrounds": {
+            "title": "Playgrounds",
+            "description": "Create interactive AI-generated experiences for your learners"
+          }
+        },
+        "toasts": {
+          "enabling": "{{feature}} 활성화 중...",
+          "disabling": "{{feature}} 비활성화 중...",
+          "enabled": "{{feature}} 활성화됨",
+          "disabled": "{{feature}} 비활성화됨",
+          "error": "{{feature}} 구성 업데이트 실패",
+          "admin_only": "조직 관리자만 기능을 활성화하거나 비활성화할 수 있습니다"
+        }
+      },
+      "audit_logs": {
+        "title": "감사 로그",
+        "subtitle": "조직 내의 모든 활동을 추적하고 모니터링합니다",
+        "refresh": "로그 새로고침",
+        "export": "내보내기",
+        "search_by": "검색 기준",
+        "placeholders": {
+          "search": "검색..."
+        },
+        "filters": {
+          "resource": "리소스",
+          "status": "상태",
+          "date": "날짜"
+        },
+        "resources": {
+          "all": "모든 리소스",
+          "user": "사용자",
+          "course": "코스",
+          "org": "조직"
+        },
+        "date_ranges": {
+          "all": "전체 기간",
+          "today": "오늘",
+          "7d": "최근 7일",
+          "30d": "최근 30일",
+          "custom": "사용자 정의 범위"
+        },
+        "table": {
+          "timestamp": "타임스탬프",
+          "user": "사용자",
+          "resource": "리소스",
+          "path_method": "경로 및 메서드",
+          "ip_address": "IP 주소",
+          "status": "상태",
+          "payload": "페이로드"
+        },
+        "loading": "활동을 불러오는 중...",
+        "no_logs": "로그를 찾을 수 없습니다",
+        "pagination": {
+          "showing": "전체 {{total}}개의 로그 중 {{start}}에서 {{end}} 표시"
+        },
+        "modals": {
+          "payload": {
+            "title": "이벤트 페이로드",
+            "description": "작업에 대한 상세 데이터: {{action}}"
+          }
+        },
+        "export_toasts": {
+          "generating": "CSV 생성 중...",
+          "success": "CSV가 성공적으로 내보내졌습니다",
+          "error": "CSV 내보내기에 실패했습니다"
+        },
+        "enterprise_only": "감사 로그는 엔터프라이즈 플랜에서만 사용 가능합니다",
+        "enterprise_feature": "엔터프라이즈 기능",
+        "enterprise_description": "감사 로그는 엔터프라이즈 플랜의 조직에서만 사용할 수 있는 프리미엄 기능입니다. 조직 활동에 대한 완전한 가시성을 얻으려면 업그레이드하세요.",
+        "upgrade_button": "엔터프라이즈로 업그레이드"
+      },
+      "landing": {
+        "title": "랜딩 페이지",
+        "subtitle": "조직의 랜딩 페이지를 맞춤 설정합니다",
+        "beta": "베타",
+        "save_changes": "변경 사항 저장",
+        "saving": "저장 중...",
+        "saved_success": "랜딩 페이지가 성공적으로 저장되었습니다",
+        "save_error": "랜딩 페이지 저장 중 오류가 발생했습니다",
+        "sections": "섹션",
+        "select_section": "편집할 섹션을 선택하거나 새 섹션을 추가하세요",
+        "section_types": {
+          "hero": {
+            "label": "히어로",
+            "description": "제목과 행동 유도 문구가 포함된 히어로 섹션을 추가합니다"
+          },
+          "text_and_image": {
+            "label": "텍스트 및 이미지",
+            "description": "텍스트와 이미지가 포함된 섹션을 추가합니다"
+          },
+          "logos": {
+            "label": "로고",
+            "description": "로고를 보여주는 섹션을 추가합니다"
+          },
+          "people": {
+            "label": "사람",
+            "description": "팀원을 강조하는 섹션을 추가합니다"
+          },
+          "featured_courses": {
+            "label": "코스",
+            "description": "선택한 코스를 보여주는 섹션을 추가합니다"
+          }
+        },
+        "add_section": "섹션 추가",
+        "hero_editor": {
+          "title": "히어로 섹션",
+          "section_title": "섹션 제목",
+          "section_title_placeholder": "섹션 제목 입력",
+          "tabs": {
+            "content": "콘텐츠",
+            "background": "배경",
+            "buttons": "버튼",
+            "illustration": "일러스트레이션"
+          },
+          "heading": "제목",
+          "heading_placeholder": "제목 텍스트 입력",
+          "heading_color": "제목 색상",
+          "subheading": "소제목",
+          "subheading_placeholder": "소제목 텍스트 입력",
+          "subheading_color": "소제목 색상",
+          "background_type": "배경 유형",
+          "background_type_placeholder": "배경 유형 선택",
+          "background_types": {
+            "solid": "단색",
+            "gradient": "그라디언트",
+            "image": "이미지"
+          },
+          "background_color": "배경 색상",
+          "gradient_type": "그라디언트 유형",
+          "gradient_type_placeholder": "그라디언트 유형 선택",
+          "gradient_types": {
+            "preset": "사전 정의된 그라디언트",
+            "custom": "사용자 정의 그라디언트"
+          },
+          "start_color": "시작 색상",
+          "end_color": "종료 색상",
+          "gradient_direction": "그라디언트 방향",
+          "gradient_direction_placeholder": "그라디언트 방향 선택",
+          "gradient_preset": "그라디언트 프리셋",
+          "gradient_preset_placeholder": "그라디언트 프리셋 선택",
+          "background_image": "배경 이미지",
+          "upload_image": "이미지 업로드",
+          "button_text_colors": "버튼 텍스트 및 색상",
+          "button_text": "버튼 텍스트",
+          "text_color": "텍스트",
+          "background_color_label": "배경",
+          "button_link": "버튼 링크",
+          "button_link_placeholder": "버튼 링크",
+          "add_button": "버튼 추가",
+          "illustration_image": "일러스트레이션 이미지",
+          "illustration_url": "일러스트레이션 URL",
+          "alt_text": "대체 텍스트",
+          "upload_illustration": "일러스트레이션 업로드",
+          "position": "위치",
+          "position_placeholder": "위치 선택",
+          "positions": {
+            "left": "왼쪽",
+            "right": "오른쪽"
+          },
+          "size": "크기",
+          "size_placeholder": "크기 선택",
+          "sizes": {
+            "small": "작게",
+            "medium": "중간",
+            "large": "크게"
+          },
+          "remove_illustration": "일러스트레이션 삭제"
+        },
+        "text_image_editor": {
+          "title": "텍스트 및 이미지 섹션",
+          "title_label": "제목",
+          "title_placeholder": "섹션 제목 입력",
+          "content": "콘텐츠",
+          "content_placeholder": "섹션 콘텐츠 입력",
+          "image_position": "이미지 위치",
+          "image_position_placeholder": "이미지 위치 선택",
+          "positions": {
+            "left": "왼쪽",
+            "right": "오른쪽"
+          },
+          "image": "이미지",
+          "image_url": "이미지 URL",
+          "alt_text": "대체 텍스트",
+          "upload_new_image": "새 이미지 업로드"
+        },
+        "logos_editor": {
+          "title": "로고 섹션",
+          "title_label": "제목",
+          "title_placeholder": "섹션 제목 입력",
+          "logos": "로고",
+          "logo_url": "로고 URL",
+          "alt_text": "대체 텍스트",
+          "upload_logo": "로고 업로드",
+          "add_logo": "로고 추가"
+        },
+        "people_editor": {
+          "title": "사람 섹션",
+          "title_label": "제목",
+          "title_placeholder": "섹션 제목 입력",
+          "people": "사람",
+          "name": "이름",
+          "name_placeholder": "사람의 이름",
+          "username": "사용자 이름",
+          "username_placeholder": "@username",
+          "image": "이미지",
+          "image_url": "이미지 URL",
+          "upload_avatar": "아바타 업로드",
+          "description": "설명",
+          "description_placeholder": "설명 또는 역할",
+          "add_person": "사람 추가"
+        },
+        "courses_editor": {
+          "title": "코스 섹션",
+          "title_label": "제목",
+          "title_placeholder": "섹션 제목 입력",
+          "select_courses": "코스 선택",
+          "loading_courses": "코스를 불러오는 중...",
+          "selected": "선택됨",
+          "select": "선택"
+        },
+        "org_id_not_found": "조직 ID를 찾을 수 없습니다"
+      },
+      "theme": {
+        "primary_color": "기본 색상",
+        "primary_color_desc": "조직의 헤더와 페이지 배경에 사용할 기본 색상을 선택하세요.",
+        "clear_color": "색상 지우기",
+        "preview": "라이브 미리보기",
+        "preview_hint": "조직의 헤더와 배경이 이렇게 표시됩니다",
+        "footer_text": "푸터 텍스트",
+        "footer_text_desc": "페이지 푸터에 표시할 사용자 지정 텍스트를 추가합니다.",
+        "footer_text_placeholder": "푸터 텍스트 입력..."
+      },
+      "sso": {
+        "allowed_domains": "허용 이메일 도메인",
+        "allowed_domains_help": "SSO를 통한 로그인이 허용된 이메일 도메인을 쉼표로 구분하여 입력 (예: example.com, company.org). 비워두면 모든 도메인을 허용합니다.",
+        "auto_provision": "사용자 자동 프로비저닝",
+        "auto_provision_desc": "첫 SSO 로그인 시 사용자 계정을 자동으로 생성합니다.",
+        "delete": "SSO 설정 삭제",
+        "delete_confirm": "이 SSO 설정을 삭제하시겠습니까? 사용자는 더 이상 SSO로 로그인할 수 없습니다.",
+        "delete_error": "SSO 설정 삭제 실패",
+        "delete_success": "SSO 설정이 삭제되었습니다",
+        "deleting": "삭제 중...",
+        "enable_sso": "SSO 활성화",
+        "enable_sso_desc": "조직의 ID 제공자를 사용하여 사용자가 인증할 수 있도록 합니다.",
+        "load_error": "SSO 설정 로드 실패",
+        "not_configured": "구성되지 않음",
+        "oidc_client_id": "클라이언트 ID",
+        "oidc_client_secret": "클라이언트 시크릿",
+        "oidc_client_secret_help": "이 시크릿을 안전하게 보관하세요. ID 제공자와의 인증에 사용됩니다.",
+        "oidc_info": "OpenID Connect 호환 ID 제공자(Azure AD, Okta, Google Workspace, Keycloak)에 직접 연결합니다.",
+        "oidc_issuer_url": "발급자 URL",
+        "oidc_issuer_url_help": "OIDC 발급자 URL. 엔드포인트는 /.well-known/openid-configuration에서 자동 검색됩니다.",
+        "oidc_scopes": "스코프",
+        "oidc_scopes_help": "요청할 OAuth 스코프 (공백으로 구분). 기본값: openid email profile",
+        "open_setup_portal": "ID 제공자 구성",
+        "provider": "SSO 제공자",
+        "save": "설정 저장",
+        "save_error": "SSO 설정 저장 실패",
+        "save_success": "SSO 설정이 성공적으로 저장되었습니다",
+        "saving": "저장 중...",
+        "select_provider": "제공자 선택",
+        "setup_error": "설정 포털 URL 가져오기 실패",
+        "setup_not_available": "설정 포털을 사용할 수 없습니다. 먼저 제공자를 구성하세요.",
+        "status_disabled": "비활성",
+        "status_enabled": "활성",
+        "subtitle": "조직의 엔터프라이즈 SSO 구성",
+        "title": "싱글 사인온 (SSO)",
+        "workos_info": "WorkOS는 SAML 및 OIDC ID 제공자를 지원하는 엔터프라이즈 SSO를 제공합니다.",
+        "workos_org_id": "WorkOS 조직 ID",
+        "workos_org_id_help": "이 ID는 설정 포털을 통해 SSO를 구성하면 자동으로 생성됩니다."
+      },
+      "seo": {
+        "copied_to_clipboard": "클립보드에 복사되었습니다",
+        "save_failed": "SEO 설정 저장에 실패했습니다"
+      },
+      "automations": {},
+      "domains": {
+        "domain_required": "도메인은 필수입니다",
+        "domain_added_success": "도메인이 성공적으로 추가되었습니다",
+        "domain_deleted_success": "도메인이 성공적으로 삭제되었습니다",
+        "copied_to_clipboard": "클립보드에 복사되었습니다",
+        "table_domain": "도메인",
+        "table_status": "상태",
+        "table_ssl": "SSL",
+        "table_added": "추가일",
+        "table_verified": "확인됨",
+        "table_actions": "작업",
+        "adding_domain": "도메인 추가 중...",
+        "deleting_domain": "도메인 삭제 중...",
+        "dns_config_required": "DNS 설정 필요",
+        "dns_config_description": "도메인 등록기관(예: Cloudflare, GoDaddy, Namecheap)에서 이 레코드를 추가하세요. DNS 변경은 최대 48시간이 걸릴 수 있습니다.",
+        "txt_record": "TXT 레코드",
+        "for_verification": "확인용",
+        "cname_record": "CNAME 레코드",
+        "for_routing": "라우팅용",
+        "host_name": "호스트 / 이름",
+        "value": "값",
+        "value_target": "값 / 대상",
+        "ssl_certificate": "SSL 인증서",
+        "https_status": "HTTPS 상태",
+        "check": "확인",
+        "checking_ssl": "SSL 상태 확인 중...",
+        "delete_domain_title": "사용자 정의 도메인 삭제",
+        "delete_domain_confirm": "이 도메인을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "delete_domain": "도메인 삭제",
+        "verify_domain_desc": "소유권을 확인하기 위해 도메인 제공업체에서 다음 DNS 레코드를 추가하세요.",
+        "issuer": "발급자",
+        "expires": "만료"
+      }
+    },
+    "users": {
+      "settings": {
+        "tabs": {
+          "users": "사용자",
+          "usergroups": "사용자 그룹",
+          "roles": "역할",
+          "signups": "가입 및 초대 코드",
+          "add": "멤버 초대",
+          "audit_logs": "감사 로그"
+        },
+        "pages": {
+          "users": {
+            "title": "사용자",
+            "subtitle": "조직 사용자를 관리하고 역할 및 권한을 할당합니다"
+          },
+          "signups": {
+            "title": "가입 및 초대 코드",
+            "subtitle": "사용자가 조직에 가입할 수 있는 경로를 선택합니다"
+          },
+          "add": {
+            "title": "멤버 초대",
+            "subtitle": "조직에 가입할 멤버를 초대합니다"
+          },
+          "usergroups": {
+            "title": "사용자 그룹",
+            "subtitle": "사용자 그룹 생성 및 관리"
+          },
+          "roles": {
+            "title": "역할",
+            "subtitle": "특정 권한을 가진 역할 생성 및 관리"
+          },
+          "audit_logs": {
+            "title": "감사 로그",
+            "subtitle": "조직 내의 모든 활동을 추적하고 모니터링합니다"
+          }
+        },
+        "mobile": {
+          "title": "데스크톱 전용",
+          "message1": "이 페이지는 데스크톱 기기에서만 액세스할 수 있습니다.",
+          "message2": "사용자 설정을 보고 관리하려면 데스크톱으로 전환해 주세요."
+        }
+      },
+      "active_users": {
+        "title": "활성 사용자",
+        "subtitle": "조직 사용자를 관리하고 역할 및 권한을 할당합니다",
+        "table": {
+          "user": "사용자",
+          "groups": "그룹",
+          "role": "역할",
+          "actions": "작업"
+        },
+        "actions": {
+          "edit_role": "역할 편집",
+          "remove_from_org": "조직에서 제거",
+          "removing": "제거 중...",
+          "remove_success": "조직에서 사용자를 제거했습니다",
+          "remove_error": "사용자 제거 중 오류 발생",
+          "updating_role": "역할 업데이트 중...",
+          "role_update_success": "역할이 성공적으로 업데이트되었습니다",
+          "role_update_error": "역할 업데이트 오류"
+        },
+        "modals": {
+          "update_role": {
+            "title": "역할 업데이트",
+            "description": "@{{username}}의 역할을 업데이트합니다"
+          },
+          "remove_user": {
+            "title": "{{username}}을(를) 삭제하시겠습니까?",
+            "message": "정말로 이 사용자를 조직에서 제거하시겠습니까?",
+            "button": "사용자 제거"
+          }
+        },
+        "search_placeholder": "사용자 검색...",
+        "no_results": "검색과 일치하는 사용자를 찾을 수 없습니다",
+        "no_users": "이 조직에는 아직 사용자가 없습니다",
+        "pagination": {
+          "showing": "{{total}}개 중 {{start}}-{{end}}개 표시",
+          "page": "{{total}}페이지 중 {{current}}페이지"
+        }
+      },
+      "signups": {
+        "title": "가입 방법",
+        "subtitle": "사용자가 조직에 가입하는 방법을 선택합니다",
+        "open": {
+          "title": "공개",
+          "description": "사용자가 가입 페이지에서 자유롭게 가입할 수 있습니다",
+          "active": "활성",
+          "change_to": "공개로 변경",
+          "confirmation_message": "가입 메커니즘을 공개로 변경하시겠습니까? 이렇게 하면 사용자가 조직에 자유롭게 가입할 수 있습니다.",
+          "confirmation_title": "공개로 변경하시겠습니까?"
+        },
+        "closed": {
+          "title": "비공개",
+          "description": "사용자가 초대를 통해서만 가입할 수 있습니다",
+          "active": "활성",
+          "change_to": "비공개로 변경",
+          "confirmation_message": "가입 메커니즘을 비공개로 변경하시겠습니까? 이렇게 하면 사용자가 초대를 통해서만 조직에 가입할 수 있습니다.",
+          "confirmation_title": "비공개로 변경하시겠습니까?"
+        },
+        "invite_codes": {
+          "title": "초대 코드",
+          "subtitle": "초대 코드를 복사하여 조직 가입에 사용할 수 있습니다",
+          "table": {
+            "code": "코드",
+            "signup_link": "가입 링크",
+            "type": "유형",
+            "expiration_date": "만료일",
+            "actions": "작업"
+          },
+          "types": {
+            "linked_to_usergroup": "사용자 그룹에 연결됨",
+            "normal": "일반"
+          },
+          "actions": {
+            "delete_code": "코드 삭제",
+            "delete_confirmation_title": "코드를 삭제하시겠습니까?",
+            "delete_confirmation_message": "정말로 이 초대 코드를 제거하시겠습니까?",
+            "generate": "초대 코드 생성",
+            "generate_title": "초대 코드 생성",
+            "generate_description": "조직을 위한 새 초대 코드를 생성합니다"
+          },
+          "toasts": {
+            "deleting": "삭제 중...",
+            "delete_success": "초대 코드가 삭제되었습니다",
+            "delete_error": "삭제 중 오류 발생",
+            "changing_method": "가입 방법 변경 중...",
+            "change_success": "가입 방법을 {{method}}(으)로 변경했습니다",
+            "change_error": "가입 방법 변경 중 오류 발생"
+          }
+        },
+        "generate_modal": {
+          "linked_title": "사용자 그룹에 연결된 초대 코드",
+          "linked_description": "가입 시 사용자가 선택한 사용자 그룹에 자동으로 연결됩니다",
+          "normal_title": "일반 초대 코드",
+          "normal_description": "가입 시 사용자가 어떤 사용자 그룹에도 연결되지 않습니다",
+          "generate_button": "생성",
+          "no_usergroups": "이용 가능한 사용자 그룹이 없습니다",
+          "create_usergroup_link": "사용자 그룹 생성",
+          "toasts": {
+            "error": "오류 {{status}}: {{detail}}"
+          }
+        }
+      },
+      "invite_members": {
+        "title": "조직에 사용자 초대",
+        "subtitle": "이메일로 초대를 보냅니다(쉼표로 구분)",
+        "email_placeholder": "예: spike.spiegel@bepop.space, michael.scott@dundermifflin.com",
+        "invite_code_label": "초대 코드",
+        "invite_code_tooltip": "가입 액세스 페이지에서 생성한 초대 코드 중 하나를 사용하세요",
+        "send_button": "이메일로 초대 보내기",
+        "invited_users": {
+          "title": "초대된 사용자",
+          "subtitle": "조직에 가입하도록 초대된 사용자",
+          "table": {
+            "email": "이메일",
+            "signup_status": "가입 상태",
+            "email_sent": "이메일 발송됨",
+            "actions": "작업"
+          },
+          "status": {
+            "pending": "대기 중",
+            "signed": "가입됨"
+          },
+          "email_status": {
+            "sent": "발송됨",
+            "no": "아니요"
+          },
+          "no_invites": "보류 중인 초대가 없습니다",
+          "no_results": "검색과 일치하는 초대가 없습니다",
+          "remove_button": "제거",
+          "remove_error": "초대 제거 중 오류",
+          "remove_message": "{{email}}에 대한 초대를 제거하시겠습니까?",
+          "remove_success": "초대가 제거되었습니다",
+          "remove_title": "초대 제거",
+          "removing": "초대 제거 중...",
+          "search_placeholder": "이메일로 검색..."
+        },
+        "toasts": {
+          "sending": "초대 보내는 중...",
+          "success": "초대가 발송되었습니다",
+          "error": "초대 보내기 중 오류 발생",
+          "partial": "{{sent}}개 전송, {{failed}}개 실패"
+        },
+        "no_invite_code": "없음",
+        "results": {
+          "failed_count": "{{count}}개 실패",
+          "sent_count": "{{count}}개 전송됨",
+          "skipped_count": "{{count}}개 이미 초대됨",
+          "status": {
+            "already_invited": "이미 초대됨",
+            "email_failed": "실패",
+            "sent": "전송됨"
+          },
+          "summary_title": "결과"
+        }
+      },
+      "usergroups": {
+        "title": "사용자 그룹 및 사용자 관리",
+        "subtitle": "사용자 그룹은 조직의 리소스(코스)에 대한 액세스를 관리하기 위해 사용자를 그룹화하는 방법입니다.",
+        "table": {
+          "usergroup": "사용자 그룹",
+          "description": "설명",
+          "manage_users": "사용자 관리",
+          "actions": "작업"
+        },
+        "actions": {
+          "manage_users": "사용자 관리",
+          "edit": "편집",
+          "delete": "삭제",
+          "create": "사용자 그룹 생성"
+        },
+        "modals": {
+          "manage_users": {
+            "title": "사용자 그룹 사용자 관리",
+            "description": "이 사용자 그룹의 사용자를 관리합니다",
+            "table": {
+              "user": "사용자",
+              "linked": "연결됨",
+              "actions": "작업"
+            },
+            "status": {
+              "linked": "연결됨",
+              "not_linked": "연결되지 않음",
+              "in_group": "그룹 내",
+              "not_in_group": "그룹 외"
+            },
+            "actions": {
+              "link": "연결",
+              "unlink": "연결 해제"
+            },
+            "toasts": {
+              "link_success": "사용자가 성공적으로 연결되었습니다",
+              "unlink_success": "사용자 연결이 성공적으로 해제되었습니다",
+              "error": "오류 {{status}}: {{detail}}",
+              "bulk_add_success": "{{count}}명의 사용자를 그룹에 추가했습니다",
+              "bulk_adding": "사용자를 그룹에 추가 중...",
+              "bulk_error": "작업 중 오류가 발생했습니다",
+              "bulk_remove_success": "{{count}}명의 사용자를 그룹에서 제거했습니다",
+              "bulk_removing": "사용자를 그룹에서 제거 중..."
+            },
+            "no_results": "검색과 일치하는 사용자가 없습니다",
+            "no_users": "이 조직에 아직 사용자가 없습니다",
+            "pagination": {
+              "page": "페이지 {{current}} / {{total}}",
+              "showing": "{{start}}-{{end}} / {{total}}개 표시"
+            },
+            "search_placeholder": "이름 또는 사용자명으로 검색...",
+            "selection": {
+              "add_selected": "{{count}}명 그룹에 추가",
+              "clear": "지우기",
+              "count": "{{count}}명 선택됨",
+              "remove_selected": "{{count}}명 그룹에서 제거",
+              "select_all_visible": "표시된 모두 선택"
+            },
+            "tabs": {
+              "all": "모든 사용자",
+              "in_group": "그룹 내",
+              "not_in_group": "그룹 외"
+            }
+          },
+          "create": {
+            "title": "사용자 그룹 생성",
+            "description": "사용자를 관리하기 위한 새 사용자 그룹을 생성합니다",
+            "form": {
+              "name": "이름",
+              "name_required": "이름은 필수 항목입니다",
+              "description": "설명",
+              "submit": "사용자 그룹 생성",
+              "loading": "로딩 중..."
+            },
+            "toasts": {
+              "creating": "생성 중...",
+              "success": "새 사용자 그룹이 생성되었습니다",
+              "error": "새 사용자 그룹을 생성할 수 없습니다"
+            }
+          },
+          "edit": {
+            "title": "사용자 그룹 편집",
+            "form": {
+              "name": "이름",
+              "name_required": "이름은 필수 항목입니다",
+              "description": "설명",
+              "submit": "사용자 그룹 저장",
+              "loading": "로딩 중..."
+            },
+            "toasts": {
+              "success": "사용자 그룹이 성공적으로 저장되었습니다",
+              "error": "사용자 그룹 저장 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+            }
+          },
+          "delete": {
+            "title": "사용자 그룹을 삭제하시겠습니까?",
+            "message": "이 사용자 그룹의 모든 사용자에 대해 모든 리소스에 대한 액세스 권한이 제거됩니다. 정말로 이 사용자 그룹을 삭제하시겠습니까?",
+            "button": "사용자 그룹 삭제"
+          }
+        },
+        "toasts": {
+          "deleting": "삭제 중...",
+          "delete_success": "사용자 그룹이 삭제되었습니다",
+          "delete_error": "사용자 그룹 삭제 중 오류 발생"
+        },
+        "count": {
+          "plural": "그룹",
+          "singular": "그룹"
+        },
+        "member_count": {
+          "plural": "멤버",
+          "singular": "멤버"
+        },
+        "no_groups": "아직 사용자 그룹이 없습니다",
+        "no_results": "검색과 일치하는 그룹이 없습니다",
+        "search_placeholder": "그룹 검색..."
+      },
+      "roles": {
+        "title": "역할 및 권한 관리",
+        "subtitle": "역할은 사용자가 조직 내에서 수행할 수 있는 작업을 정의합니다. 다양한 사용자 유형에 대해 특정 권한을 가진 커스텀 역할을 만드세요.",
+        "table": {
+          "role_name": "역할 이름",
+          "description": "설명",
+          "permissions": "권한",
+          "actions": "작업"
+        },
+        "no_description": "설명 없음",
+        "no_permissions": "권한 없음",
+        "permissions_count": "{{count}}개의 권한",
+        "system_wide": "시스템 전체",
+        "actions": {
+          "edit": "편집",
+          "delete": "삭제",
+          "create": "역할 생성",
+          "view_rights": "권한 보기"
+        },
+        "modals": {
+          "create": {
+            "title": "역할 생성",
+            "description": "특정 권한을 가진 새 역할을 생성합니다",
+            "form": {
+              "role_name": "역할 이름",
+              "role_name_placeholder": "예: 코스 관리자",
+              "description": "설명",
+              "description_placeholder": "이 역할이 수행할 수 있는 작업에 대해 설명해 주세요...",
+              "permissions": "권한",
+              "select_all": "전체 선택",
+              "deselect_all": "전체 선택 해제",
+              "select": "선택",
+              "deselect": "해제",
+              "submit": "역할 생성",
+              "loading": "생성 중..."
+            },
+            "validation": {
+              "name_required": "필수 항목입니다",
+              "name_min_length": "이름은 최소 2자 이상이어야 합니다",
+              "description_required": "필수 항목입니다",
+              "description_min_length": "설명은 최소 10자 이상이어야 합니다"
+            },
+            "toasts": {
+              "success": "새 역할이 생성되었습니다",
+              "error": "새 역할을 생성할 수 없습니다"
+            },
+            "presets": {
+              "title": "사전 정의된 권한",
+              "admin": {
+                "name": "관리자",
+                "description": "모든 권한을 가진 전체 플랫폼 제어"
+              },
+              "maintainer": {
+                "name": "유지관리자",
+                "description": "코스, 장 및 활동 관리 가능"
+              },
+              "instructor": {
+                "name": "강사",
+                "description": "자신의 코스 생성 및 관리 가능"
+              },
+              "viewer": {
+                "name": "뷰어",
+                "description": "코스 및 콘텐츠에 대한 읽기 전용 액세스"
+              },
+              "content_creator": {
+                "name": "콘텐츠 제작자",
+                "description": "콘텐츠 생성 및 편집 가능(사용자 관리는 불가)"
+              },
+              "user_manager": {
+                "name": "사용자 관리자",
+                "description": "사용자 및 사용자 그룹 관리 가능"
+              },
+              "moderator": {
+                "name": "중재자",
+                "description": "콘텐츠 중재 및 활동 관리 가능"
+              },
+              "analyst": {
+                "name": "분석가",
+                "description": "분석 기능이 포함된 읽기 전용 액세스"
+              },
+              "guest": {
+                "name": "게스트",
+                "description": "외부 사용자를 위한 제한된 액세스"
+              }
+            },
+            "permissions": {
+              "title": "권한",
+              "sections": {
+                "courses": "코스",
+                "users": "사용자",
+                "usergroups": "사용자 그룹",
+                "collections": "컬렉션",
+                "organizations": "조직",
+                "coursechapters": "코스 장",
+                "activities": "활동",
+                "roles": "역할",
+                "dashboard": "대시보드"
+              },
+              "actions": {
+                "create": "생성",
+                "read": "읽기",
+                "read_own": "자신의 것 읽기",
+                "update": "업데이트",
+                "update_own": "자신의 것 업데이트",
+                "delete": "삭제",
+                "delete_own": "자신의 것 삭제",
+                "access": "액세스"
+              },
+              "select_all": "전체 선택",
+              "deselect_all": "전체 선택 해제",
+              "select": "선택",
+              "deselect": "해제"
+            }
+          },
+          "edit": {
+            "title": "역할 편집",
+            "description": "역할 권한 및 상세 정보를 편집합니다",
+            "form": {
+              "role_name": "역할 이름",
+              "description": "설명",
+              "permissions": "권한",
+              "select_all": "전체 선택",
+              "deselect_all": "전체 선택 해제",
+              "select": "선택",
+              "deselect": "해제",
+              "submit": "역할 저장",
+              "loading": "저장 중..."
+            },
+            "validation": {
+              "name_required": "필수 항목입니다",
+              "name_min_length": "이름은 최소 2자 이상이어야 합니다",
+              "description_required": "필수 항목입니다",
+              "description_min_length": "설명은 최소 10자 이상이어야 합니다"
+            },
+            "toasts": {
+              "success": "역할이 성공적으로 저장되었습니다",
+              "error": "역할 저장 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+            },
+            "permissions": {
+              "actions": {
+                "access": "액세스",
+                "create": "생성",
+                "delete": "삭제",
+                "delete_own": "자신의 것 삭제",
+                "read": "읽기",
+                "read_own": "자신의 것 읽기",
+                "update": "업데이트",
+                "update_own": "자신의 것 업데이트"
+              },
+              "deselect": "해제",
+              "deselect_all": "전체 선택 해제",
+              "sections": {
+                "activities": "활동",
+                "collections": "컬렉션",
+                "coursechapters": "코스 장",
+                "courses": "코스",
+                "dashboard": "대시보드",
+                "organizations": "조직",
+                "roles": "역할",
+                "usergroups": "사용자 그룹",
+                "users": "사용자"
+              },
+              "select": "선택",
+              "select_all": "전체 선택",
+              "title": "권한"
+            }
+          },
+          "delete": {
+            "title": "역할을 삭제하시겠습니까?",
+            "message": "이 작업은 취소할 수 없습니다. 이 역할을 가진 모든 사용자는 권한을 잃게 됩니다. 정말로 이 역할을 삭제하시겠습니까?",
+            "button": "역할 삭제"
+          },
+          "view_rights": {
+            "description": "이 역할에 할당된 모든 권한 보기",
+            "title": "{{roleName}} - 권한"
+          }
+        },
+        "toasts": {
+          "deleting": "삭제 중...",
+          "delete_success": "역할이 삭제되었습니다",
+          "delete_error": "역할 삭제 중 오류 발생"
+        },
+        "rights": {
+          "resources": {
+            "activities": "활동",
+            "collections": "컬렉션",
+            "coursechapters": "코스 챕터",
+            "courses": "코스",
+            "dashboard": "대시보드",
+            "organizations": "조직",
+            "roles": "역할",
+            "usergroups": "사용자 그룹",
+            "users": "사용자"
+          }
+        }
+      }
+    },
+    "assignments": {
+      "home": {
+        "title": "과제",
+        "course_label": "코스",
+        "assignment_label": "과제",
+        "course_editor": "코스 에디터",
+        "editor": "에디터",
+        "submissions": "제출물",
+        "no_assignments": "이 코스에 대한 과제가 없습니다. 코스 에디터에서 코스 과제를 만드세요",
+        "untitled": "제목 없는 과제",
+        "search_placeholder": "이름 또는 설명으로 과제 검색...",
+        "loading": "과제 로딩 중...",
+        "empty": "아직 과제가 없습니다",
+        "empty_filtered": "필터와 일치하는 과제가 없습니다",
+        "clear_filters": "필터 지우기",
+        "showing_count": "{{total}}개 중 {{shown}}개 과제 표시",
+        "stats": {
+          "total": "전체",
+          "published": "게시됨",
+          "drafts": "초안",
+          "auto_graded": "자동 채점"
+        },
+        "filters": {
+          "all": "전체",
+          "published": "게시됨",
+          "drafts": "초안",
+          "auto_graded": "자동 채점만",
+          "hide_empty": "빈 코스 숨기기"
+        }
+      },
+      "detail": {
+        "title": "과제 도구",
+        "tabs": {
+          "editor": "에디터",
+          "submissions": "제출물",
+          "analytics": "분석"
+        },
+        "mobile": {
+          "title": "데스크톱 전용",
+          "message1": "이 페이지는 데스크톱 기기에서만 액세스할 수 있습니다.",
+          "message2": "과제를 보고 관리하려면 데스크톱으로 전환해 주세요."
+        },
+        "publishing": {
+          "published": "게시됨",
+          "unpublished": "게시 안 됨",
+          "edit_tooltip": "과제 상세 정보 편집",
+          "preview_tooltip": "학생으로 과제 미리보기",
+          "unpublish_tooltip": "과제를 학생들에게 비공개로 설정",
+          "publish_tooltip": "과제를 공개로 설정하여 학생들이 볼 수 있도록 함",
+          "edit": "편집",
+          "preview": "미리보기",
+          "unpublish": "게시 취소",
+          "publish": "게시",
+          "toasts": {
+            "updating": "과제 업데이트 중...",
+            "update_success": "과제가 성공적으로 업데이트되었습니다",
+            "update_error": "과제 업데이트 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+          }
+        },
+        "title_prefix": "과제:",
+        "header_badges": {
+          "auto_grading": "자동 채점",
+          "anti_copy_paste": "붙여넣기 차단"
+        }
+      },
+      "editor": {
+        "tasks_title": "태스크",
+        "add_task": "태스크 추가",
+        "add_task_modal": {
+          "title": "과제 태스크 추가",
+          "description": "이 과제를 위한 새 태스크를 만듭니다"
+        },
+        "task_types": {
+          "quiz": {
+            "title": "퀴즈",
+            "description": "객관식 답변이 포함된 질문"
+          },
+          "file_submission": {
+            "title": "파일 제출",
+            "description": "학생들이 이 태스크를 위해 파일을 제출할 수 있습니다"
+          },
+          "form": {
+            "title": "폼",
+            "description": "학생들을 위한 빈칸 채우기 양식"
+          },
+          "code": {
+            "title": "코드",
+            "description": "자동화된 테스트 케이스 채점이 포함된 코딩 문제"
+          },
+          "short_answer": {
+            "title": "단답형",
+            "description": "학생이 텍스트 답변을 입력하고 승인된 답변과 비교됩니다"
+          },
+          "number_answer": {
+            "title": "숫자 답변",
+            "description": "학생이 숫자를 입력하고 허용 오차로 채점됩니다"
+          }
+        },
+        "toasts": {
+          "task_created": "태스크가 성공적으로 생성되었습니다",
+          "task_saved": "태스크가 성공적으로 저장되었습니다",
+          "task_save_error": "태스크 저장 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.",
+          "task_updated": "태스크가 성공적으로 업데이트되었습니다",
+          "task_update_error": "태스크 업데이트 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.",
+          "reminder": "태스크를 편집하거나 추가할 때 학생들과의 문제를 피하기 위해 과제 게시를 취소하는 것을 잊지 마세요. 준비가 되면 다시 게시할 수 있습니다."
+        },
+        "task_editor": {
+          "general": {
+            "title": "제목",
+            "description": "설명",
+            "hint": "힌트",
+            "reference_file": "참조 파일",
+            "reference_file_info": "허용 형식: pdf, docx, mp4, jpg, jpeg, png, pptx, zip",
+            "submit": "제출",
+            "download": "다운로드",
+            "change_reference_file": "참조 파일 변경",
+            "loading": "로딩 중",
+            "reference_file_updated": "참조 파일이 성공적으로 업데이트되었습니다",
+            "allowed_formats": "허용 형식: pdf, docx, mp4, jpg, jpeg, png, pptx, zip",
+            "sign_in_required": "파일을 업로드하려면 로그인하세요",
+            "auth_required": "인증이 필요합니다. 파일을 업로드하려면 로그인하세요.",
+            "auth_required_submit": "인증이 필요합니다. 태스크를 제출하려면 로그인하세요.",
+            "hint_optional": "힌트 (선택 사항)",
+            "paste_blocked": "이 과제에서는 붙여넣기가 비활성화됩니다",
+            "paste_blocked_hint": "붙여넣기가 비활성화됨 — 답을 직접 입력하세요."
+          },
+          "code": {
+            "student_behavior_label": "학생 동작",
+            "allow_student_run_label": "학생이 코드를 실행하도록 허용",
+            "allow_student_run_description": "학생 보기에 테스트 실행 버튼을 표시하여 제출 전에 코드를 시도해볼 수 있도록 합니다.",
+            "show_test_details_label": "실패 시 예상 대 실제 표시",
+            "show_test_details_description": "표시된 테스트가 실패하면 예상 및 수신된 출력을 공개합니다.",
+            "show_hidden_count_label": "숨겨진 테스트 수 표시",
+            "show_hidden_count_description": "숨겨진 테스트가 몇 개 있는지 학생에게 알려주는 배지를 표시합니다.",
+            "require_passing_label": "표시된 테스트 통과 필수",
+            "require_passing_description": "모든 표시된 테스트가 통과할 때까지 저장 버튼을 차단합니다.",
+            "must_pass_toast": "저장하기 전에 모든 표시된 테스트를 통과해야 합니다.",
+            "must_pass_hint": "저장하기 전에 모든 표시된 테스트가 통과해야 합니다.",
+            "show_solution_label": "제출 후 솔루션 공개",
+            "show_solution_description": "학생이 작업을 저장한 후 교사의 참조 솔루션을 표시합니다.",
+            "reference_solution_label": "참조 솔루션"
+          },
+          "short_answer": {
+            "prompt_label": "문제 내용",
+            "prompt_placeholder": "모로코의 수도는?",
+            "answers_label": "허용된 답변",
+            "answer_placeholder": "라바트",
+            "add_answer": "다른 답변 추가",
+            "no_answers_error": "저장 전에 최소 하나의 허용된 답변을 추가하세요",
+            "match_mode_label": "답변 매칭 방법",
+            "match_modes": {
+              "exact": "정확히 일치",
+              "case_insensitive": "대소문자 구분 안함 (권장)",
+              "contains": "답변이 포함됨",
+              "regex": "정규 표현식"
+            },
+            "explanation_label": "설명 (정답 시 표시)",
+            "explanation_placeholder": "선택 — 왜 정답인지 설명",
+            "your_answer_placeholder": "답변을 입력...",
+            "student_answer_label": "학생 답변",
+            "accepted_answers_label": "허용된 답변",
+            "no_answer": "제출된 답변 없음",
+            "correct": "정답",
+            "incorrect": "틀렸어요 — 다시 시도하세요"
+          },
+          "number_answer": {
+            "prompt_label": "문제 내용",
+            "prompt_placeholder": "지구의 중력 가속도는?",
+            "correct_value_label": "정답 값",
+            "tolerance_label": "허용 오차 (±)",
+            "unit_label": "단위 (선택)",
+            "unit_placeholder": "m/s², kg, °C...",
+            "unit_hint": "답변 필드 옆에 표시됩니다. 강제되지 않음.",
+            "explanation_label": "설명 (정답 시 표시)",
+            "explanation_placeholder": "선택 — 답을 구하는 방법을 설명",
+            "preview_label": "허용",
+            "your_answer_placeholder": "숫자를 입력...",
+            "student_answer_label": "학생 답변",
+            "accepted_range_label": "허용 범위",
+            "no_answer": "제출된 답변 없음",
+            "correct": "정답",
+            "incorrect": "틀렸어요 — 다시 시도하세요"
+          }
+        }
+      },
+      "submissions": {
+        "status": {
+          "late": "지연됨",
+          "submitted": "제출됨",
+          "graded": "채점됨"
+        },
+        "submission_label": "제출물",
+        "evaluate": "평가",
+        "evaluate_modal": {
+          "title": "@{{username}} 평가",
+          "description": "제출물 평가"
+        },
+        "task_label": "태스크 {{number}} :",
+        "hint": "힌트",
+        "reference_document": "참조 문서",
+        "actions": {
+          "reject": "과제 반려",
+          "set_final_grade": "최종 성적 설정",
+          "mark_as_done": "사용자의 활동을 완료로 표시",
+          "finalize": "최종 확정 및 완료",
+          "reject_description": "제출물을 삭제하고 학생이 다시 제출할 수 있게 합니다",
+          "set_final_grade_description": "활동을 완료하지 않고 성적을 계산하고 저장합니다",
+          "finalize_description": "최종 성적을 설정하고 학생의 활동을 완료로 표시합니다"
+        },
+        "toasts": {
+          "reject_success": "과제가 성공적으로 반려되었습니다",
+          "finalize_success": "과제가 채점되고 활동이 완료로 표시되었습니다"
+        },
+        "filters": {
+          "all": "전체"
+        },
+        "sort": {
+          "label": "정렬",
+          "date": "제출 날짜",
+          "name": "학생 이름",
+          "status": "상태",
+          "grade": "성적",
+          "needs_grading": "채점 필요 먼저",
+          "late_first": "늦은 제출 먼저",
+          "recently_graded": "최근 채점 먼저"
+        },
+        "stats": {
+          "total": "전체"
+        },
+        "search_placeholder": "이름 또는 이메일로 검색...",
+        "loading": "제출물 로딩 중...",
+        "empty": "제출물이 없습니다",
+        "grade_label": "성적:",
+        "preview": {
+          "current_grade": "현재 성적",
+          "passing": "합격",
+          "not_passing": "불합격",
+          "not_submitted": "미제출"
+        },
+        "feedback": {
+          "label": "전체 피드백",
+          "optional": "선택",
+          "placeholder": "제출물 전반에 대한 의견을 작성하세요. 학생이 성적 옆에서 확인할 수 있습니다.",
+          "hint": "이전 피드백을 변경하지 않으려면 비워두세요."
+        }
+      },
+      "analytics": {
+        "loading": "분석을 불러오는 중...",
+        "empty": {
+          "title": "아직 제출된 과제가 없습니다",
+          "description": "학생들이 과제를 제출하기 시작하면 분석이 표시됩니다."
+        },
+        "kpis": {
+          "average": "반 평균",
+          "median": "중앙값",
+          "pass_rate": "합격률",
+          "pass_rate_sub": "{{total}}명 중 {{passed}}명 합격",
+          "on_time": "정시 제출률",
+          "on_time_sub": "{{total}}건 중 {{late}}건 지각"
+        },
+        "mini": {
+          "highest": "최고",
+          "lowest": "최저",
+          "spread": "범위",
+          "feedback": "피드백 비율"
+        },
+        "distribution": {
+          "title": "성적 분포",
+          "subtitle": "학급이 성적 구간에 어떻게 분포하는지",
+          "empty": "채점이 완료되면 여기에 성적이 표시됩니다",
+          "students": "학생"
+        },
+        "timeline": {
+          "title": "제출 활동",
+          "subtitle": "학생이 제출한 시점 vs. 채점한 시점",
+          "empty": "아직 표시할 활동이 없습니다",
+          "submitted": "제출됨",
+          "graded": "채점됨",
+          "due": "마감일"
+        },
+        "tasks": {
+          "title": "과제별 성과",
+          "subtitle": "과제별 평균 점수 — 낮은 막대는 학생들이 어려워하는 부분을 보여줍니다",
+          "empty": "채점 후 과제별 성과가 표시됩니다",
+          "avg_grade": "평균 점수",
+          "attempts": "시도"
+        },
+        "top": {
+          "title": "상위 성적",
+          "subtitle": "이 과제에서 가장 높은 점수를 받은 학생",
+          "empty": "채점된 제출이 아직 없습니다"
+        },
+        "attention": {
+          "title": "지원이 필요할 수 있음",
+          "subtitle": "합격하지 못한 학생 — 연락해 보세요",
+          "empty": "채점된 모든 학생이 합격했습니다. 잘하셨어요!"
+        }
+      },
+      "modals": {
+        "edit": {
+          "title": "과제 편집",
+          "description": "과제 상세 정보 업데이트",
+          "form": {
+            "title_label": "과제 제목",
+            "title_required": "과제 이름을 입력해 주세요",
+            "description_label": "과제 설명",
+            "description_required": "과제 설명을 입력해 주세요",
+            "due_date_label": "제출 기한",
+            "due_date_required": "과제 제출 기한을 입력해 주세요",
+            "grading_type_label": "채점 유형",
+            "grading_type_required": "과제 채점 유형을 선택해 주세요",
+            "grading_types": {
+              "alphabet": "알파벳",
+              "numeric": "수치",
+              "percentage": "백분율",
+              "pass_fail": "합격 / 불합격",
+              "gpa_scale": "GPA 척도"
+            },
+            "cancel": "취소",
+            "save": "변경 사항 저장",
+            "saving": "저장 중...",
+            "grading_type_descriptions": {
+              "alphabet": "A, B, C, D, F 문자 성적",
+              "numeric": "0에서 100까지 점수",
+              "percentage": "백분율 성적",
+              "pass_fail": "단순 합격 또는 불합격",
+              "gpa_scale": "4.0 학점 척도"
+            },
+            "grading_options_label": "채점 옵션",
+            "auto_grading_label": "자동 채점",
+            "auto_grading_description": "학생이 제출하면 자동으로 활동을 채점하고 완료합니다. 모든 과제가 사람의 검토 없이 채점 가능할 때만 작동합니다.",
+            "anti_copy_paste_label": "복사 및 붙여넣기 차단",
+            "anti_copy_paste_description": "붙여넣기 이벤트를 차단하여 AI 생성 답변 붙여넣기를 억제합니다. 참고: 이것은 억제책입니다.",
+            "auto_grading_disabled_file": "자동 채점을 사용할 수 없습니다 — 이 과제에는 사람의 검토가 필요한 파일 제출 과제가 있습니다.",
+            "grading_type_hint": "학생에게 성적이 표시되는 방식",
+            "grading_options_hint": "제출 시 동작",
+            "show_correct_answers_description": "제출물이 채점되면 학생에게 자신의 답변과 함께 정답을 표시합니다. 어떤 퀴즈 선택지가 정답이었는지, 예상되는 단답형 또는 숫자 답변, 그리고 양식 빈칸의 정답이 표시됩니다.",
+            "show_correct_answers_label": "채점 후 정답 공개"
+          },
+          "toasts": {
+            "updating": "과제 업데이트 중...",
+            "success": "과제가 성공적으로 업데이트되었습니다",
+            "error": "과제 업데이트 실패",
+            "error_detail": "과제 업데이트 중 오류가 발생했습니다"
+          }
+        },
+        "create": {
+          "form": {
+            "title_label": "과제 제목",
+            "title_required": "과제 이름을 입력해 주세요",
+            "description_label": "과제 설명",
+            "description_required": "과제 설명을 입력해 주세요",
+            "due_date_label": "제출 기한",
+            "due_date_required": "과제 제출 기한을 입력해 주세요",
+            "grading_type_label": "채점 유형",
+            "grading_type_required": "과제 채점 유형을 선택해 주세요",
+            "grading_types": {
+              "alphabet": "알파벳",
+              "numeric": "수치",
+              "percentage": "백분율",
+              "pass_fail": "합격 / 불합격",
+              "gpa_scale": "GPA 척도"
+            },
+            "submit": "활동 생성",
+            "grading_type_descriptions": {
+              "alphabet": "A, B, C, D, F 문자 성적",
+              "numeric": "0에서 100까지 점수",
+              "percentage": "백분율 성적",
+              "pass_fail": "단순 합격 또는 불합격",
+              "gpa_scale": "4.0 학점 척도"
+            },
+            "grading_options_label": "채점 옵션",
+            "auto_grading_label": "자동 채점",
+            "auto_grading_description": "학생이 제출하면 자동으로 활동을 채점하고 완료합니다. 모든 과제가 사람의 검토 없이 채점 가능할 때만 작동합니다.",
+            "anti_copy_paste_label": "복사 및 붙여넣기 차단",
+            "anti_copy_paste_description": "붙여넣기 이벤트를 차단하여 AI 생성 답변 붙여넣기를 억제합니다. 참고: 이것은 억제책입니다.",
+            "grading_type_hint": "학생에게 성적이 표시되는 방식",
+            "grading_options_hint": "제출 시 동작",
+            "show_correct_answers_description": "채점이 완료되면 학생들은 자신의 답변 옆에서 정답을 확인할 수 있습니다.",
+            "show_correct_answers_label": "채점 후 정답 공개"
+          },
+          "toasts": {
+            "creating": "과제 생성 중...",
+            "success": "과제가 성공적으로 생성되었습니다"
+          }
+        }
+      }
+    },
+    "search": {
+      "trigger": "검색",
+      "placeholder": "페이지 및 콘텐츠 검색…",
+      "shortcut_hint": "⌘K",
+      "no_results": "결과를 찾을 수 없습니다",
+      "loading": "검색 중…",
+      "type_to_search": "콘텐츠를 검색하려면 2자 이상 입력하세요",
+      "groups": {
+        "pages": "페이지",
+        "courses": "강좌",
+        "collections": "컬렉션",
+        "users": "사용자",
+        "communities": "커뮤니티",
+        "discussions": "토론",
+        "playgrounds": "플레이그라운드",
+        "podcasts": "팟캐스트"
+      },
+      "entries": {
+        "home": {
+          "description": "대시보드 개요",
+          "keywords": "홈, 개요, 시작, 대시보드"
+        },
+        "courses": {
+          "description": "강좌 관리",
+          "keywords": "강좌, 수업, 학습, 교육, 클래스"
+        },
+        "assignments": {
+          "description": "과제 관리",
+          "keywords": "작업, 숙제, 연습, 제출"
+        },
+        "communities": {
+          "description": "커뮤니티 관리",
+          "keywords": "포럼, 토론, 회원, 게시물"
+        },
+        "podcasts": {
+          "description": "팟캐스트 관리",
+          "keywords": "오디오, 에피소드, 프로그램"
+        },
+        "boards": {
+          "description": "보드 관리",
+          "keywords": "칸반, 프로젝트, 작업, 목록"
+        },
+        "playgrounds": {
+          "description": "코드 플레이그라운드",
+          "keywords": "코드, 샌드박스, repl, 프로그래밍"
+        },
+        "analytics": {
+          "description": "분석 대시보드 보기",
+          "keywords": "통계, 메트릭, 차트, 보고서"
+        },
+        "users": {
+          "description": "조직 사용자 관리",
+          "keywords": "회원, 계정, 사람"
+        },
+        "usergroups": {
+          "description": "사용자 그룹 관리",
+          "keywords": "팀, 코호트, 그룹"
+        },
+        "roles": {
+          "description": "역할 및 권한 관리",
+          "keywords": "권한, 접근, rbac, 보안"
+        },
+        "signups": {
+          "description": "가입 검토",
+          "keywords": "등록, 신청, 요청"
+        },
+        "org_general": {
+          "description": "조직 일반 설정",
+          "keywords": "이름, 브랜딩, slug, 프로필"
+        },
+        "org_features": {
+          "description": "조직 기능 관리",
+          "keywords": "기능, 모듈, 토글"
+        },
+        "org_billing": {
+          "description": "결제 및 구독",
+          "keywords": "플랜, 결제, 청구서, 구독"
+        },
+        "payments_overview": {
+          "description": "결제 개요 및 수익",
+          "keywords": "stripe, 대시보드, 수익, 판매",
+          "title": "결제 개요"
+        },
+        "payments_products": {
+          "description": "결제 상품 및 가격",
+          "keywords": "상품, 가격, stripe, 등급, 플랜",
+          "title": "상품"
+        },
+        "users_add": {
+          "description": "새 회원 초대",
+          "keywords": "초대, 추가, 회원, 보내기"
+        },
+        "users_audit_logs": {
+          "description": "조직 활동 로그",
+          "keywords": "감사, 로그, 기록, 보안, 활동"
+        },
+        "org_branding": {
+          "description": "로고, 색상 및 시각적 정체성",
+          "keywords": "브랜딩, 로고, 색상, 테마"
+        },
+        "org_landing": {
+          "description": "랜딩 페이지 사용자 정의",
+          "keywords": "랜딩, 홈페이지, hero, 페이지"
+        },
+        "org_seo": {
+          "description": "검색 엔진 최적화",
+          "keywords": "seo, 검색, 메타, 순위, google"
+        },
+        "org_ai": {
+          "description": "AI 기능 및 구성",
+          "keywords": "ai, llm, gpt, openai, 생성"
+        },
+        "org_domains": {
+          "description": "사용자 정의 도메인",
+          "keywords": "도메인, dns, 사용자 정의, 하위 도메인, cname"
+        },
+        "org_automations": {
+          "description": "웹훅 및 외부 통합",
+          "keywords": "웹훅, 자동화, zapier, 통합, 트리거"
+        },
+        "org_sso": {
+          "description": "싱글 사인온 구성",
+          "keywords": "sso, saml, oauth, 엔터프라이즈, 로그인"
+        },
+        "org_other": {
+          "description": "기타 조직 설정",
+          "keywords": "기타, 고급, 사용자 정의, 추가"
+        },
+        "payments_groups": {
+          "description": "결제 그룹 및 번들",
+          "keywords": "그룹, 번들, 세트",
+          "title": "결제 그룹"
+        },
+        "payments_configuration": {
+          "description": "Stripe 및 결제 구성",
+          "keywords": "구성, 설정, stripe, 셋업, connect",
+          "title": "구성"
+        },
+        "payments_customers": {
+          "description": "고객 및 구독자",
+          "keywords": "고객, 구독자, 구매자, 지불됨",
+          "title": "고객"
+        },
+        "courses_migrate": {
+          "description": "다른 LMS에서 강좌 가져오기",
+          "keywords": "가져오기, 마이그레이션, 전송, lms, moodle, canvas",
+          "title": "강좌 마이그레이션"
+        },
+        "account_general": {
+          "description": "개인 계정 일반 설정",
+          "keywords": "계정, 설정, 이메일, 이름, 언어"
+        },
+        "account_profile": {
+          "description": "프로필 및 소개 편집",
+          "keywords": "프로필, 소개, 아바타, 사진, 공개"
+        },
+        "account_security": {
+          "description": "비밀번호 및 보안 설정",
+          "keywords": "비밀번호, 보안, 2fa, mfa, 세션"
+        },
+        "account_purchases": {
+          "description": "내 구매 및 구독",
+          "keywords": "구매, 구독, 결제, 기록, 영수증"
+        }
+      }
+    }
+  },
+  "editor": {
+    "save": "저장",
+    "saving": "저장 중...",
+    "saved": "저장됨",
+    "save_error": "저장할 수 없습니다",
+    "preview": "미리보기",
+    "desktop_only": "데스크톱 전용",
+    "desktop_only_message": "에디터는 데스크톱 기기에서만 접근할 수 있습니다.",
+    "switch_to_desktop": "보려면 데스크톱으로 전환해 주세요.",
+    "ai_editor": "AI 에디터",
+    "versioning": {
+      "version_history": "버전 기록",
+      "current_version": "현재 버전:",
+      "versions_info": "저장은 자동으로 버전이 관리됩니다. 최대 20개의 버전이 보관됩니다.",
+      "no_history": "아직 버전 기록이 없습니다",
+      "versions_created_on_save": "변경 사항을 저장하면 버전이 생성됩니다",
+      "version": "버전 {{number}}",
+      "previous": "이전",
+      "just_now": "방금",
+      "minutes_ago": "{{count}}분 전",
+      "hours_ago": "{{count}}시간 전",
+      "days_ago": "{{count}}일 전",
+      "preview": "미리보기",
+      "restore_version": "이 버전 복원",
+      "close": "닫기",
+      "loading_preview": "미리보기 로드 중...",
+      "failed_load_history": "기록 로드 실패",
+      "restored_success": "버전 {{number}}으로 복원됨",
+      "restore_failed": "버전 복원 실패",
+      "by_author": "{{author}} 작성",
+      "conflict": {
+        "title": "다른 사람이 변경했습니다",
+        "choose_version": "유지할 버전을 선택하세요",
+        "keep_mine": "내 버전 유지",
+        "keep_theirs": "상대방 버전 유지",
+        "keep_both": "둘 다 유지",
+        "keep_both_info": "귀하의 콘텐츠가 유지되고, 상대방의 변경 사항이 아래에 추가됩니다",
+        "your_version": "내 버전",
+        "their_version": "상대방 버전",
+        "author_version": "{{author}}의 버전",
+        "apply_save": "적용 및 저장",
+        "cancel": "취소",
+        "changes_from": "{{author}}의 변경 사항",
+        "another_teacher": "다른 강사",
+        "detected": "충돌이 감지되었습니다! {{author}}님이 변경했습니다. 저장 버튼을 사용하여 옵션을 확인하세요.",
+        "checking": "확인 중...",
+        "newer_version": "새 버전 사용 가능",
+        "reload_changes": "변경 사항을 보려면 새로고침",
+        "merge_changes": "변경 사항 병합",
+        "remote_detected": "원격 변경 사항 감지됨",
+        "editing_notice": "편집 중 {{author}}님이 변경했습니다",
+        "overwrite_mine": "내 변경 사항으로 덮어쓰기",
+        "discard_mine": "내 변경 사항 버리고 원격 사용",
+        "show_changes": "상대방 변경 사항 보기"
+      }
+    },
+    "toolbar": {
+      "bold": "굵게",
+      "italic": "기울임",
+      "underline": "밑줄",
+      "strikethrough": "취소선",
+      "code": "코드",
+      "heading1": "제목 1",
+      "heading2": "제목 2",
+      "heading3": "제목 3",
+      "heading4": "제목 4",
+      "heading5": "제목 5",
+      "heading6": "제목 6",
+      "paragraph": "문단",
+      "bullet_list": "글머리 기호 목록",
+      "ordered_list": "번호 매기기 목록",
+      "blockquote": "인용문",
+      "code_block": "코드 블록",
+      "horizontal_rule": "가로줄",
+      "link": "링크",
+      "image": "이미지",
+      "video": "동영상",
+      "table": "표",
+      "insert_table": "새 표 삽입 (3×3)",
+      "add_row": "아래에 행 추가",
+      "add_column": "오른쪽에 열 추가",
+      "delete_row": "현재 행 삭제",
+      "delete_column": "현재 열 삭제",
+      "undo": "실행 취소",
+      "redo": "다시 실행",
+      "align_left": "왼쪽 정렬",
+      "align_center": "가운데 정렬",
+      "align_right": "오른쪽 정렬",
+      "clear_formatting": "서식 지우기"
+    },
+    "blocks": {
+      "info_callout": "정보 콜아웃",
+      "warning_callout": "경고 콜아웃",
+      "image": "이미지",
+      "video": "동영상",
+      "pdf": "PDF 문서",
+      "youtube": "YouTube 동영상",
+      "quiz": "대화형 퀴즈",
+      "math": "수학 방정식 (LaTeX)",
+      "embed": "외부 개체 (임베드)",
+      "web_preview": "웹 미리보기",
+      "flipcard": "플립카드",
+      "scenario": "대화형 시나리오",
+      "badge": "배지",
+      "button": "버튼",
+      "user": "사용자",
+      "magic_block": "매직 블록 (AI)",
+      "magic_block_disabled": "매직 블록은 Standard 플랜이 필요합니다",
+      "common": {
+        "cancel": "취소",
+        "save": "저장",
+        "apply": "적용",
+        "align_center": "가운데 정렬",
+        "align_left": "왼쪽 정렬",
+        "align_right": "오른쪽 정렬",
+        "download": "다운로드",
+        "drop_or_browse": "파일을 여기에 놓거나 클릭하여 찾아보기",
+        "expand": "확장",
+        "full_width": "전체 너비",
+        "large": "큰",
+        "medium": "중간",
+        "size": "크기",
+        "small": "작은",
+        "upload": "업로드",
+        "uploading": "업로드 중..."
+      },
+      "quiz_block": {
+        "question_placeholder": "질문을 여기에 입력하세요",
+        "answer_placeholder": "답변을 여기에 입력하세요",
+        "add_answer": "답변 추가",
+        "add_question": "질문 추가",
+        "all_correct": "모든 답이 맞습니다!",
+        "delete_answer": "답변 삭제",
+        "mark_correct": "정답으로 표시",
+        "mark_incorrect": "오답으로 표시",
+        "reset_answers": "답변 초기화",
+        "some_incorrect": "일부 답이 틀렸습니다!",
+        "submit": "제출"
+      },
+      "math_block": {
+        "templates": "템플릿",
+        "select_template": "템플릿 선택",
+        "symbols": "기호",
+        "click_symbol": "기호 클릭",
+        "help": "도움말",
+        "quick_reference": "빠른 참조",
+        "view_reference": "참조 보기",
+        "placeholder": "LaTeX 코드를 여기에 입력하세요",
+        "refer_to": "다음을 참조",
+        "guide": "가이드",
+        "for_functions": "함수의 경우"
+      },
+      "embed_block": {
+        "edit_embed": "임베드 편집",
+        "add_embed_from": "에서 임베드 추가",
+        "click_service": "서비스 선택",
+        "add_embed": "{{name}} 임베드 추가",
+        "add_embed_url": "URL에서 임베드 추가",
+        "add_embed_code": "코드에서 임베드 추가",
+        "paste_url": "{{name}} 임베드 URL 붙여넣기",
+        "paste_any_url": "아무 URL이나 붙여넣기",
+        "paste_directly": "직접 붙여넣기",
+        "how_to_embed": "{{name}} 임베드 방법",
+        "paste_code": "코드 붙여넣기",
+        "paste_iframe": "iframe 코드 붙여넣기"
+      },
+      "web_preview_block": {
+        "website_preview": "웹사이트 미리보기",
+        "embedded_preview": "임베드된 미리보기",
+        "edit_url": "URL 편집",
+        "delete_card": "카드 삭제",
+        "edit_card": "카드 편집",
+        "edit_card_description": "카드 설명 편집",
+        "website_url": "웹사이트 URL",
+        "enter_url": "URL 입력",
+        "button_options": "버튼 옵션",
+        "show_button": "버튼 표시",
+        "open_popup": "팝업에서 열기",
+        "button_label": "버튼 레이블",
+        "alignment": "정렬",
+        "visit_site": "사이트 방문",
+        "align": "정렬"
+      },
+      "user_block": {
+        "enter_username": "사용자 이름 입력",
+        "load_user": "사용자 로드",
+        "no_user": "사용자 없음"
+      },
+      "magic_block_content": {
+        "title": "매직 블록",
+        "interactive_element": "인터랙티브 요소",
+        "iterations": "{{count}}/{{max}} 반복",
+        "create_interactive": "인터랙티브 콘텐츠 만들기",
+        "generate_description": "AI로 퀴즈, 시뮬레이션, 차트 등을 생성하세요",
+        "generate_with_ai": "AI로 생성",
+        "upgrade_required": "AI로 인터랙티브 콘텐츠를 생성하려면 Standard 플랜으로 업그레이드하세요",
+        "drag_resize": "드래그하여 크기 조정",
+        "edit_left": "편집 ({{count}}회 남음)",
+        "experimental": "실험적 기능",
+        "save_and_close": "저장 후 닫기",
+        "magic_chat": "매직 채팅",
+        "describe_prompt": "만들고 싶은 인터랙티브 요소를 설명하세요:",
+        "ai_generated": "AI 생성 콘텐츠",
+        "check_preview": "인터랙티브 요소가 생성되었습니다. 미리보기 패널을 확인하세요.",
+        "creating_magic": "마법을 만드는 중...",
+        "max_iterations_reached": "최대 반복 횟수에 도달했습니다. 콘텐츠를 저장하거나 새 블록을 시작하세요.",
+        "placeholder_new": "만들고 싶은 것을 설명하세요...",
+        "placeholder_edit": "변경 사항이나 개선 사항을 설명하세요...",
+        "suggestion_physics": "물리 시뮬레이션",
+        "suggestion_physics_prompt": "각도와 속도를 조절할 수 있는 발사체 운동을 보여주는 인터랙티브 물리 시뮬레이션을 만드세요",
+        "suggestion_chart": "데이터 차트",
+        "suggestion_chart_prompt": "사용자가 마우스를 올리면 값을 볼 수 있는 샘플 판매 데이터가 포함된 인터랙티브 막대 차트를 만드세요",
+        "suggestion_quiz": "퀴즈 게임",
+        "suggestion_quiz_prompt": "과학에 관한 5개의 객관식 문제가 있는 간단한 퀴즈 게임을 만드세요",
+        "suggestion_memory": "메모리 게임",
+        "suggestion_memory_prompt": "컬러풀한 카드로 카드 짝 맞추기 메모리 게임을 만드세요",
+        "suggestion_calculator": "수학 계산기",
+        "suggestion_calculator_prompt": "기본 방정식의 단계별 풀이를 보여주는 계산기를 만드세요",
+        "suggestion_timeline": "타임라인",
+        "suggestion_timeline_prompt": "확장 가능한 세부 정보와 함께 주요 역사적 사건을 보여주는 인터랙티브 타임라인을 만드세요"
+      },
+      "button_block": {
+        "enter_link_url": "링크 URL 입력"
+      },
+      "flipcard_block": {
+        "back": "뒷면",
+        "click_to_flip": "클릭하여 뒤집기",
+        "front": "앞면"
+      },
+      "image_block": {
+        "download_image": "이미지 다운로드",
+        "drop_or_browse": "이미지를 여기에 놓거나 클릭하여 찾아보기",
+        "expand_image": "이미지 확장",
+        "supported_formats": "JPG, PNG, WebP, GIF 지원",
+        "uploading": "이미지 업로드 중...",
+        "viewer_title": "이미지 뷰어"
+      },
+      "pdf_block": {
+        "document_title": "PDF 문서",
+        "download_pdf": "PDF 다운로드",
+        "drop_or_browse": "PDF를 여기에 놓거나 클릭하여 찾아보기",
+        "expand_pdf": "PDF 확장",
+        "no_pdf": "사용 가능한 PDF 없음",
+        "supported_formats": "PDF 형식 지원",
+        "upload_pdf": "PDF 업로드",
+        "uploading": "PDF 업로드 중..."
+      },
+      "video_block": {
+        "download_video": "비디오 다운로드",
+        "drop_or_browse": "비디오를 여기에 놓거나 클릭하여 찾아보기",
+        "expand_video": "비디오 확장",
+        "player_title": "비디오 플레이어",
+        "supported_formats": "MP4 및 WebM 형식 지원",
+        "unsupported_format": "지원되는 비디오 형식을 업로드해 주세요 (MP4 또는 WebM)",
+        "uploading": "비디오 업로드 중..."
+      }
+    },
+    "ai_panel": {
+      "add_definition": "정의 추가",
+      "add_examples": "예시 추가",
+      "add_quiz": "퀴즈 추가",
+      "add_summary": "요약 추가",
+      "add_tip": "팁 추가",
+      "block_selected": "블록 선택됨",
+      "clear_chat": "채팅 지우기",
+      "clear_selection": "선택 지우기",
+      "expand": "확장",
+      "how_can_i_help": "콘텐츠 개선을 어떻게 도와드릴까요?",
+      "improve_writing": "글쓰기 개선",
+      "input_placeholder": "AI에게 콘텐츠 도움을 요청하세요...",
+      "question_add_quiz": "퀴즈 추가",
+      "question_improve": "이것을 어떻게 개선할 수 있을까요?",
+      "question_summary": "요약 추가",
+      "simplify": "간소화",
+      "title": "AI 에디터",
+      "translate": "번역"
+    }
+  },
+  "analytics": {
+    "title": "분석",
+    "subtitle": "학습자와 콘텐츠에 대한 인사이트",
+    "tabs": {
+      "overview": "개요",
+      "advanced": "고급"
+    },
+    "not_configured": {
+      "title": "분석이 구성되지 않았습니다",
+      "description": "분석 기능을 사용하려면 Tinybird 연결이 필요합니다. 활성화하려면 <code>LEARNHOUSE_TINYBIRD_INGEST_TOKEN</code> 및 <code>LEARNHOUSE_TINYBIRD_READ_TOKEN</code> 환경 변수를 설정하세요."
+    },
+    "advanced_gate": {
+      "requires": "필요",
+      "upgrade_description": "고급 분석을 잠금 해제하려면 업그레이드하세요"
+    },
+    "common": {
+      "loading": "로딩 중...",
+      "no_data": "아직 데이터가 없습니다",
+      "users": "사용자",
+      "views": "조회수",
+      "enrollments": "등록",
+      "completions": "완료",
+      "course": "코스",
+      "date": "날짜",
+      "user": "사용자",
+      "type": "유형",
+      "expand": "확장",
+      "days": "일",
+      "score": "점수",
+      "unique_users": "고유 사용자"
+    },
+    "overview": {
+      "live_now": "실시간",
+      "last_5_minutes": "최근 5분",
+      "signups": "가입",
+      "submissions": "제출",
+      "daily_active_users": "일일 활성 사용자",
+      "active_users": "활성 사용자",
+      "countries": "국가",
+      "top_countries": "상위 국가",
+      "devices": "기기",
+      "desktop": "데스크톱",
+      "mobile": "모바일",
+      "tablet": "태블릿",
+      "top_referrers": "상위 추천 출처",
+      "top_referrer": "최상위 추천 출처",
+      "enrollment_funnel": "등록 퍼널",
+      "page_views": "페이지 조회수",
+      "course_views": "코스 조회수",
+      "view_to_enroll": "조회 → 등록",
+      "enroll_to_complete": "등록 → 완료",
+      "page_to_complete": "페이지 → 완료",
+      "conv_rate": "전환율",
+      "top_courses": "상위 코스",
+      "activity_engagement": "활동 참여도",
+      "activity": "활동",
+      "avg_time": "평균 시간",
+      "activities": "활동",
+      "courses": "코스",
+      "enrollments": "등록",
+      "completions": "완료"
+    },
+    "modals": {
+      "live_users": {
+        "title": "실시간 사용자",
+        "description": "최근 5분간 활성 사용자"
+      },
+      "signups": {
+        "title": "가입",
+        "description": "최근 {{days}}일간 신규 사용자 등록"
+      },
+      "enrollments": {
+        "title": "등록",
+        "description": "최근 {{days}}일간 코스 등록"
+      },
+      "completions": {
+        "title": "완료",
+        "description": "최근 {{days}}일간 코스 완료"
+      },
+      "live_users_table": {
+        "current_page": "현재 페이지",
+        "device": "기기",
+        "country": "국가",
+        "last_seen": "마지막 접속"
+      },
+      "signups_table": {
+        "email": "이메일",
+        "method": "방법"
+      }
+    },
+    "advanced_widgets": {
+      "org_growth_trend": {
+        "title": "조직 성장 추이",
+        "description": "주간 가입, 등록, 완료"
+      },
+      "new_vs_returning": {
+        "title": "신규 대 재방문 사용자",
+        "description": "성장 대 유지율 상태"
+      },
+      "cohort_retention": {
+        "title": "코호트 유지율",
+        "description": "가입 주 이후 활성 사용자 비율(%)",
+        "cohort": "코호트",
+        "size": "규모"
+      },
+      "peak_usage": {
+        "title": "피크 사용 시간",
+        "description": "요일 및 시간대별 이벤트 수",
+        "days": {
+          "mon": "월",
+          "tue": "화",
+          "wed": "수",
+          "thu": "목",
+          "fri": "금",
+          "sat": "토",
+          "sun": "일"
+        },
+        "events": "이벤트"
+      },
+      "course_dropoff": {
+        "title": "코스 이탈",
+        "description": "코스별 사용자 이탈 지점"
+      },
+      "time_to_completion": {
+        "title": "완료까지 소요 시간",
+        "description": "각 코스 완료까지의 중앙값(일)"
+      },
+      "completion_velocity": {
+        "title": "완료 속도",
+        "description": "활동 완료 간 평균 일수"
+      },
+      "content_type_effectiveness": {
+        "title": "콘텐츠 유형 효과",
+        "description": "활동 유형별 완료율"
+      },
+      "course_effectiveness_matrix": {
+        "title": "코스 효과 매트릭스",
+        "description": "활동 수 대 완료율 (등록 수에 따라 크기 조정)"
+      },
+      "community_correlation": {
+        "title": "커뮤니티 상관관계",
+        "description": "완료율: 토론 참여자 대 비참여자",
+        "discussion_users": "토론 참여 사용자",
+        "non_discussion_users": "토론 비참여 사용자"
+      },
+      "learner_engagement_score": {
+        "title": "학습자 참여도 점수",
+        "description": "종합 참여도 기준 상위 학습자",
+        "user_id": "사용자 ID"
+      },
+      "user_progress_snapshot": {
+        "title": "사용자 진행 상황 스냅샷",
+        "description": "코스별 완료 구간에 있는 사용자"
+      },
+      "grade_distribution": {
+        "title": "성적 분포",
+        "description": "과제 성적 히스토그램"
+      },
+      "search_effectiveness": {
+        "title": "검색 효과",
+        "description": "상위 검색어 및 결과 없음 비율",
+        "query": "검색어",
+        "searches": "검색 수",
+        "zero_results": "결과 없음 %"
+      },
+      "certification_rate": {
+        "title": "인증률",
+        "description": "인증서를 신청한 수료자 비율"
+      }
+    },
+    "course_analytics": {
+      "not_configured_title": "분석 미설정",
+      "not_configured_desc": "분석을 사용하려면 Tinybird 설정이 필요합니다. 관리자에게 문의하세요.",
+      "common": {
+        "loading": "로딩 중...",
+        "no_data": "아직 데이터가 없습니다",
+        "no_enrollments": "아직 등록이 없습니다",
+        "total": "전체",
+        "daily_avg": "일 평균",
+        "latest_day": "최근 일",
+        "peak": "피크",
+        "peak_day": "피크 일",
+        "type": "유형",
+        "rate": "비율",
+        "views": "조회수",
+        "enrollments": "등록수",
+        "completions": "완료수",
+        "completion_rate": "완료율",
+        "conversion": "전환",
+        "avg_time": "평균 시간",
+        "total_views": "총 조회수",
+        "total_completions": "총 완료수",
+        "avg_rate": "평균 비율",
+        "needs_attention": "주의 필요",
+        "total_samples": "총 샘플 수",
+        "more_expand": "+{{count}}개 더 — 클릭하여 펼치기",
+        "activities_count": "{{count}}개 활동",
+        "pct_of_total": "전체 대비 %",
+        "bar_width_hint": "막대 너비 = 상대적 조회수",
+        "rate_high": ">70%",
+        "rate_mid": "40–70%",
+        "rate_low": "<40%",
+        "low_conversion": "낮은 전환",
+        "avg_completion": "평균 완료",
+        "avg_prefix": "평균 {{value}}",
+        "unknown_activity": "알 수 없는 활동"
+      },
+      "units": {
+        "done": "완료",
+        "views": "조회",
+        "enrolled": "등록됨",
+        "learner": "학습자",
+        "learners": "학습자",
+        "events": "이벤트",
+        "total": "전체",
+        "total_views": "총 조회수",
+        "total_completions": "총 완료수",
+        "total_dropoffs": "총 이탈수",
+        "peak_active": "피크 활성",
+        "conversion": "전환",
+        "retention": "유지율",
+        "in_cohort": "코호트 내",
+        "active_learners": "활성 학습자",
+        "recent_enrollments": "최근 등록",
+        "transitions": "전환",
+        "median_days": "중앙값 일수",
+        "claim_rate": "신청률",
+        "claimed": "신청됨",
+        "completed": "완료됨",
+        "unique": "고유",
+        "time": "시간",
+        "avg_per_day": "일 평균",
+        "busiest_time": "가장 바쁜 시간",
+        "minutes": "분",
+        "hours": "시간",
+        "days": "일",
+        "done_before": "이전에 완료",
+        "sample": "샘플",
+        "samples": "샘플",
+        "min": "분",
+        "avg_per_learner": "학습자당 평균"
+      },
+      "type_labels": {
+        "video": "동영상",
+        "document": "문서",
+        "quiz": "퀴즈",
+        "assignment": "과제",
+        "dynamic": "다이나믹"
+      },
+      "overview_stats": {
+        "views": "조회수",
+        "enrollments": "등록수",
+        "completions": "완료수",
+        "completion_rate": "완료율"
+      },
+      "activity_type_breakdown": {
+        "title": "활동 유형 분류",
+        "subtitle": "콘텐츠 유형별 분포 및 완료율"
+      },
+      "engagement_by_type": {
+        "title": "콘텐츠 유형별 참여도",
+        "subtitle": "활동 유형별 학습자 참여 지표",
+        "total_events": "총 이벤트",
+        "total_learners": "총 학습자"
+      },
+      "peak_hours": {
+        "title": "학습 피크 시간",
+        "subtitle": "이 코스에서 학습자가 가장 활발한 시간대",
+        "peak_time": "피크 시간",
+        "peak_events": "피크 이벤트",
+        "less": "적음",
+        "more": "많음",
+        "days": {
+          "mon": "월",
+          "tue": "화",
+          "wed": "수",
+          "thu": "목",
+          "fri": "금",
+          "sat": "토",
+          "sun": "일"
+        },
+        "events_tooltip": "{{day}} {{hour}}: {{count}}개 이벤트"
+      },
+      "enrollment_trend": {
+        "title": "등록 추세",
+        "subtitle": "시간에 따른 일별 신규 등록"
+      },
+      "active_learners": {
+        "title": "활성 학습자",
+        "subtitle": "이 코스의 일별 고유 활성 학습자 수"
+      },
+      "unique_viewers": {
+        "title": "코스 조회자",
+        "subtitle": "코스 페이지의 일별 고유 방문자 수",
+        "total_views": "총 조회수",
+        "peak_viewers": "피크 조회자"
+      },
+      "view_to_enrollment": {
+        "title": "조회 → 등록",
+        "subtitle": "조회자 중 등록 학습자가 되는 비율"
+      },
+      "daily_completions": {
+        "title": "일별 완료수",
+        "subtitle": "하루당 활동 완료 수"
+      },
+      "activity_funnel": {
+        "title": "활동 완료 퍼널",
+        "subtitle": "활동별 조회수 vs 완료수"
+      },
+      "time_per_activity": {
+        "title": "활동별 소요 시간",
+        "subtitle": "각 활동에 학습자가 소비하는 평균 시간"
+      },
+      "activity_dropoff": {
+        "title": "이탈 지점",
+        "subtitle": "학습자가 진행을 멈추는 곳 — 마지막으로 완료한 활동",
+        "total_dropoffs": "총 이탈수",
+        "dropoff_points": "이탈 지점"
+      },
+      "avg_session_duration": {
+        "title": "학습자당 일별 시간",
+        "subtitle": "각 학습자가 하루에 소비하는 평균 시간",
+        "total_time": "총 시간",
+        "avg_per_day": "일 평균",
+        "minutes_label": "분"
+      },
+      "learner_progress": {
+        "title": "학습자 진도",
+        "subtitle": "학습자가 완료한 활동 수",
+        "total_across_brackets": "모든 진도 구간에 걸쳐 총 {{count}}명의 학습자"
+      },
+      "learner_retention": {
+        "title": "학습자 유지율",
+        "subtitle": "첫 활동 후 돌아오는 학습자 비율",
+        "cohort_size": "코호트 크기",
+        "current_retention": "현재 유지율",
+        "days_since_first": "첫 활동 이후 일수",
+        "day_label": "{{day}}일차"
+      },
+      "completion_velocity": {
+        "title": "완료 속도",
+        "subtitle": "활동 완료 간 평균 시간",
+        "not_enough_data": "데이터가 충분하지 않습니다",
+        "need_transitions": "속도를 계산하려면 최소 3개의 활동 전환이 필요합니다",
+        "not_enough_data_short": "데이터 부족",
+        "need_transitions_short": "3개 이상의 전환 필요",
+        "avg_between": "완료 간 평균 {{unit}}",
+        "transitions_tracked": "추적된 전환",
+        "raw_hours_avg": "원시 시간 평균",
+        "description": "학습자가 다음 활동으로 얼마나 빨리 진행하는지 측정합니다. 낮을수록 좋습니다 — 학습자가 콘텐츠를 더 빠르게 진행하고 있다는 의미입니다."
+      },
+      "time_to_completion": {
+        "title": "완료까지 소요 시간",
+        "subtitle": "학습자가 이 코스를 마치는 데 걸리는 시간",
+        "median_days_to_complete": "완료까지 중앙값 일수",
+        "fast_p25": "빠름 (P25)",
+        "top_25_finish": "상위 25% 완료",
+        "median": "중앙값",
+        "half_finish": "절반 완료",
+        "slow_p75": "느림 (P75)",
+        "pct_75_finish": "75% 완료",
+        "based_on": "{{count}}건의 코스 완료 기준",
+        "days_unit": "일"
+      },
+      "certification_rate": {
+        "title": "인증률",
+        "subtitle": "인증서를 신청한 수료자 비율",
+        "of_completers_claimed": "의 수료자가 인증서를 신청",
+        "certificates_claimed": "신청된 인증서",
+        "course_completions": "코스 완료수"
+      },
+      "top_learners": {
+        "title": "상위 학습자",
+        "subtitle": "완료수 기준 가장 활발한 학습자",
+        "user_fallback": "사용자 #{{id}}"
+      },
+      "recent_enrollments": {
+        "title": "최근 등록",
+        "subtitle": "이 코스에 최근 등록한 학습자",
+        "count_in_period": "이 기간 동안 {{count}}건 등록"
+      },
+      "pagination": {
+        "range": "{{from}}–{{to}} / {{total}}"
+      }
+    },
+    "export": {
+      "button": "내보내기",
+      "csv": "CSV 다운로드",
+      "downloading": "내보내는 중...",
+      "json": "JSON 다운로드"
+    }
+  },
+  "onboarding": {
+    "getting_started": "시작하기",
+    "all_done": "모두 완료!",
+    "all_set": "준비 완료!",
+    "all_set_desc": "시작 가이드를 완료했습니다.",
+    "more_steps": "{{count}}단계 더",
+    "more_steps_plural": "{{count}}단계 더",
+    "show_less": "접기",
+    "skip": "건너뛰기",
+    "got_it": "이해했어요, 구축할 준비가 됐습니다!",
+    "done": "완료, 준비됐습니다!",
+    "steps": {
+      "create_course": {
+        "title": "첫 번째 코스 만들기",
+        "description": "학습자를 위한 새 코스를 만들어 시작하세요.",
+        "action": "코스 만들기"
+      },
+      "add_activities": {
+        "title": "코스에 활동 추가하기",
+        "description": "페이지, 동영상, 문서 등의 콘텐츠를 추가하세요.",
+        "action": "콘텐츠로 이동"
+      },
+      "experience_editor": {
+        "title": "에디터 체험하기",
+        "description": "에디터를 열고 코스 콘텐츠를 만드는 방법을 배워보세요.",
+        "add_activity": "활동 추가",
+        "dynamic_page": "다이나믹 페이지",
+        "click_edit": "편집 클릭",
+        "editor_features": "에디터에서 할 수 있는 것들:",
+        "slash_commands": "슬래시 명령어를 위해 / 입력",
+        "headings_lists": "제목, 목록 및 텍스트",
+        "images_media": "이미지 및 미디어",
+        "video_embeds": "동영상 및 임베드",
+        "tables_callouts": "표 및 콜아웃",
+        "interactive_blocks": "인터랙티브 블록"
+      },
+      "try_playgrounds": {
+        "title": "플레이그라운드로 인터랙티브 학습",
+        "description": "자기 주도 학습을 위한 인터랙티브 페이지를 만드세요.",
+        "action": "플레이그라운드 사용해보기"
+      },
+      "invite_users": {
+        "title": "팀과 학습자 초대하기",
+        "description": "강사를 추가하거나 학습자가 참여할 수 있는 링크를 공유하세요.",
+        "action": "사용자 초대"
+      },
+      "customize_org": {
+        "title": "조직 커스터마이징",
+        "description": "로고와 색상을 추가하고 나만의 것으로 만드세요.",
+        "action": "커스터마이징"
+      },
+      "teach_the_world": {
+        "title": "배우고 성장하기",
+        "description": "LearnHouse를 최대한 활용하기 위한 리소스.",
+        "classroom": "클래스룸",
+        "classroom_desc": "코스를 성장시키고 관리하는 방법을 배우세요",
+        "university": "LearnHouse 대학교",
+        "university_desc": "가이드, 팁 및 모범 사례"
+      }
+    },
+    "welcome": {
+      "title": "LearnHouse에 오신 것을 환영합니다",
+      "subtitle": "코스를 만들고, 학습자를 초대하고, 세계와 지식을 공유하세요.",
+      "get_started": "시작하기",
+      "features_title": "필요한 모든 것",
+      "features_subtitle": "학습 플랫폼을 구축하고 성장시키기 위한 모든 도구.",
+      "lets_go": "시작해볼까요",
+      "features": {
+        "teach": "무엇이든 가르치세요",
+        "teach_desc": "챕터와 풍부한 콘텐츠로 구조화된 코스를 만드세요",
+        "interactive": "인터랙티브하게",
+        "interactive_desc": "학습자가 자기 속도로 탐구할 수 있는 플레이그라운드를 구축하세요",
+        "community": "커뮤니티를 만드세요",
+        "community_desc": "학습자들이 서로 도울 수 있는 토론 공간을 만드세요",
+        "assess": "지식을 평가하세요",
+        "assess_desc": "과제를 만들고 학습자의 제출물을 추적하세요",
+        "collaborate": "시각적으로 협업하세요",
+        "collaborate_desc": "학습자에게 브레인스토밍과 협업을 위한 공유 보드를 제공하세요",
+        "voice": "목소리를 공유하세요",
+        "voice_desc": "팟캐스트를 시작하고 학습자에게 오디오 에피소드를 배포하세요",
+        "certify": "학습자를 인증하세요",
+        "certify_desc": "학습자가 코스를 완료하면 인증서를 발급하세요",
+        "impact": "영향력을 파악하세요",
+        "impact_desc": "참여도를 추적하고 학습자가 시간이 지남에 따라 어떻게 발전하는지 확인하세요",
+        "team": "팀을 성장시키세요",
+        "team_desc": "강사를 초대하고, 역할을 관리하고, 학습자 그룹을 조직하세요"
+      }
+    },
+    "farewell": {
+      "title": "세상을 가르칠 준비가 되었습니다",
+      "description": "모든 준비가 완료되었습니다. 학습자들이 멋진 콘텐츠를 기다리고 있습니다.",
+      "button": "가르치기 시작"
+    }
+  },
+  "boards": {
+    "access": {
+      "access_update_error": "액세스 업데이트 실패",
+      "actions": "작업",
+      "active": "활성",
+      "board_set_private": "보드가 비공개로 설정됨",
+      "board_set_public": "보드가 공개로 설정됨",
+      "create_user_group": "사용자 그룹 만들기",
+      "description": "이 보드에 액세스할 수 있는 사용자 제어",
+      "link": "연결",
+      "link_error": "연결 실패: ",
+      "link_to_user_group": "사용자 그룹에 연결",
+      "link_to_user_group_description": "이 보드에 액세스를 부여할 사용자 그룹 선택",
+      "link_to_usergroup_btn": "사용자 그룹에 연결",
+      "make_board_private": "보드를 비공개로 설정",
+      "make_board_public": "보드를 공개로 설정",
+      "no_user_groups": "아직 연결된 사용자 그룹이 없습니다",
+      "no_user_groups_available": "사용 가능한 사용자 그룹이 없습니다",
+      "private_description": "연결된 사용자 그룹만 이 보드에 액세스할 수 있습니다",
+      "private_option": "사용자만",
+      "public_description": "로그인한 모든 조직 구성원이 이 보드에 액세스할 수 있습니다",
+      "public_option": "공개",
+      "set_to_private": "비공개로 설정",
+      "set_to_private_confirm": "연결된 사용자 그룹의 구성원만 이 보드에 액세스할 수 있습니다.",
+      "set_to_public": "공개로 설정",
+      "set_to_public_confirm": "로그인한 모든 조직 구성원이 이 보드에 액세스할 수 있습니다.",
+      "title": "액세스 제어",
+      "unlink": "연결 해제",
+      "unlink_confirm": "이 사용자 그룹은 더 이상 이 보드에 액세스할 수 없습니다.",
+      "unlink_error": "연결 해제 실패: ",
+      "unlink_error_generic": "사용자 그룹 연결 해제 실패",
+      "unlink_user_group": "사용자 그룹 연결 해제",
+      "user_group": "사용자 그룹",
+      "user_group_linked": "사용자 그룹이 연결됨",
+      "user_group_unlinked": "사용자 그룹 연결이 해제됨",
+      "user_groups": "사용자 그룹",
+      "user_groups_description": "이 보드에 액세스할 수 있는 사용자 그룹 관리"
+    },
+    "activity_block": {
+      "no_activities": "활동을 찾을 수 없습니다",
+      "no_courses": "코스를 찾을 수 없습니다",
+      "select_course": "코스 선택",
+      "unsupported_type": "지원되지 않는 활동 유형"
+    },
+    "back_to_boards": "보드로 돌아가기",
+    "board_created": "보드 생성됨",
+    "board_created_error": "보드 생성 실패",
+    "board_deleted_error": "보드 삭제 실패",
+    "board_deleted_success": "보드 삭제됨",
+    "board_duplicated_error": "보드 복제 실패",
+    "board_duplicated_success": "보드 복제됨",
+    "boards": "보드",
+    "boards_deleted_partial": "{{success}}개 삭제, {{error}}개 실패",
+    "boards_deleted_success": "{{count}}개 보드 삭제됨",
+    "chat": {
+      "placeholder": "무언가를 말해보세요..."
+    },
+    "clear_selection": "지우기",
+    "create_board": "보드 만들기",
+    "create_new_board": "새 보드 만들기",
+    "create_new_board_description": "새로운 협업 보드 설정",
+    "delete_board": "보드 삭제",
+    "delete_board_confirm": "이 보드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    "delete_board_title": "\"{{name}}\" 삭제",
+    "delete_boards_title": "보드 삭제",
+    "delete_selected": "선택 삭제",
+    "delete_selected_confirm": "{{count}}개 보드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    "deleting_board": "보드 삭제 중...",
+    "deleting_boards": "{{count}}개 보드 삭제 중...",
+    "description": "설명",
+    "description_placeholder": "간단한 설명...",
+    "duplicate_board": "보드 복제",
+    "duplicate_board_confirm": "같은 설정으로 보드의 사본이 생성됩니다.",
+    "duplicate_board_title": "\"{{name}}\" 복제",
+    "duplicating_board": "보드 복제 중...",
+    "effects": {
+      "aurora": "오로라",
+      "black_hole": "블랙홀",
+      "blizzard": "눈보라",
+      "earthquake": "지진",
+      "fireworks": "불꽃놀이",
+      "glitch": "글리치",
+      "inferno": "불지옥",
+      "lightning": "번개",
+      "matrix": "매트릭스",
+      "nuke": "핵폭발",
+      "title": "효과"
+    },
+    "embed_block": {
+      "add_embed": "{{name}} 임베드 추가",
+      "apply": "적용",
+      "code": "코드",
+      "code_help": "iframe 또는 임베드 코드 붙여넣기",
+      "edit_embed": "임베드 편집",
+      "edit_embed_code": "임베드 코드 편집",
+      "edit_embed_url": "임베드 URL 편집",
+      "embed": "임베드",
+      "paste_code": "임베드 코드 붙여넣기",
+      "paste_url": "임베드 URL 붙여넣기",
+      "remove_embed": "임베드 제거",
+      "url": "URL",
+      "url_help": "YouTube, Figma, CodePen, Spotify 등의 URL을 붙여넣으세요"
+    },
+    "general": {
+      "board_updated": "보드 업데이트됨",
+      "board_updated_error": "보드 업데이트 실패",
+      "description": "기본 보드 정보",
+      "save_changes": "변경사항 저장",
+      "saving": "저장 중...",
+      "title": "일반"
+    },
+    "member_count": "{{count}}명의 멤버",
+    "member_count_plural": "{{count}}명의 멤버",
+    "members": {
+      "actions": "작업",
+      "add_member": "멤버 추가",
+      "add_member_description": "이 보드에 추가할 조직 구성원 검색",
+      "adding": "추가 중...",
+      "description": "이 보드에서 협업할 수 있는 사용자 관리",
+      "editor": "편집자",
+      "member_added": "멤버 추가됨",
+      "member_added_error": "멤버 추가 실패 (이미 멤버일 수 있음)",
+      "member_limit_reached": "멤버 제한 도달 (최대 10명)",
+      "member_removed": "멤버 제거됨",
+      "member_removed_error": "멤버 제거 실패",
+      "no_members": "아직 멤버가 없습니다",
+      "no_users_found": "사용자를 찾을 수 없습니다",
+      "remove": "제거",
+      "remove_confirm": "{{name}}을(를) 보드에서 제거하시겠습니까?",
+      "remove_member": "멤버 제거",
+      "role": "역할",
+      "role_label": "역할:",
+      "search_placeholder": "이름 또는 이메일로 검색...",
+      "title": "멤버",
+      "user": "사용자",
+      "viewer": "뷰어",
+      "all_groups": "모든 그룹"
+    },
+    "name": "이름",
+    "name_placeholder": "예: 프로젝트 기획",
+    "new_board": "새 보드",
+    "no_boards_description": "시작하려면 첫 번째 협업 보드를 만드세요.",
+    "no_boards_found": "보드를 찾을 수 없습니다",
+    "no_boards_yet": "아직 보드가 없습니다",
+    "node_actions": {
+      "delete": "삭제",
+      "delete_multiple": "{{count}}개 항목 삭제",
+      "move_back": "뒤로 이동",
+      "move_forward": "앞으로 이동",
+      "duplicate": "복제"
+    },
+    "open_board": "보드 열기",
+    "pagination": {
+      "next": "다음",
+      "page_of": "페이지 {{current}} / {{total}}",
+      "previous": "이전",
+      "results": "\"{{query}}\" 검색 결과 {{count}}개",
+      "results_plural": "\"{{query}}\" 검색 결과 {{count}}개"
+    },
+    "playground_block": {
+      "ai_content": "AI 생성 콘텐츠",
+      "calculator": "계산기",
+      "chart": "차트",
+      "chat_header": "AI 플레이그라운드",
+      "check_preview": "왼쪽의 미리보기를 확인하세요",
+      "creating": "생성 중...",
+      "description": "AI로 구동되는 인터랙티브 요소 생성",
+      "drawing": "그리기",
+      "edit": "편집",
+      "empty_state": "만들고 싶은 것을 설명하면 실현됩니다",
+      "flashcards": "플래시카드",
+      "generate": "생성",
+      "generating": "인터랙티브 콘텐츠 생성 중...",
+      "input_placeholder": "만들고 싶은 것을 설명하세요...",
+      "input_placeholder_refine": "변경사항이나 개선사항을 설명하세요...",
+      "max_iterations": "최대 반복 횟수에 도달했습니다. 작업을 저장하세요!",
+      "prompt_text": "생성할 인터랙티브 요소를 설명하세요",
+      "quiz": "퀴즈",
+      "save_close": "저장 및 닫기",
+      "streaming": "생성 중...",
+      "timeline": "타임라인",
+      "title": "AI 플레이그라운드"
+    },
+    "private": "비공개",
+    "public": "공개",
+    "search_placeholder": "보드 검색...",
+    "select_all": "모두 선택",
+    "selected_count": "{{count}}개 선택됨",
+    "settings": "설정",
+    "share": {
+      "share_board": "보드 공유",
+      "share_this_board": "이 보드 공유"
+    },
+    "thumbnail": {
+      "alt": "보드 썸네일",
+      "description": "카드에 표시되는 보드 커버 이미지",
+      "gallery": "갤러리",
+      "supported_formats": "지원 형식: JPG, JPEG, PNG. 최대 8MB.",
+      "thumbnail_updated": "썸네일 업데이트됨",
+      "thumbnail_updated_error": "썸네일 업로드 실패",
+      "title": "썸네일",
+      "upload_image": "이미지 업로드",
+      "uploading": "업로드 중..."
+    },
+    "timer": {
+      "close": "닫기",
+      "pause": "일시정지",
+      "restart": "다시 시작",
+      "resume": "계속",
+      "set_timer": "타이머 설정",
+      "set_timer_title": "타이머 설정",
+      "times_up": "시간이 다 됐습니다!"
+    },
+    "toolbar": {
+      "activity": "활동",
+      "add_card": "카드 추가",
+      "ai_playground": "AI 플레이그라운드",
+      "draw": "그리기",
+      "embed": "임베드",
+      "frame": "프레임",
+      "medium": "중간",
+      "note": "노트",
+      "pan": "이동",
+      "podcast": "팟캐스트",
+      "redo": "다시 실행",
+      "select": "선택",
+      "sticker": "스티커",
+      "sticky_note": "포스트잇",
+      "thick": "굵게",
+      "thin": "얇게",
+      "todo": "할 일",
+      "undo": "실행 취소",
+      "webpage": "웹페이지",
+      "youtube": "YouTube"
+    },
+    "try_different_search": "다른 검색어를 시도해 보세요",
+    "webpage_block": {
+      "add": "추가",
+      "blocking_notice": "일부 사이트는 임베드를 차단할 수 있습니다",
+      "embed_webpage": "웹페이지 임베드",
+      "open_in_new_tab": "새 탭에서 열기",
+      "reload": "새로고침",
+      "url_placeholder": "https://example.com"
+    },
+    "youtube_block": {
+      "add": "추가",
+      "paste_url": "YouTube URL 붙여넣기",
+      "url_placeholder": "https://youtube.com/watch?v=..."
+    },
+    "zoom": {
+      "zoom_in": "확대",
+      "zoom_out": "축소"
+    },
+    "no_boards": "아직 보드가 없습니다",
+    "no_search_results": "보드를 찾을 수 없습니다"
+  },
+  "embed": {
+    "not_supported_description": "이 유형의 활동은 인증이 필요하며 임베드할 수 없습니다.",
+    "not_supported_title": "이 활동은 지원되지 않습니다",
+    "powered_by": "Powered by LearnHouse",
+    "visit_activity": "활동 페이지 방문"
+  },
+  "migration": {
+    "accepted_formats": "비디오 (MP4, WebM, MOV), 문서 (PDF), 이미지 (PNG, JPG, WebP), 오디오 (MP3, WAV)",
+    "add_activity": "활동 추가",
+    "add_chapter": "챕터 추가",
+    "ai_failed": "AI 제안 실패, 수동 구성으로 전환",
+    "all_files_assigned": "모든 파일이 할당됨",
+    "click_to_add_more": "더 많은 파일을 추가하려면 클릭",
+    "course_created": "코스가 성공적으로 생성되었습니다!",
+    "course_name": "코스 이름",
+    "course_name_placeholder": "예: 초보자를 위한 Python 기초",
+    "course_structure": "코스 구조",
+    "create_course": "코스 만들기",
+    "created_summary": "{{chapters}}개 챕터와 {{activities}}개 활동이 생성됨",
+    "creating_course": "코스 생성 중...",
+    "creating_description": "파일을 업로드하고 챕터와 활동을 설정 중",
+    "creation_error_generic": "문제가 발생했습니다. 다시 시도해 주세요.",
+    "creation_failed": "코스 생성 실패",
+    "description": "한 줄 설명",
+    "description_placeholder": "예: 기초, 데이터 유형, 함수를 다루는 3개 모듈",
+    "drop_file_here": "파일을 여기에 놓으세요",
+    "drop_files": "파일을 여기에 놓거나 클릭하여 찾아보기",
+    "go_to_course": "코스로 이동",
+    "new_activity": "새 활동",
+    "new_chapter": "새 챕터",
+    "organize_manually": "수동으로 구성",
+    "organize_with_ai": "AI로 구성",
+    "step_complete": "완료",
+    "step_organize": "구성",
+    "step_upload": "업로드",
+    "subtitle": "파일을 업로드하고 코스로 구성하세요",
+    "title": "콘텐츠 마이그레이션",
+    "try_again": "다시 시도",
+    "unassigned_files": "미할당 파일",
+    "upload_failed": "파일 업로드 실패",
+    "uploading_files": "파일 업로드 중"
+  },
+  "upgrade_modal": {
+    "title": "잠재력을 최대한 발휘하세요",
+    "subtitle": "교육 목표에 맞는 플랜을 선택하세요.",
+    "choose_plan": "{{plan}} 선택",
+    "current_free_limits": "무료 플랜: 코스 1개 · 멤버 10명 · AI 없음",
+    "plans": {
+      "standard": {
+        "goal": "코스 수익화를 시작하고 학습 커뮤니티를 구축하세요.",
+        "highlights": {
+          "courses": "무제한 코스",
+          "courses_desc": "필요한 만큼 코스를 만드세요 — 커리큘럼에 제한이 없습니다.",
+          "members": "최대 500명 멤버",
+          "members_desc": "학습자를 늘리고 한곳에서 관리하세요.",
+          "payments": "결제 수락",
+          "payments_desc": "코스를 판매하고 구독을 제공하여 수익을 창출하세요.",
+          "communities": "커뮤니티 토론",
+          "communities_desc": "학습자들이 소통하고 질문하고 아이디어를 공유할 수 있습니다.",
+          "podcasts": "팟캐스트 제작",
+          "podcasts_desc": "오디오 콘텐츠를 제공하고 어디서나 학습자에게 도달하세요.",
+          "ai": "1,000 AI 크레딧",
+          "ai_desc": "AI 글쓰기 도구로 콘텐츠 제작을 가속화하세요.",
+          "analytics": "학습자 분석",
+          "analytics_desc": "진행 상황과 참여도를 추적하여 코스를 개선하세요.",
+          "playgrounds": "인터랙티브 플레이그라운드",
+          "playgrounds_desc": "학습자가 실습형 인터랙티브 연습으로 실험하고 연습할 수 있게 합니다."
+        }
+      },
+      "pro": {
+        "goal": "고급 도구와 완전한 제어로 아카데미를 확장하세요.",
+        "includes_standard": "Standard의 모든 것, 추가로:",
+        "highlights": {
+          "members": "최대 1,000명 멤버",
+          "members_desc": "최대 10개 관리자 시트로 더 큰 코호트를 지원하세요.",
+          "ai": "3,000 AI 크레딧",
+          "ai_desc": "대규모 콘텐츠 제작을 위한 더 많은 크레딧.",
+          "certifications": "인증서 발급",
+          "certifications_desc": "코스 수료 시 학습자에게 인증서를 수여하세요.",
+          "custom_domain": "커스텀 도메인",
+          "custom_domain_desc": "브랜드 아카데미를 위해 자체 도메인을 사용하세요.",
+          "roles": "맞춤 역할 및 권한",
+          "roles_desc": "조직에서 누가 무엇을 할 수 있는지 정확하게 제어하세요."
+        }
+      }
+    }
+  },
+  "course": {
+    "locked": "잠김",
+    "locked_title": "이 활동은 잠겨 있습니다",
+    "locked_auth_required": "이 활동에 접근하려면 로그인해야 합니다.",
+    "locked_restricted": "접근하려면 해당 사용자 그룹의 멤버여야 합니다. 코스 관리자에게 추가를 요청하세요.",
+    "activity_locked_hint": "로그인하거나 해당 사용자 그룹에 참여하여 잠금을 해제하세요.",
+    "back_to_course": "코스로 돌아가기",
+    "lock": {
+      "header_access": "접근",
+      "title_chapter": "이 챕터 잠그기",
+      "title_activity": "이 활동 잠그기",
+      "option_public_label": "공개",
+      "option_public_description": "로그인하지 않아도 누구나 열 수 있습니다.",
+      "option_authenticated_label": "로그인한 사용자만",
+      "option_authenticated_description": "로그인한 사용자만 열 수 있습니다.",
+      "option_restricted_label": "사용자 그룹 전용",
+      "option_restricted_description": "아래에서 선택한 그룹의 멤버만.",
+      "trigger_public_title": "접근: 모두에게 공개",
+      "trigger_authenticated_title": "접근: 로그인한 사용자만",
+      "trigger_restricted_title": "접근: 특정 사용자 그룹만",
+      "usergroups_header": "사용자 그룹",
+      "usergroups_none_assigned": "지정된 그룹 없음 — 관리자만 열 수 있습니다.",
+      "usergroups_remove_title": "제거",
+      "usergroups_loading": "그룹 로드 중…",
+      "usergroups_none_in_org": "이 조직에는 아직 사용자 그룹이 없습니다.",
+      "usergroups_all_assigned": "모든 그룹이 이미 지정되었습니다.",
+      "usergroups_add_a_group": "그룹 추가",
+      "toast_add_error": "그룹을 추가할 수 없습니다",
+      "toast_remove_error": "그룹을 제거할 수 없습니다"
+    },
+    "accessDenied": "이 코스에 액세스할 수 없습니다",
+    "backToCourses": "코스 목록으로 돌아가기",
+    "loadError": "이 코스를 찾을 수 없거나 로드하는 중 오류가 발생했습니다.",
+    "noPermission": "이 코스를 볼 수 있는 권한이 없습니다."
+  },
+  "pagination": {
+    "next": "다음",
+    "previous": "이전",
+    "showing_page": "{{total}}페이지 중 {{current}}페이지 표시"
+  },
+  "playgrounds": {
+    "no_playgrounds_yet": "아직 플레이그라운드가 없습니다",
+    "playgrounds_description": "학습자를 위한 AI 생성 인터랙티브 경험을 만드세요.",
+    "new_playground": "New Playground",
+    "search_placeholder": "Search playgrounds...",
+    "no_results_for": "No results for",
+    "try_different_search": "Try a different search term",
+    "new_playground_modal_title": "New Playground",
+    "new_playground_modal_desc": "Give your playground a name to get started.",
+    "creating": "Creating...",
+    "create": "Create",
+    "failed_create": "Failed to create playground",
+    "view": {
+      "open_editor_to_generate": "에디터를 열어 콘텐츠를 생성하세요.",
+      "check_back_later": "나중에 다시 확인하세요.",
+      "open_editor": "에디터 열기",
+      "breadcrumb": "플레이그라운드",
+      "about": "소개",
+      "author": "작성자",
+      "access": "접근",
+      "created": "생성일",
+      "status": "상태",
+      "published": "게시됨",
+      "draft": "초안",
+      "edit_in_editor": "에디터에서 편집",
+      "download": "다운로드",
+      "reactions": "반응",
+      "exit_fullscreen": "종료",
+      "fullscreen": "전체 화면"
+    }
+  }
+}

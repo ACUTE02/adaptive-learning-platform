@@ -1,0 +1,741 @@
+import json
+import logging
+from typing import Literal, List, Optional, Union
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, Query
+from pydantic import BaseModel, EmailStr
+from sqlmodel.ext.asyncio.session import AsyncSession
+from src.core.redis import get_redis_client as _get_redis_pool_client
+from src.services.users.password_reset import (
+    change_password_with_reset_code,
+    change_password_with_reset_code_platform,
+    send_reset_password_code,
+    send_reset_password_code_platform,
+)
+from src.services.security.rate_limiting import (
+    check_password_reset_rate_limit,
+    check_invite_acceptance_rate_limit,
+)
+from src.services.orgs.orgs import get_org_join_mechanism
+from src.security.auth import get_current_user, get_authenticated_user
+from src.core.events.database import get_db_session
+
+from src.db.users import (
+    AnonymousUser,
+    PublicUser,
+    UserCreate,
+    UserRead,
+    UserReadPublic,
+    UserSession,
+    UserUpdate,
+    UserUpdatePassword,
+)
+from src.services.users.users import (
+    authorize_user_action,
+    create_user,
+    create_user_with_invite,
+    create_user_without_org,
+    delete_user_by_id,
+    get_user_session,
+    read_user_by_id,
+    read_user_by_uuid,
+    read_user_by_username,
+    update_user,
+    update_user_avatar,
+    update_user_password,
+)
+
+_get_redis_client = _get_redis_pool_client
+
+logger = logging.getLogger(__name__)
+
+router = APIRouter()
+
+SESSION_CACHE_TTL = 600  # 10 minutes
+
+
+def _get_session_cache(user_id: int) -> Optional[dict]:
+    """Get cached session data for a user."""
+    r = _get_redis_pool_client()
+    if r is None:
+        return None
+    try:
+        raw = r.get(f"session:{user_id}")
+        if raw:
+            return json.loads(raw)
+    except Exception:
+        logger.debug("Session cache read failed for user %s", user_id, exc_info=True)
+    return None
+
+
+def _set_session_cache(user_id: int, session_data: dict) -> None:
+    """Cache session data for a user."""
+    r = _get_redis_pool_client()
+    if r is None:
+        return
+    try:
+        r.setex(f"session:{user_id}", SESSION_CACHE_TTL, json.dumps(session_data))
+    except Exception:
+        logger.debug("Session cache write failed for user %s", user_id, exc_info=True)
+
+
+def _invalidate_session_cache(user_id: int) -> None:
+    """Invalidate cached session data for a user."""
+    r = _get_redis_pool_client()
+    if r is None:
+        return
+    try:
+        r.delete(f"session:{user_id}")
+    except Exception:
+        logger.debug("Session cache invalidation failed for user %s", user_id, exc_info=True)
+
+
+@router.get(
+    "/profile",
+    summary="Get current user profile",
+    description="Return the currently authenticated user, or an anonymous user object if no session is present.",
+    responses={
+        200: {"description": "Current user profile (public or anonymous)."},
+    },
+)
+async def api_get_current_user(
+    current_user: Union[PublicUser, AnonymousUser] = Depends(get_current_user)
+):
+    """
+    Get current user
+    """
+    return current_user.model_dump()
+
+
+@router.get(
+    "/session",
+    response_model=UserSession,
+    summary="Get current user session",
+    description="Return the full session for the current user, including org memberships and roles. Cached in Redis for up to 10 minutes per user.",
+    responses={
+        200: {"description": "Full session info for the current user.", "model": UserSession},
+    },
+)
+async def api_get_current_user_session(
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: Union[PublicUser, AnonymousUser] = Depends(get_current_user),
+) -> UserSession:
+    """
+    Get current user session (cached for 10 minutes).
+    """
+    if not isinstance(current_user, AnonymousUser):
+        cached = _get_session_cache(current_user.id)
+        if cached:
+            return UserSession(**cached)
+
+    session = await get_user_session(request, db_session, current_user)
+
+    if not isinstance(current_user, AnonymousUser):
+        _set_session_cache(current_user.id, session.model_dump())
+
+    return session
+
+
+@router.get(
+    "/authorize/ressource/{ressource_uuid}/action/{action}",
+    summary="Check authorization for resource action",
+    description="Check whether the current user is authorized to perform the given action (create/read/update/delete) on a specific resource.",
+    responses={
+        200: {"description": "Authorization decision for the requested resource and action."},
+        404: {"description": "Resource not found"},
+    },
+)
+async def api_get_authorization_status(
+    request: Request,
+    ressource_uuid: str,
+    action: Literal["create", "read", "update", "delete"],
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+):
+    """
+    Get current user authorization status
+    """
+    return await authorize_user_action(
+        request, db_session, current_user, ressource_uuid, action
+    )
+
+
+@router.post(
+    "/{org_id}",
+    response_model=UserRead,
+    tags=["users"],
+    summary="Create user in organization",
+    description="Create a user and attach them to the given organization. Rejected if the organization is invite-only â€” use the invite-code endpoint instead.",
+    responses={
+        200: {"description": "User created and attached to the organization.", "model": UserRead},
+        403: {"description": "Organization is invite-only; an invite code is required"},
+    },
+)
+async def api_create_user_with_orgid(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_object: UserCreate,
+    org_id: int,
+) -> UserRead:
+    """
+    Create User with Org ID
+    """
+
+    # TODO(fix) : This is temporary, logic should be moved to service
+    if (
+        await get_org_join_mechanism(request, org_id, current_user, db_session)
+        == "inviteOnly"
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="You need an invite to join this organization",
+        )
+    else:
+        return await create_user(request, db_session, current_user, user_object, org_id)
+
+
+@router.post(
+    "/{org_id}/invite/{invite_code}",
+    response_model=UserRead,
+    tags=["users"],
+    summary="Create user with invite code",
+    description="Create a user and attach them to the given organization using an invite code. Only valid when the organization is configured as invite-only.",
+    responses={
+        200: {"description": "User created and attached via invite code.", "model": UserRead},
+        403: {"description": "Organization does not require an invite code"},
+    },
+)
+async def api_create_user_with_orgid_and_invite(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_object: UserCreate,
+    invite_code: str,
+    org_id: int,
+) -> UserRead:
+    """
+    Create User with Org ID and invite code
+    """
+    # Throttle invite-code guessing per IP+org. ``detail`` is a plain string
+    # so the frontend's generic error path renders it as-is.
+    is_allowed, retry_after = check_invite_acceptance_rate_limit(request, org_id)
+    if not is_allowed:
+        minutes = max(1, retry_after // 60)
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                f"Too many invite-code attempts. "
+                f"Please try again in about {minutes} minute"
+                f"{'s' if minutes != 1 else ''}."
+            ),
+            headers={"Retry-After": str(retry_after)},
+        )
+
+    # TODO: This is temporary, logic should be moved to service
+    if (
+        await get_org_join_mechanism(request, org_id, current_user, db_session)
+        == "inviteOnly"
+    ):
+        return await create_user_with_invite(
+            request, db_session, current_user, user_object, org_id, invite_code
+        )
+    else:
+        raise HTTPException(
+            status_code=403,
+            detail="This organization does not require an invite code",
+        )
+
+
+@router.post(
+    "/",
+    response_model=UserRead,
+    tags=["users"],
+    summary="Create user without organization",
+    description="Create a user account that is not attached to any organization at creation time.",
+    responses={
+        200: {"description": "User account created.", "model": UserRead},
+        400: {"description": "Password fails validation, email already registered, or username taken"},
+    },
+)
+async def api_create_user_without_org(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_object: UserCreate,
+) -> UserRead:
+    """
+    Create User
+    """
+    return await create_user_without_org(request, db_session, current_user, user_object)
+
+
+@router.get(
+    "/id/{user_id}",
+    response_model=UserReadPublic,
+    tags=["users"],
+    summary="Get user by ID",
+    description="Get a user by numeric ID. Requires authentication to prevent user enumeration attacks. Sensitive fields (`is_superadmin`, `signup_method`) are excluded.",
+    responses={
+        200: {"description": "Public view of the user.", "model": UserReadPublic},
+        401: {"description": "Authentication required"},
+    },
+)
+async def api_get_user_by_id(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_authenticated_user),
+    user_id: int,
+) -> UserReadPublic:
+    """
+    Get User by ID.
+
+    SECURITY: Requires authentication to prevent user enumeration attacks.
+    Anonymous users cannot access this endpoint.
+    Returns a restricted view â€” sensitive fields (is_superadmin, signup_method) are excluded.
+    """
+    return await read_user_by_id(request, db_session, current_user, user_id)
+
+
+@router.get(
+    "/uuid/{user_uuid}",
+    response_model=UserReadPublic,
+    tags=["users"],
+    summary="Get user by UUID",
+    description="Get a user by UUID. Requires authentication to prevent user enumeration attacks. Sensitive fields (`is_superadmin`, `signup_method`) are excluded.",
+    responses={
+        200: {"description": "Public view of the user.", "model": UserReadPublic},
+        401: {"description": "Authentication required"},
+    },
+)
+async def api_get_user_by_uuid(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_authenticated_user),
+    user_uuid: str,
+) -> UserReadPublic:
+    """
+    Get User by UUID.
+
+    SECURITY: Requires authentication to prevent user enumeration attacks.
+    Returns a restricted view â€” sensitive fields (is_superadmin, signup_method) are excluded.
+    """
+    return await read_user_by_uuid(request, db_session, current_user, user_uuid)
+
+
+@router.get(
+    "/username/{username}",
+    response_model=UserReadPublic,
+    tags=["users"],
+    summary="Get user by username",
+    description="Get a user by username. Requires authentication to prevent username enumeration attacks. Sensitive fields (`is_superadmin`, `signup_method`) are excluded.",
+    responses={
+        200: {"description": "Public view of the user.", "model": UserReadPublic},
+        401: {"description": "Authentication required"},
+    },
+)
+async def api_get_user_by_username(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_authenticated_user),
+    username: str,
+) -> UserReadPublic:
+    """
+    Get User by Username.
+
+    SECURITY: Requires authentication to prevent username enumeration attacks.
+    Returns a restricted view â€” sensitive fields (is_superadmin, signup_method) are excluded.
+    """
+    return await read_user_by_username(request, db_session, current_user, username)
+
+
+@router.put(
+    "/{user_id}",
+    response_model=UserRead,
+    tags=["users"],
+    summary="Update user",
+    description="Update a user's profile fields. Invalidates the user's cached session so subsequent session reads reflect the change.",
+    responses={
+        200: {"description": "User updated successfully.", "model": UserRead},
+        400: {"description": "Validation failed (duplicate email/username, invalid fields)"},
+        403: {"description": "Caller lacks permission to update this user"},
+        404: {"description": "User not found"},
+    },
+)
+async def api_update_user(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_id: int,
+    user_object: UserUpdate,
+) -> UserRead:
+    """
+    Update User
+    """
+    result = await update_user(request, db_session, user_id, current_user, user_object)
+    _invalidate_session_cache(user_id)
+    return result
+
+
+@router.put(
+    "/update_avatar/{user_id}",
+    response_model=UserRead,
+    tags=["users"],
+    summary="Update user avatar",
+    description="Upload a new avatar image for a user. Users can only update their own avatar (the `user_id` in the URL must match the authenticated user's ID).",
+    responses={
+        200: {"description": "Avatar updated; cached session is invalidated so subsequent reads return the new image.", "model": UserRead},
+        403: {"description": "Attempted to update another user's avatar"},
+    },
+)
+async def api_update_avatar_user(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_id: int,
+    avatar_file: UploadFile | None = None,
+) -> UserRead:
+    """
+    Update User Avatar
+
+    SECURITY: Users can only update their own avatar.
+    The user_id in the URL must match the authenticated user's ID.
+    """
+    # SECURITY: IDOR protection - verify user can only update their own avatar
+    if current_user.id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You can only update your own avatar",
+        )
+    result = await update_user_avatar(request, db_session, current_user, avatar_file)
+    # Invalidate session cache so the next session fetch returns the new avatar
+    _invalidate_session_cache(user_id)
+    return result
+
+
+@router.put(
+    "/change_password/{user_id}",
+    response_model=UserRead,
+    tags=["users"],
+    summary="Change user password",
+    description="Update a user's password. The authenticated user must either be the target user or otherwise authorized by the service layer.",
+    responses={
+        200: {"description": "Password changed successfully.", "model": UserRead},
+        400: {"description": "New password fails validation"},
+        401: {"description": "Wrong current password"},
+        403: {"description": "Caller cannot change this user's password"},
+        404: {"description": "User not found"},
+    },
+)
+async def api_update_user_password(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_id: int,
+    form: UserUpdatePassword,
+) -> UserRead:
+    """
+    Update User Password
+    """
+    return await update_user_password(request, db_session, current_user, user_id, form)
+
+
+class ResetPasswordRequest(BaseModel):
+    # Email is optional so the legacy path-param variant can reuse the same
+    # body model; the v2 handlers require it.
+    email: Optional[EmailStr] = None
+    new_password: str
+    org_id: int
+    reset_code: str
+
+
+class SendResetCodeRequest(BaseModel):
+    email: EmailStr
+    org_id: int
+
+
+@router.post(
+    "/reset_password/change_password",
+    tags=["users"],
+    summary="Change password with reset code",
+    description="Change a user's password using a reset code. Email, reset code and new password are all supplied in the request body so they never appear in server logs or browser history.",
+    responses={
+        200: {"description": "Password updated successfully using the reset code."},
+        429: {"description": "Too many password reset attempts for this email"},
+    },
+)
+async def api_change_password_with_reset_code_v2(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    body: ResetPasswordRequest,
+):
+    """
+    Update User Password with reset code (email in body).
+    """
+    if not body.email:
+        raise HTTPException(status_code=422, detail="email is required")
+
+    # Rate limit: 5 attempts per 5 minutes per email
+    is_allowed, retry_after = check_password_reset_rate_limit(body.email)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many password reset attempts. Please try again in {retry_after // 60} minutes.",
+        )
+
+    return await change_password_with_reset_code(
+        request,
+        db_session,
+        current_user,
+        body.new_password,
+        body.org_id,
+        body.email,
+        body.reset_code,
+    )
+
+
+@router.post(
+    "/reset_password/change_password/{email}",
+    tags=["users"],
+    summary="Change password with reset code (legacy path)",
+    description="Deprecated: use /reset_password/change_password with email in the body. This path variant leaks the email into server access logs and exists only for backward compatibility.",
+    deprecated=True,
+    responses={
+        200: {"description": "Password updated successfully using the reset code."},
+        429: {"description": "Too many password reset attempts for this email"},
+    },
+)
+async def api_change_password_with_reset_code(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    email: EmailStr,
+    body: ResetPasswordRequest,
+):
+    # Rate limit: 5 attempts per 5 minutes per email
+    is_allowed, retry_after = check_password_reset_rate_limit(email)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many password reset attempts. Please try again in {retry_after // 60} minutes.",
+        )
+
+    return await change_password_with_reset_code(
+        request, db_session, current_user, body.new_password, body.org_id, email, body.reset_code
+    )
+
+
+@router.post(
+    "/reset_password/send_reset_code",
+    tags=["users"],
+    summary="Send password reset code",
+    description="Dispatch an org-scoped password reset code to the given email address (email supplied in body so it never appears in access logs). Returns a generic response regardless of whether the email exists to avoid user enumeration.",
+    responses={
+        200: {"description": "Reset code email dispatch requested."},
+        400: {"description": "Organization not found"},
+    },
+)
+async def api_send_password_reset_email_v2(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    body: SendResetCodeRequest,
+):
+    return await send_reset_password_code(
+        request, db_session, current_user, body.org_id, body.email
+    )
+
+
+@router.post(
+    "/reset_password/send_reset_code/{email}",
+    tags=["users"],
+    summary="Send password reset code (legacy path)",
+    description="Deprecated: use /reset_password/send_reset_code with email in the body.",
+    deprecated=True,
+    responses={
+        200: {"description": "Reset code email dispatch requested."},
+        400: {"description": "Organization not found"},
+    },
+)
+async def api_send_password_reset_email(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    email: EmailStr,
+    org_id: int,
+):
+    return await send_reset_password_code(
+        request, db_session, current_user, org_id, email
+    )
+
+
+class PlatformResetPasswordRequest(BaseModel):
+    email: Optional[EmailStr] = None
+    new_password: str
+    reset_code: str
+
+
+class SendPlatformResetCodeRequest(BaseModel):
+    email: EmailStr
+
+
+@router.post(
+    "/reset_password/platform/send_reset_code",
+    tags=["users"],
+    summary="Send platform password reset code",
+    description="Dispatch a platform-level password reset code (email supplied in body so it does not appear in access logs). Subject to rate limiting per email.",
+    responses={
+        200: {"description": "Reset code email dispatch requested."},
+        429: {"description": "Too many password reset attempts for this email"},
+    },
+)
+async def api_send_password_reset_email_platform_v2(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    body: SendPlatformResetCodeRequest,
+):
+    is_allowed, retry_after = check_password_reset_rate_limit(body.email)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many password reset attempts. Please try again in {retry_after // 60} minutes.",
+        )
+    return await send_reset_password_code_platform(
+        request, db_session, current_user, body.email
+    )
+
+
+@router.post(
+    "/reset_password/platform/send_reset_code/{email}",
+    tags=["users"],
+    summary="Send platform password reset code (legacy path)",
+    description="Deprecated: use /reset_password/platform/send_reset_code with email in the body.",
+    deprecated=True,
+    responses={
+        200: {"description": "Reset code email dispatch requested."},
+        429: {"description": "Too many password reset attempts for this email"},
+    },
+)
+async def api_send_password_reset_email_platform(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    email: EmailStr,
+):
+    is_allowed, retry_after = check_password_reset_rate_limit(email)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many password reset attempts. Please try again in {retry_after // 60} minutes.",
+        )
+
+    return await send_reset_password_code_platform(
+        request, db_session, current_user, email
+    )
+
+
+@router.post(
+    "/reset_password/platform/change_password",
+    tags=["users"],
+    summary="Change platform password with reset code",
+    description="Change a user's password at the platform level (email + reset code + new password all supplied in the body so none of them appear in server access logs).",
+    responses={
+        200: {"description": "Password updated successfully using the reset code."},
+        429: {"description": "Too many password reset attempts for this email"},
+    },
+)
+async def api_change_password_with_reset_code_platform_v2(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    body: PlatformResetPasswordRequest,
+):
+    if not body.email:
+        raise HTTPException(status_code=422, detail="email is required")
+    is_allowed, retry_after = check_password_reset_rate_limit(body.email)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many password reset attempts. Please try again in {retry_after // 60} minutes.",
+        )
+    return await change_password_with_reset_code_platform(
+        request, db_session, current_user, body.new_password, body.email, body.reset_code
+    )
+
+
+@router.post(
+    "/reset_password/platform/change_password/{email}",
+    tags=["users"],
+    summary="Change platform password with reset code (legacy path)",
+    description="Deprecated: use /reset_password/platform/change_password with email in the body.",
+    deprecated=True,
+    responses={
+        200: {"description": "Password updated successfully using the reset code."},
+        429: {"description": "Too many password reset attempts for this email"},
+    },
+)
+async def api_change_password_with_reset_code_platform(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    email: EmailStr,
+    body: PlatformResetPasswordRequest,
+):
+    is_allowed, retry_after = check_password_reset_rate_limit(email)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Too many password reset attempts. Please try again in {retry_after // 60} minutes.",
+        )
+
+    return await change_password_with_reset_code_platform(
+        request, db_session, current_user, body.new_password, email, body.reset_code
+    )
+
+
+@router.delete(
+    "/user_id/{user_id}",
+    tags=["users"],
+    summary="Delete user",
+    description="Delete a user by ID. Invalidates the user's cached session so stale session data is not served.",
+    responses={
+        200: {"description": "User deleted successfully."},
+        403: {"description": "Caller cannot delete this user"},
+        404: {"description": "User not found"},
+    },
+)
+async def api_delete_user(
+    *,
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),
+    current_user: PublicUser = Depends(get_current_user),
+    user_id: int,
+):
+    """
+    Delete User
+    """
+    result = await delete_user_by_id(request, db_session, current_user, user_id)
+    _invalidate_session_cache(user_id)
+    return result
+
+
+

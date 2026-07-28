@@ -1,0 +1,71 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# next.js
+.next/
+out/
+build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.*
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# turbo
+.turbo
+
+# vercel
+.vercel
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# vscode
+.vscode/
+
+# Flyio
+.flyio/
+fly.toml
+
+# Generated runtime config
+apps/web/public/runtime-config.js
+apps/web/runtime-config.json
+
+# Tinybird CLI local state (contains tokens)
+.tinyb
+
+# LearnHouse CLI generated files
+.learnhouse/
+.ee-disabled
+
+# Enterprise Edition (private repo, overlaid at SaaS build time, symlinked locally)
+# No trailing slash — must also match a bare symlink at apps/api/ee, not just a directory.
+apps/api/ee
+
+# Claude Code
+.claude/
+
+# Git worktrees
+.worktrees/

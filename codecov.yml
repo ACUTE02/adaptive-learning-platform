@@ -1,0 +1,34 @@
+codecov:
+  require_ci_to_pass: true
+
+coverage:
+  status:
+    project:
+      default:
+        target: 90%
+        threshold: 1%
+        flags:
+          - api
+    patch:
+      default:
+        target: 90%
+        threshold: 1%
+        flags:
+          - api
+        if_ci_failed: success
+        only_pulls: false
+
+flag_management:
+  default_rules:
+    carryforward: true
+  individual_flags:
+    - name: api
+      paths:
+        - apps/api/src
+
+component_management:
+  individual_components:
+    - component_id: api
+      name: API
+      paths:
+        - apps/api/src/**

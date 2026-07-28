@@ -1,0 +1,551 @@
+import logging
+from typing import Literal, Union
+from fastapi import HTTPException, status, Request
+from sqlalchemy import null
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+from src.db.collections import Collection
+from src.db.resource_authors import ResourceAuthor, ResourceAuthorshipEnum, ResourceAuthorshipStatusEnum
+from src.db.roles import Role
+from src.db.user_organizations import UserOrganization
+from src.db.users import APITokenUser
+from src.db.usergroup_resources import UserGroupResource
+from src.db.usergroup_user import UserGroupUser
+from src.security.rbac.utils import (
+    check_element_type,
+    check_course_permissions_with_own,
+    get_element_organization_id,
+)
+from src.security.rbac.constants import ADMIN_OR_MAINTAINER_ROLE_IDS
+from src.security.superadmin import is_user_superadmin
+
+logger = logging.getLogger(__name__)
+
+
+async def _get_offer_for_usergroup(usergroup_id: int, db_session: AsyncSession) -> dict | None:
+    """
+    Return offer metadata if a usergroup is the access-control group for a PaymentsOffer.
+    Returns None if the usergroup is not tied to any offer.
+    """
+    try:
+        from ee.db.payments.payments_offers import PaymentsOffer
+        stmt = select(PaymentsOffer).where(
+            PaymentsOffer.usergroup_id == usergroup_id,
+        )
+        offer = (await db_session.execute(stmt)).scalars().first()
+        if offer:
+            return {
+                "offer_id": offer.id,
+                "offer_name": offer.name,
+                "amount": offer.amount,
+                "currency": offer.currency,
+            }
+    except Exception:
+        pass
+    return None
+
+
+async def check_usergroup_access(
+    resource_uuid: str,
+    user_id: int,
+    db_session: AsyncSession,
+) -> bool:
+    """
+    Check if a user has access to a resource via UserGroup membership.
+
+    This checks if:
+    1. The resource is linked to any UserGroups
+    2. If yes, whether the user is a member of any of those UserGroups
+
+    When access is denied because the resource belongs to a paid offer's UserGroup,
+    raises HTTP 402 Payment Required instead of returning False.
+
+    Args:
+        resource_uuid: UUID of the resource (course, podcast, community, etc.)
+        user_id: ID of the user to check
+        db_session: Database session
+
+    Returns:
+        bool: True if user has access (either no UserGroup restrictions or user is a member)
+    """
+    logger.info("[USERGROUP_ACCESS] Checking access for resource_uuid=%s, user_id=%s", resource_uuid, user_id)
+
+    # Check if resource has any UserGroups linked
+    usergroup_stmt = select(UserGroupResource).where(
+        UserGroupResource.resource_uuid == resource_uuid
+    )
+    usergroup_resources = (await db_session.execute(usergroup_stmt)).scalars().all()
+
+    logger.info("[USERGROUP_ACCESS] Found %d UserGroupResource entries for resource", len(usergroup_resources))
+
+    # If no UserGroups linked, resource is accessible to all authenticated users
+    if not usergroup_resources:
+        logger.info("[USERGROUP_ACCESS] No UserGroups linked, granting access")
+        return True
+
+    # Check if user is a member of any linked UserGroup
+    usergroup_ids = [ugr.usergroup_id for ugr in usergroup_resources]
+    logger.info("[USERGROUP_ACCESS] UserGroup IDs linked to resource: %s", usergroup_ids)
+
+    membership_stmt = select(UserGroupUser).where(
+        UserGroupUser.usergroup_id.in_(usergroup_ids),
+        UserGroupUser.user_id == user_id
+    )
+    membership = (await db_session.execute(membership_stmt)).scalars().first()
+
+    if membership:
+        logger.info("[USERGROUP_ACCESS] User %s IS a member of UserGroup %s, granting access", user_id, membership.usergroup_id)
+    else:
+        logger.info("[USERGROUP_ACCESS] User %s is NOT a member of any linked UserGroups %s, denying access", user_id, usergroup_ids)
+
+        # Check if any of the blocking UserGroups is tied to a paid offer
+        # If so, return HTTP 402 Payment Required (semantically distinct from 403 Forbidden)
+        for ugid in usergroup_ids:
+            offer_meta = await _get_offer_for_usergroup(ugid, db_session)
+            if offer_meta:
+                logger.info("[USERGROUP_ACCESS] Resource is behind paid offer %s, returning 402", offer_meta["offer_id"])
+                raise HTTPException(
+                    status_code=status.HTTP_402_PAYMENT_REQUIRED,
+                    detail={
+                        "code": "PAYMENT_REQUIRED",
+                        "offer_id": offer_meta["offer_id"],
+                        "offer_name": offer_meta["offer_name"],
+                        "amount": offer_meta["amount"],
+                        "currency": offer_meta["currency"],
+                    },
+                )
+
+    return membership is not None
+
+
+# Tested and working
+async def authorization_verify_if_element_is_public(
+    request,
+    element_uuid: str,
+    action: Literal["read"],
+    db_session: AsyncSession,
+):
+    element_nature = await check_element_type(element_uuid)
+    # Verifies if the element is public
+    if element_nature == "collections" and action == "read":
+        statement = select(Collection).where(
+            Collection.public == True, Collection.collection_uuid == element_uuid
+        )
+        collection = (await db_session.execute(statement)).scalars().first()
+        if collection:
+            return True
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User rights : You don't have the right to perform this action",
+            )
+
+    elif element_nature == "podcasts" and action == "read":
+        from src.db.podcasts.podcasts import Podcast
+        statement = select(Podcast).where(
+            Podcast.public == True,
+            Podcast.published == True,
+            Podcast.podcast_uuid == element_uuid
+        )
+        podcast = (await db_session.execute(statement)).scalars().first()
+        if podcast:
+            return True
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User rights : You don't have the right to perform this action",
+            )
+
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User rights : You don't have the right to perform this action",
+        )
+
+
+# Tested and working
+async def authorization_verify_if_user_is_author(
+    request,
+    user_id: int,
+    action: Literal["read", "update", "delete", "create"],
+    element_uuid: str,
+    db_session: AsyncSession,
+):
+    # For create action, we don't need to check existing resource
+    if action == "create":
+        return True  # Allow creation if user is authenticated
+
+    if action in ["update", "delete", "read"]:
+        # Query for the current user's authorship record specifically
+        # FIXED: Previously this only filtered by resource_uuid and got .first(),
+        # which would return the first author (usually CREATOR) even if the current
+        # user was a different contributor. Now we filter by both resource_uuid AND user_id.
+        statement = select(ResourceAuthor).where(
+            ResourceAuthor.resource_uuid == element_uuid,
+            ResourceAuthor.user_id == user_id
+        )
+        resource_author = (await db_session.execute(statement)).scalars().first()
+
+        if resource_author:
+            valid_authorships = [
+                ResourceAuthorshipEnum.CREATOR,
+                ResourceAuthorshipEnum.MAINTAINER,
+                ResourceAuthorshipEnum.CONTRIBUTOR,
+            ]
+            if (resource_author.authorship in valid_authorships and
+                    resource_author.authorship_status == ResourceAuthorshipStatusEnum.ACTIVE):
+                return True
+            else:
+                return False
+        else:
+            return False
+    return False
+
+
+async def _load_applicable_roles(
+    db_session: AsyncSession,
+    user_id: int,
+    target_org_id: int | None,
+):
+    """
+    Load roles that may grant a user permission on a resource in ``target_org_id``.
+
+    A role applies when either (a) it belongs to the target organization and the
+    user holds it there, or (b) it is a global default role (``org_id IS NULL``)
+    and the user is a member of the target organization. When ``target_org_id``
+    is ``None`` (placeholder UUIDs used during top-level creation), every role
+    the user holds is returned — existence checks and org-scoped request bodies
+    gate those paths downstream.
+    """
+    if target_org_id is None:
+        statement = (
+            select(Role)
+            .join(UserOrganization)
+            .where(
+                (UserOrganization.org_id == Role.org_id)
+                | (Role.org_id == null())
+            )
+            .where(UserOrganization.user_id == user_id)
+        )
+        return (await db_session.execute(statement)).scalars().all()
+
+    is_member_of_target = (await db_session.execute(
+        select(UserOrganization).where(
+            UserOrganization.user_id == user_id,
+            UserOrganization.org_id == target_org_id,
+        )
+    )).scalars().first()
+
+    if not is_member_of_target:
+        # Non-member: never grant role-based access to this org's resources.
+        return []
+
+    statement = (
+        select(Role)
+        .join(UserOrganization)
+        .where(UserOrganization.user_id == user_id)
+        .where((Role.org_id == target_org_id) | (Role.org_id == null()))
+    )
+    return (await db_session.execute(statement)).scalars().all()
+
+
+# Tested and working
+async def authorization_verify_based_on_roles(
+    request: Request,
+    user_id: int,
+    action: Literal["read", "update", "delete", "create"],
+    element_uuid: str,
+    db_session: AsyncSession,
+):
+    # Superadmin bypass - full access to all resources
+    if await is_user_superadmin(user_id, db_session):
+        return True
+
+    element_type = await check_element_type(element_uuid)
+
+    # SECURITY: role-based fallback must be scoped to the target resource's org.
+    # Without this check, a user with e.g. admin-in-orgA whose admin role grants
+    # courses.action_update=True could mutate a course in orgB purely because
+    # one of their org roles carries the permission.
+    target_org_id = await get_element_organization_id(element_uuid, db_session)
+
+    user_roles_in_organization_and_standard_roles = await _load_applicable_roles(
+        db_session, user_id, target_org_id
+    )
+
+
+    # Check if user is the author of the resource for "own" permissions
+    is_author = False
+    if action in ["update", "delete", "read"]:
+        is_author = await authorization_verify_if_user_is_author(
+            request, user_id, action, element_uuid, db_session
+        )
+
+    # Check all roles until we find one that grants the permission
+    for role in user_roles_in_organization_and_standard_roles:
+        role = Role.model_validate(role)
+        if role.rights:
+            rights = role.rights
+            # Handle both dict (from JSON storage) and Rights object
+            if isinstance(rights, dict):
+                element_rights = rights.get(element_type)
+            else:
+                element_rights = getattr(rights, element_type, None)
+            if element_rights:
+                # Special handling for resources with PermissionsWithOwn
+                if element_type in ("courses", "discussions", "podcasts", "boards", "playgrounds"):
+                    if await check_course_permissions_with_own(element_rights, action, is_author):
+                        return True
+                else:
+                    # For non-course resources, only check general permissions
+                    # Handle both dict and object access
+                    if isinstance(element_rights, dict):
+                        if element_rights.get(f"action_{action}", False):
+                            return True
+                    elif getattr(element_rights, f"action_{action}", False):
+                        return True
+
+    # If we get here, no role granted the permission
+    return False
+
+
+async def authorization_verify_based_on_org_admin_status(
+    request: Request,
+    user_id: int,
+    action: Literal["read", "update", "delete", "create"],
+    element_uuid: str,
+    db_session: AsyncSession,
+):
+    """
+    Verify if a user has admin status in the SPECIFIC organization being accessed.
+
+    Args:
+        request: FastAPI request object
+        user_id: ID of the user to check
+        action: The action being performed (read, update, delete, create)
+        element_uuid: UUID of the element (organization) being accessed
+        db_session: Database session
+
+    Returns:
+        bool: True if user is admin in the target organization, False otherwise
+    """
+    # Superadmin bypass - full access to all organizations
+    if await is_user_superadmin(user_id, db_session):
+        return True
+
+    # Get the target organization's ID from the element UUID
+    target_org_id = await get_element_organization_id(element_uuid, db_session)
+
+    if target_org_id is None:
+        # If we can't determine the organization, deny access for safety
+        return False
+
+    # Check if user has admin or maintainer role in the TARGET organization
+    # Note: This checks for admin/maintainer role which typically have full permissions
+    statement = (
+        select(UserOrganization)
+        .where(UserOrganization.user_id == user_id)
+        .where(UserOrganization.org_id == target_org_id)
+        .where(UserOrganization.role_id.in_(ADMIN_OR_MAINTAINER_ROLE_IDS))
+    )
+
+    user_org = (await db_session.execute(statement)).scalars().first()
+
+    return user_org is not None
+
+
+# Tested and working
+async def authorization_verify_based_on_roles_and_authorship(
+    request: Request,
+    user_id: int,
+    action: Literal["read", "update", "delete", "create"],
+    element_uuid: str,
+    db_session: AsyncSession,
+):
+    logger.info("[RBAC] authorization_verify_based_on_roles_and_authorship: user_id=%s, action=%s, element_uuid=%s", user_id, action, element_uuid)
+
+    # Superadmin bypass - full access to all resources
+    if await is_user_superadmin(user_id, db_session):
+        logger.info("[RBAC] Superadmin bypass for user_id=%s", user_id)
+        return True
+
+    isAuthor = await authorization_verify_if_user_is_author(
+        request, user_id, action, element_uuid, db_session
+    )
+    logger.info("[RBAC] isAuthor=%s", isAuthor)
+
+    isRole = await authorization_verify_based_on_roles(
+        request, user_id, action, element_uuid, db_session
+    )
+    logger.info("[RBAC] isRole=%s", isRole)
+
+    # For read actions, also check UserGroup membership
+    # UserGroups allow access to resources that are not public but restricted to group members
+    hasUserGroupAccess = False
+    if action == "read":
+        hasUserGroupAccess = await check_usergroup_access(
+            element_uuid, user_id, db_session
+        )
+    logger.info("[RBAC] hasUserGroupAccess=%s", hasUserGroupAccess)
+
+    # Enrollment-based access: users who have paid for this resource always get access,
+    # regardless of UserGroup membership state (e.g. if an admin removes them from the group).
+    hasPaidEnrollmentAccess = False
+    if action == "read":
+        try:
+            from ee.services.payments.payments_access import check_enrollment_access
+            hasPaidEnrollmentAccess = await check_enrollment_access(element_uuid, user_id, db_session)
+        except Exception:
+            pass  # payments module not available (community edition) — skip silently
+    logger.info("[RBAC] hasPaidEnrollmentAccess=%s", hasPaidEnrollmentAccess)
+
+    if isAuthor or isRole or hasUserGroupAccess or hasPaidEnrollmentAccess:
+        logger.info("[RBAC] Access GRANTED (isAuthor=%s, isRole=%s, hasUserGroupAccess=%s, hasPaidEnrollmentAccess=%s)", isAuthor, isRole, hasUserGroupAccess, hasPaidEnrollmentAccess)
+        return True
+    else:
+        logger.info("[RBAC] Access DENIED (isAuthor=%s, isRole=%s, hasUserGroupAccess=%s, hasPaidEnrollmentAccess=%s)", isAuthor, isRole, hasUserGroupAccess, hasPaidEnrollmentAccess)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User rights (roles & authorship) : You don't have the right to perform this action",
+        )
+
+
+async def authorization_verify_if_user_is_anon(user_id: int):
+    if user_id == 0:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You should be logged in to perform this action",
+        )
+
+
+async def authorization_verify_api_token_permissions(
+    request: Request,
+    api_token_user: APITokenUser,
+    action: Literal["read", "update", "delete", "create"],
+    element_uuid: str,
+    db_session: AsyncSession,
+) -> bool:
+    """
+    Verify API token permissions for an action on an element.
+
+    CRITICAL: This function enforces organization boundary - tokens can ONLY
+    access resources within their organization.
+
+    API tokens are restricted to these resources:
+    - courses, activities, coursechapters, collections, certifications,
+    - usergroups, payments, search
+
+    Args:
+        request: FastAPI request object
+        api_token_user: The authenticated API token user
+        action: The action being performed
+        element_uuid: The UUID of the element being accessed
+        db_session: Database session
+
+    Returns:
+        bool: True if permission granted
+
+    Raises:
+        HTTPException: If permission denied or org boundary violated
+    """
+    element_type = await check_element_type(element_uuid)
+
+    # API tokens are restricted to specific resource types
+    allowed_resource_types = [
+        'courses', 'activities', 'coursechapters', 'collections',
+        'certifications', 'usergroups', 'payments', 'search'
+    ]
+
+    if element_type not in allowed_resource_types:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"API tokens cannot access '{element_type}' resources",
+        )
+
+    # CRITICAL: Verify element belongs to token's organization
+    element_org_id = await get_element_organization_id(element_uuid, db_session)
+
+    if element_org_id is not None and element_org_id != api_token_user.org_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API token cannot access resources outside its organization",
+        )
+
+    # Check token's rights for this action
+    if not api_token_user.rights:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API token has no permissions configured",
+        )
+
+    # Get the rights for this element type
+    rights = api_token_user.rights
+    if isinstance(rights, dict):
+        element_rights = rights.get(element_type, {})
+    else:
+        element_rights = getattr(rights, element_type, None)
+
+    if not element_rights:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"API token does not have permissions for {element_type}",
+        )
+
+    # Check the specific action permission
+    if element_type == "search":
+        # Search only allows read action
+        if action != "read":
+            has_permission = False
+        elif isinstance(element_rights, dict):
+            has_permission = element_rights.get("action_read", False)
+        else:
+            has_permission = getattr(element_rights, "action_read", False)
+    elif element_type == "courses":
+        # For courses, check standard permission (no "own" for API tokens)
+        if isinstance(element_rights, dict):
+            has_permission = element_rights.get(f"action_{action}", False)
+        else:
+            has_permission = getattr(element_rights, f"action_{action}", False)
+    else:
+        # Standard permission check
+        if isinstance(element_rights, dict):
+            has_permission = element_rights.get(f"action_{action}", False)
+        else:
+            has_permission = getattr(element_rights, f"action_{action}", False)
+
+    if not has_permission:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"API token does not have '{action}' permission for {element_type}",
+        )
+
+    return True
+
+
+async def authorization_verify_based_on_roles_and_authorship_or_api_token(
+    request: Request,
+    current_user: Union[APITokenUser, any],
+    action: Literal["read", "update", "delete", "create"],
+    element_uuid: str,
+    db_session: AsyncSession,
+):
+    """
+    Combined authorization check that handles both regular users and API tokens.
+
+    For API tokens: Verifies org boundary and token permissions
+    For regular users: Falls back to existing role/authorship verification
+    """
+    # Check if this is an API token request
+    if isinstance(current_user, APITokenUser):
+        return await authorization_verify_api_token_permissions(
+            request, current_user, action, element_uuid, db_session
+        )
+
+    # Superadmin bypass - full access to all resources
+    if await is_user_superadmin(current_user.id, db_session):
+        return True
+
+    # Regular user path: use existing logic
+    return await authorization_verify_based_on_roles_and_authorship(
+        request, current_user.id, action, element_uuid, db_session
+    )

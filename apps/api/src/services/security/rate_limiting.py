@@ -1,0 +1,424 @@
+"""
+Redis-based rate limiting service for authentication endpoints.
+
+Rate limits:
+- Login: 30 attempts per 5 minutes per IP
+- Signup: 10 attempts per hour per IP
+- Verification resend: 5 attempts per 5 minutes per email
+"""
+import ipaddress
+from typing import Tuple
+from fastapi import HTTPException, Request
+from src.core.redis import get_redis_client as _get_redis_pool_client
+
+
+class RateLimitExceeded(Exception):
+    """Exception raised when rate limit is exceeded."""
+    def __init__(self, message: str, retry_after: int):
+        self.message = message
+        self.retry_after = retry_after
+        super().__init__(self.message)
+
+
+def get_redis_connection():
+    """Get Redis connection from shared pool."""
+    r = _get_redis_pool_client()
+    if r is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Redis connection string not found",
+        )
+    return r
+
+
+def _is_trusted_proxy(ip: str) -> bool:
+    """Check if the direct connection IP is from a trusted local proxy."""
+    try:
+        addr = ipaddress.ip_address(ip)
+        return addr.is_loopback or addr.is_private
+    except ValueError:
+        return False
+
+
+def get_client_ip(request: Request) -> str:
+    """
+    Extract client IP from request, considering proxy headers.
+
+    Only trusts X-Forwarded-For/X-Real-IP when the direct connection
+    comes from a private/loopback address (i.e., a local reverse proxy).
+    """
+    # SECURITY: This trusts X-Forwarded-For only when the direct connection comes
+    # from a private IP (assumed to be a trusted reverse proxy).
+    # REQUIREMENT: The reverse proxy MUST strip and rewrite X-Forwarded-For headers
+    # from untrusted clients. If the proxy passes through client-supplied headers,
+    # IP spoofing can bypass rate limits.
+    # For self-hosted deployments without a reverse proxy, set
+    # LEARNHOUSE_SECURITY__TRUST_PROXY_HEADERS=false in config to disable this.
+    direct_ip = request.client.host if request.client else None
+
+    # Only trust proxy headers if request comes from a local reverse proxy
+    if direct_ip and _is_trusted_proxy(direct_ip):
+        # Check for forwarded headers (reverse proxy)
+        forwarded = request.headers.get("X-Forwarded-For")
+        if forwarded:
+            # Take the first IP in the chain (original client)
+            client_ip = forwarded.split(",")[0].strip()
+            # Validate it's a real IP, not garbage
+            try:
+                ipaddress.ip_address(client_ip)
+                return client_ip
+            except ValueError:
+                pass
+
+        # Check for real IP header
+        real_ip = request.headers.get("X-Real-IP")
+        if real_ip:
+            real_ip = real_ip.strip()
+            try:
+                ipaddress.ip_address(real_ip)
+                return real_ip
+            except ValueError:
+                pass
+
+    # Fall back to direct client host
+    if direct_ip:
+        return direct_ip
+
+    return "unknown"
+
+
+def check_rate_limit(
+    key: str,
+    max_attempts: int,
+    window_seconds: int,
+    r=None
+) -> Tuple[bool, int, int]:
+    """
+    Check if rate limit is exceeded for a given key.
+
+    Args:
+        key: Unique identifier for rate limiting (e.g., "login:192.168.1.1")
+        max_attempts: Maximum number of attempts allowed
+        window_seconds: Time window in seconds
+        r: Optional Redis connection (creates new one if not provided)
+
+    Returns:
+        Tuple of (is_allowed, current_count, seconds_until_reset)
+    """
+    if r is None:
+        r = get_redis_connection()
+
+    rate_limit_key = f"rate_limit:{key}"
+
+    # Get current count
+    current_count = r.get(rate_limit_key)
+    ttl = r.ttl(rate_limit_key)
+
+    if current_count is None:
+        # First attempt - set counter with expiry
+        r.setex(rate_limit_key, window_seconds, 1)
+        return True, 1, window_seconds
+
+    current_count = int(current_count)
+
+    if current_count >= max_attempts:
+        # Rate limit exceeded
+        return False, current_count, ttl if ttl > 0 else window_seconds
+
+    # Increment counter
+    new_count = r.incr(rate_limit_key)
+    return True, new_count, ttl if ttl > 0 else window_seconds
+
+
+def check_login_rate_limit(request: Request) -> Tuple[bool, int]:
+    """
+    Check login rate limit: 30 attempts per 5 minutes per IP.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    ip = get_client_ip(request)
+    key = f"login:{ip}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=30,
+        window_seconds=5 * 60  # 5 minutes
+    )
+
+    return is_allowed, retry_after
+
+
+def check_signup_rate_limit(request: Request) -> Tuple[bool, int]:
+    """
+    Check signup rate limit: 10 attempts per hour per IP.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    ip = get_client_ip(request)
+    key = f"signup:{ip}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=10,
+        window_seconds=60 * 60  # 1 hour
+    )
+
+    return is_allowed, retry_after
+
+
+def check_verification_resend_rate_limit(email: str) -> Tuple[bool, int]:
+    """
+    Check verification email resend rate limit: 5 attempts per 5 minutes per email.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    key = f"verify_resend:{email.lower()}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=5,
+        window_seconds=5 * 60  # 5 minutes
+    )
+
+    return is_allowed, retry_after
+
+
+def check_refresh_rate_limit(request: Request) -> Tuple[bool, int]:
+    """
+    Check token refresh rate limit: 60 attempts per minute per IP.
+    This prevents brute-force attacks on the refresh endpoint.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    ip = get_client_ip(request)
+    key = f"refresh:{ip}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=60,
+        window_seconds=60  # 1 minute
+    )
+
+    return is_allowed, retry_after
+
+
+def check_api_token_rate_limit(request: Request) -> Tuple[bool, int]:
+    """
+    Check API token creation/regeneration rate limit: 10 per hour per IP.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    ip = get_client_ip(request)
+    key = f"api_token:{ip}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=10,
+        window_seconds=60 * 60  # 1 hour
+    )
+
+    return is_allowed, retry_after
+
+
+def check_password_reset_rate_limit(email: str) -> Tuple[bool, int]:
+    """
+    Check password reset verification rate limit: 5 attempts per 5 minutes per email.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    key = f"password_reset:{email.lower()}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=5,
+        window_seconds=5 * 60  # 5 minutes
+    )
+
+    return is_allowed, retry_after
+
+
+def check_webhook_mutation_rate_limit(
+    org_id: int,
+    action: str = "create",
+) -> Tuple[bool, int]:
+    """
+    Rate limit webhook endpoint creation/update/test at 20/hour per org.
+    Webhook endpoints are a fan-out primitive, so without a ceiling a
+    compromised admin can create hundreds and use ``/test`` as an outbound
+    bandwidth amplifier.
+    """
+    key = f"webhook_{action}:{org_id}"
+    is_allowed, _count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=20,
+        window_seconds=60 * 60,  # 1 hour
+    )
+    return is_allowed, retry_after
+
+
+def check_invite_acceptance_rate_limit(request: Request, org_id: int) -> Tuple[bool, int]:
+    """
+    Rate limit invite-code acceptance at 20 attempts / 15 minutes per IP+org.
+    Deters brute-force against 8-char alphanumeric invite codes.
+    """
+    ip = get_client_ip(request)
+    key = f"invite_accept:{org_id}:{ip}"
+    is_allowed, _count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=20,
+        window_seconds=15 * 60,
+    )
+    return is_allowed, retry_after
+
+
+def check_search_rate_limit(user_id: int) -> Tuple[bool, int]:
+    """
+    Rate limit search queries at 60/min per authenticated user. Search hits
+    full-text indexes and scales poorly under sustained load from one session.
+    """
+    key = f"search:{user_id}"
+    is_allowed, _count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=60,
+        window_seconds=60,
+    )
+    return is_allowed, retry_after
+
+
+def check_admin_user_provision_rate_limit(api_token_id: int) -> Tuple[bool, int]:
+    """
+    Rate limit admin-API user provisioning at 30/min per API token.
+
+    Provisioning creates DB rows, increments member usage (billing-relevant),
+    and fires webhooks/analytics. Without a cap, a leaked or buggy integration
+    can fan out resource creation and exhaust limits for the org.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    key = f"admin_user_provision:{api_token_id}"
+    is_allowed, _count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=30,
+        window_seconds=60,
+    )
+    return is_allowed, retry_after
+
+
+def check_admin_user_lookup_rate_limit(api_token_id: int) -> Tuple[bool, int]:
+    """
+    Rate limit admin-API user lookups by email at 60/min per API token.
+
+    The endpoint returns 404 for "not in org" and 200 for "in org", which is
+    useful to legitimate integrations but also a bulk-enumeration oracle if
+    a token leaks. The cap limits blast radius.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    key = f"admin_user_lookup:{api_token_id}"
+    is_allowed, _count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=60,
+        window_seconds=60,  # 60/min per token
+    )
+    return is_allowed, retry_after
+
+
+def check_email_verification_rate_limit(email: str) -> Tuple[bool, int]:
+    """
+    Check email verification rate limit: 5 attempts per 5 minutes per email.
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds)
+    """
+    key = f"email_verify:{email.lower()}"
+
+    is_allowed, count, retry_after = check_rate_limit(
+        key=key,
+        max_attempts=5,
+        window_seconds=5 * 60  # 5 minutes
+    )
+
+    return is_allowed, retry_after
+
+
+# AI endpoint rate-limit tunables. Exposed as module-level constants so tests
+# can monkeypatch them without touching the bucket semantics.
+AI_USER_MAX_REQUESTS_PER_MINUTE = 30
+AI_ORG_MAX_REQUESTS_PER_MINUTE = 120
+AI_RATE_LIMIT_WINDOW_SECONDS = 60
+
+
+def check_ai_rate_limit(user_id: int, org_id: int) -> Tuple[bool, int]:
+    """
+    Per-user AND per-org sliding-window rate limit for AI endpoints.
+
+    AI routes consume real model spend and provider capacity. Credits alone
+    don't prevent a single authenticated user from saturating workers — they
+    throttle spend, not concurrency. This guard enforces both a per-user
+    ceiling (to stop a single actor from exhausting capacity) and a per-org
+    ceiling (to protect multi-tenant fairness).
+
+    Returns:
+        Tuple of (is_allowed, retry_after_seconds). ``retry_after`` reflects
+        whichever bucket denied the request, so the client's Retry-After
+        header is always honoured.
+    """
+    user_allowed, _user_count, user_retry = check_rate_limit(
+        key=f"ai:user:{user_id}",
+        max_attempts=AI_USER_MAX_REQUESTS_PER_MINUTE,
+        window_seconds=AI_RATE_LIMIT_WINDOW_SECONDS,
+    )
+    if not user_allowed:
+        return False, user_retry
+
+    org_allowed, _org_count, org_retry = check_rate_limit(
+        key=f"ai:org:{org_id}",
+        max_attempts=AI_ORG_MAX_REQUESTS_PER_MINUTE,
+        window_seconds=AI_RATE_LIMIT_WINDOW_SECONDS,
+    )
+    if not org_allowed:
+        return False, org_retry
+
+    return True, AI_RATE_LIMIT_WINDOW_SECONDS
+
+
+def enforce_ai_rate_limit(user_id: int, org_id: int) -> None:
+    """
+    Raise HTTP 429 with a Retry-After header if the per-user OR per-org AI
+    rate limit is exceeded. Uses the existing rate-limit error envelope
+    ({"code":"RATE_LIMITED","message":...,"retry_after":...}) so the
+    frontend can reuse its existing 429 handler without any change.
+    """
+    is_allowed, retry_after = check_ai_rate_limit(user_id, org_id)
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "code": "RATE_LIMITED",
+                "message": "Too many AI requests. Please slow down.",
+                "retry_after": retry_after,
+            },
+            headers={"Retry-After": str(retry_after)},
+        )
+
+
+def increment_rate_limit(key: str, window_seconds: int) -> None:
+    """
+    Increment a rate limit counter for tracking purposes.
+    Used when we want to count an action without checking.
+    """
+    r = get_redis_connection()
+    rate_limit_key = f"rate_limit:{key}"
+
+    if r.exists(rate_limit_key):
+        r.incr(rate_limit_key)
+    else:
+        r.setex(rate_limit_key, window_seconds, 1)
