@@ -69,3 +69,6 @@ apps/api/ee
 
 # Git worktrees
 .worktrees/
+
+# custom ignore
+apps/api/config/config.yaml
