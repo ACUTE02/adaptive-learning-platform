@@ -122,7 +122,13 @@ This spins up PostgreSQL and Redis, installs dependencies, and starts the API, W
 
 ## 📸 Demo
 
-*(Add screenshots or a demo video here showcasing the Dashboard, AI Course Generator, Retention Graph, and Remediation Workflow)*
+
+
+https://github.com/user-attachments/assets/2ebf8acf-c8fa-4750-a847-0797b05b4819
+
+
+
+
 
 ---
 
