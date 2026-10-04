@@ -150,24 +150,6 @@ def _install_stub_modules(monkeypatch: pytest.MonkeyPatch) -> None:
     sys.modules["src.routers.orgs"].packs = sys.modules["src.routers.orgs.packs"]
 
     install_router_module(
-    )
-    install_router_module(
-    )
-    install_router_module(
-    )
-    install_router_module(
-    )
-    install_router_module(
-    )
-    ]
-    ]
-    ]
-    ]
-    ]
-    ]
-    ]
-
-    install_router_module(
         "src.routers.communities.communities", "src.routers.communities.communities"
     )
     install_router_module(
