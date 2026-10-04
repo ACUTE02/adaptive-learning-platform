@@ -1,4 +1,4 @@
-﻿"""
+"""
 Extra router tests for src/routers/users.py.
 
 This file intentionally avoids the profile/read-by-id/read-by-uuid/read-by-username
@@ -64,30 +64,6 @@ def _mock_user_session(**overrides) -> UserSession:
     data = dict(user=_mock_user_read(), roles=[])
     data.update(overrides)
     return UserSession(**data)
-
-
-def _mock_course_read(**overrides) -> CourseRead:
-    data = dict(
-        id=1,
-        name="Test Course",
-        description="A course",
-        about="About",
-        learnings="Learn",
-        tags="tag1,tag2",
-        public=True,
-        published=False,
-        open_to_contributors=False,
-        org_id=1,
-        authors=[],
-        course_uuid="course_test",
-        creation_date="2024-01-01",
-        update_date="2024-01-01",
-        thumbnail_image="",
-        thumbnail_video="",
-        seo=None,
-    )
-    data.update(overrides)
-    return CourseRead(**data)
 
 
 class TestSessionEndpoint:
@@ -555,19 +531,3 @@ class TestPasswordResetEndpoints:
 
         assert response.status_code == 429
         assert "too many password reset attempts" in response.json()["detail"].lower()
-
-
-class TestUserCoursesEndpoint:
-    async def test_get_user_courses(self, client):
-        with patch(
-            "src.routers.users.get_user_courses",
-            new_callable=AsyncMock,
-            return_value=[_mock_course_read()],
-        ) as courses_mock:
-            response = await client.get("/api/v1/users/1/courses?page=2&limit=5")
-
-        assert response.status_code == 200
-        body = response.json()
-        assert len(body) == 1
-        assert body[0]["course_uuid"] == "course_test"
-        courses_mock.assert_awaited_once()

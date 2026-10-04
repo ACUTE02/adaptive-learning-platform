@@ -780,8 +780,11 @@ async def get_list_of_invited_users(
             detail="Organization not found",
         )
 
-    # RBAC check
-    await rbac_check(request, org.org_uuid, current_user, "read", db_session)
+    # SECURITY: rbac_check treats "read" on an organization as public (the
+    # organization itself is readable by anyone), so a "read" check here let
+    # anonymous callers list the e-mail addresses of every pending invitee.
+    # Listing invitees is an administrative action, like listing invite codes.
+    await rbac_check(request, org.org_uuid, current_user, "update", db_session)
 
     # Connect to Redis
     r = redis.Redis.from_url(redis_conn_string)

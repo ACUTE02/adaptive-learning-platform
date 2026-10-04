@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "Reportar problema ou feedback",
       "feedback_title": "Enviar Feedback",
-      "feedback_description": "Ajude-nos a melhorar o LearnHouse compartilhando suas opiniões, reportando bugs ou sugerindo novos recursos.",
+      "feedback_description": "Ajude-nos a melhorar o Abhyas compartilhando suas opiniões, reportando bugs ou sugerindo novos recursos.",
       "feedback_placeholder": "Diga-nos o que você está pensando...",
       "feedback_success": "Obrigado pelo seu feedback!",
       "send_feedback": "Enviar Feedback",
@@ -514,14 +514,14 @@
     "import": {
       "scorm_package": "Pacote SCORM",
       "scorm_description": "Importar pacotes SCORM 1.2 ou SCORM 2004",
-      "learnhouse_courses": "Cursos LearnHouse",
-      "learnhouse_description": "Importar cursos exportados do LearnHouse",
+      "learnhouse_courses": "Cursos Abhyas",
+      "learnhouse_description": "Importar cursos exportados do Abhyas",
       "upload_package": "Enviar Pacote",
       "configure": "Configurar",
       "complete": "Concluído",
       "click_to_upload": "Clique para enviar ou arraste e solte",
-      "learnhouse_format": "Exportação de curso LearnHouse (.zip)",
-      "learnhouse_info": "Envie um pacote de exportação de cursos LearnHouse (.zip). Você poderá selecionar quais cursos importar e configurar as opções de importação.",
+      "learnhouse_format": "Exportação de curso Abhyas (.zip)",
+      "learnhouse_info": "Envie um pacote de exportação de cursos Abhyas (.zip). Você poderá selecionar quais cursos importar e configurar as opções de importação.",
       "analyze_package": "Analisar Pacote",
       "ready_to_analyze": "Pronto para analisar",
       "invalid_file_format": "Por favor, envie um arquivo .zip",
@@ -1419,8 +1419,8 @@
       "import_course": "Importar curso",
       "import_scorm": "Importar Pacote SCORM",
       "import_scorm_description": "Importar um pacote SCORM para criar um novo curso",
-      "import_learnhouse": "Importar Cursos LearnHouse",
-      "import_learnhouse_description": "Importar cursos de um pacote de exportação LearnHouse",
+      "import_learnhouse": "Importar Cursos Abhyas",
+      "import_learnhouse_description": "Importar cursos de um pacote de exportação Abhyas",
       "import_select_type": "Selecione o tipo de pacote que deseja importar",
       "no_courses": "Nenhum curso ainda",
       "create_course_placeholder": "Crie um curso para adicionar conteúdo",
@@ -2241,8 +2241,8 @@
         "label_placeholder": "Selecione o rótulo da organização",
         "about": "Sobre a Organização",
         "about_placeholder": "Descrição detalhada da sua organização",
-        "showcase_explore": "Exibir no LearnHouse Explore",
-        "showcase_description": "Compartilhe os cursos e conteúdos da sua organização com a comunidade LearnHouse. Ative isso para ajudar os alunos a descobrir seus valiosos recursos educacionais.",
+        "showcase_explore": "Exibir no Abhyas Explore",
+        "showcase_description": "Compartilhe os cursos e conteúdos da sua organização com a comunidade Abhyas. Ative isso para ajudar os alunos a descobrir seus valiosos recursos educacionais.",
         "save_changes": "Salvar Alterações",
         "saving": "Salvando...",
         "update_success": "Organização Atualizada",
@@ -2253,9 +2253,9 @@
         "footer_text_desc": "Texto personalizado exibido na parte inferior das páginas da sua organização",
         "default_language": "Idioma padrão",
         "default_language_desc": "O idioma que novos visitantes veem por padrão e o idioma usado nos e-mails enviados em nome desta organização. Os membros ainda podem alterar o seu próprio idioma de interface.",
-        "watermark_desc": "Mostrar marca d'água LearnHouse nas páginas da organização",
+        "watermark_desc": "Mostrar marca d'água Abhyas nas páginas da organização",
         "watermark_free_plan": "A marca d'água é sempre exibida no plano gratuito",
-        "watermark_label": "Marca d'água \"Made with LearnHouse\"",
+        "watermark_label": "Marca d'água \"Made with Abhyas\"",
         "watermark_ee": "Oculto pela sua licença Enterprise Edition"
       },
       "images": {
@@ -4600,7 +4600,7 @@
       },
       "teach_the_world": {
         "title": "Aprenda e cresça",
-        "description": "Recursos para ajudá-lo a aproveitar ao máximo o LearnHouse.",
+        "description": "Recursos para ajudá-lo a aproveitar ao máximo o Abhyas.",
         "classroom": "A sala de aula",
         "classroom_desc": "Aprenda a expandir e gerenciar seus cursos",
         "university": "Universidade LearnHouse",
@@ -4608,7 +4608,7 @@
       }
     },
     "welcome": {
-      "title": "Bem-vindo ao LearnHouse",
+      "title": "Bem-vindo ao Abhyas",
       "subtitle": "Crie cursos, convide alunos e compartilhe conhecimento com o mundo.",
       "get_started": "Começar",
       "features_title": "Tudo o que você precisa",
@@ -4900,7 +4900,7 @@
   "embed": {
     "not_supported_description": "Este tipo de atividade requer autenticação e não pode ser incorporado.",
     "not_supported_title": "Esta atividade não é suportada",
-    "powered_by": "Desenvolvido com LearnHouse",
+    "powered_by": "Desenvolvido com Abhyas",
     "visit_activity": "Visitar página da atividade"
   },
   "migration": {

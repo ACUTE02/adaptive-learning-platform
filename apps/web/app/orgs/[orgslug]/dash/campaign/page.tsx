@@ -5,11 +5,11 @@ import { useAuth } from '@components/Contexts/AuthContext';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import toast from 'react-hot-toast';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { engineFetch, engineErrorMessage } from '@services/engine/engine';
 
 export default function CampaignModePage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const targetId = searchParams.get('id');
   const [activeCampaign, setActiveCampaign] = useState<any>(null);
   const [modules, setModules] = useState<any[]>([]);
@@ -22,16 +22,16 @@ export default function CampaignModePage() {
   const [chatInput, setChatInput] = useState("");
   const [isChatLoading, setIsChatLoading] = useState(false);
 
-  const { session } = useAuth();
-  const userId = session?.user?.email || session?.user?.id || session?.id || "unknown_user";
+  // The server identifies the student from the session; no user id is sent.
+  const { accessToken, status } = useAuth();
+  const isAuthenticated = status === 'authenticated';
 
   // Fetch active campaign on mount
   React.useEffect(() => {
     async function fetchActiveCampaign() {
       try {
-        let url = `/api/v1/engine/campaigns/active?user_id=${userId}`;
-        if (targetId) url += `&campaign_id=${targetId}`;
-        const res = await fetch(url);
+        const query = targetId ? `?campaign_id=${encodeURIComponent(targetId)}` : '';
+        const res = await engineFetch(`campaigns/active${query}`, accessToken);
         if (res.ok) {
           const data = await res.json();
           if (data.campaign && data.modules.length > 0) {
@@ -39,15 +39,18 @@ export default function CampaignModePage() {
             setModules(data.modules);
             setSyllabus(data.campaign.syllabus_text || "");
           }
+        } else {
+          setError(await engineErrorMessage(res, "Your campaign could not be loaded."));
         }
       } catch (err) {
         console.error("Failed to load active campaign", err);
+        setError("Your campaign could not be loaded. Check your connection and reload the page.");
       }
     }
-    if (userId && userId !== "unknown_user") {
+    if (isAuthenticated) {
       fetchActiveCampaign();
     }
-  }, [userId, targetId]);
+  }, [isAuthenticated, accessToken, targetId]);
 
   // Restore or initialize chat from local storage
   React.useEffect(() => {
@@ -59,17 +62,17 @@ export default function CampaignModePage() {
           setMessages(JSON.parse(cached));
         } catch (e) {
           setMessages([
-            { 
-              role: 'ai', 
-              text: `Welcome to ${activeModule.title}. I'll be your tutor for this module. We'll take this step-by-step. To get started, how familiar are you with this topic?` 
+            {
+              role: 'ai',
+              text: `Welcome to ${activeModule.title}. I'll be your tutor for this module. We'll take this step-by-step. To get started, how familiar are you with this topic?`
             }
           ]);
         }
       } else {
         setMessages([
-          { 
-            role: 'ai', 
-            text: `Welcome to ${activeModule.title}. I'll be your tutor for this module. We'll take this step-by-step. To get started, how familiar are you with this topic?` 
+          {
+            role: 'ai',
+            text: `Welcome to ${activeModule.title}. I'll be your tutor for this module. We'll take this step-by-step. To get started, how familiar are you with this topic?`
           }
         ]);
       }
@@ -86,7 +89,7 @@ export default function CampaignModePage() {
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!chatInput.trim()) return;
+    if (!chatInput.trim() || isChatLoading || !activeModule) return;
 
     const userText = chatInput;
     // Add user message
@@ -102,33 +105,27 @@ export default function CampaignModePage() {
       }));
       recentMessages.push({ role: 'user', content: userText });
 
-      const res = await fetch(`/api/v1/engine/roadmap/chat`, {
+      // The tutor's instructions are loaded on the server from this module.
+      const res = await engineFetch(`roadmap/chat`, accessToken, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: recentMessages,
-          teaching_prompt: activeModule?.teaching_prompt || "You are a helpful tutor.",
-          subtopics: (() => {
-            try {
-              if (typeof activeModule?.subtopics === 'string') return JSON.parse(activeModule.subtopics);
-              if (Array.isArray(activeModule?.subtopics)) return activeModule.subtopics;
-              return [];
-            } catch (e) {
-              return [];
-            }
-          })()
+          module_id: activeModule.id,
+          messages: recentMessages.map(m => ({ ...m, content: m.content.slice(0, 4000) })),
         })
       });
 
       if (!res.ok) {
-        throw new Error("Failed to get chat response");
+        throw new Error(await engineErrorMessage(res, "The AI tutor could not reply. Please send your message again."));
       }
-      
+
       const data = await res.json();
       setMessages(prev => [...prev, { role: 'ai', text: data.reply }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: 'ai', text: "Sorry, I am having trouble connecting to the network right now." }]);
+      // Shown as a toast, not stored as a tutor message, so it is never sent back to the model as history.
+      toast.error(error?.message || "The AI tutor could not reply. Please send your message again.");
+      setChatInput(userText);
+      setMessages(prev => prev.slice(0, -1));
     } finally {
       setIsChatLoading(false);
     }
@@ -145,32 +142,19 @@ export default function CampaignModePage() {
     if (!syllabus.trim()) return;
     setIsGenerating(true);
     setError(null);
-    
+
     try {
-      const res = await fetch(`/api/v1/engine/roadmap/generate`, {
+      const res = await engineFetch(`roadmap/generate`, accessToken, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          syllabus_text: syllabus,
-          student_id: userId
-        }),
+        body: JSON.stringify({ syllabus_text: syllabus }),
       });
 
       if (!res.ok) {
-        let errorMsg = "Failed to generate campaign";
-        try {
-          const errorData = await res.json();
-          if (errorData.detail) errorMsg = errorData.detail;
-        } catch (e) {
-          // ignore parsing error
-        }
-        throw new Error(errorMsg);
+        throw new Error(await engineErrorMessage(res, "Failed to generate campaign"));
       }
 
       const data = await res.json();
-      const activeRes = await fetch(`/api/v1/engine/campaigns/active?user_id=${userId}`);
+      const activeRes = await engineFetch(`campaigns/active?campaign_id=${data.campaign_id}`, accessToken);
       if (activeRes.ok) {
         const activeData = await activeRes.json();
         setActiveCampaign(activeData.campaign);
@@ -194,8 +178,9 @@ export default function CampaignModePage() {
       <div className="min-h-full w-full p-6 md:p-10 bg-gray-50/50 dark:bg-zinc-950 flex flex-col">
         <div className="w-full max-w-7xl mx-auto flex flex-col h-full flex-grow">
           <div className="flex items-center gap-4 mb-8">
-            <button 
+            <button
               onClick={resetStudyRoom}
+              aria-label="Back to campaign"
               className="p-2 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded-xl transition-colors text-gray-500 dark:text-gray-400"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -206,12 +191,11 @@ export default function CampaignModePage() {
               {activeModule.title}
             </h1>
           </div>
-          
+
           <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 bg-white dark:bg-zinc-900 rounded-3xl flex flex-col border border-gray-100 dark:border-zinc-800 shadow-2xl min-h-[600px] relative overflow-hidden">
               {sessionState === 'idle' ? (
                 <div className="flex-grow flex flex-col items-center justify-center text-center p-8 bg-gray-900">
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 mix-blend-overlay pointer-events-none"></div>
                   <div className="w-20 h-20 mb-6 rounded-full bg-indigo-500/20 flex items-center justify-center relative z-10">
                     <svg className="w-10 h-10 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -226,10 +210,10 @@ export default function CampaignModePage() {
                   <div className="flex-grow overflow-y-auto p-6 flex flex-col gap-6">
                     {messages.map((msg, idx) => (
                       <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div 
+                        <div
                           className={`max-w-[80%] p-4 rounded-2xl ${
-                            msg.role === 'user' 
-                              ? 'bg-indigo-600 text-white rounded-br-none shadow-md shadow-indigo-500/20' 
+                            msg.role === 'user'
+                              ? 'bg-indigo-600 text-white rounded-br-none shadow-md shadow-indigo-500/20'
                               : 'bg-white dark:bg-zinc-800 text-gray-800 dark:text-gray-200 rounded-bl-none shadow-sm border border-gray-100 dark:border-zinc-700/50'
                           }`}
                         >
@@ -245,7 +229,7 @@ export default function CampaignModePage() {
                         </div>
                       </div>
                     ))}
-                    
+
                     {isChatLoading && (
                       <div className="flex justify-start">
                         <div className="max-w-[80%] p-4 rounded-2xl bg-white dark:bg-zinc-800 text-gray-800 dark:text-gray-200 rounded-bl-none shadow-sm border border-gray-100 dark:border-zinc-700/50 flex items-center gap-2">
@@ -259,7 +243,7 @@ export default function CampaignModePage() {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Chat Input Area */}
                   <div className="p-4 bg-white dark:bg-zinc-900 border-t border-gray-100 dark:border-zinc-800">
                     <form onSubmit={handleSendMessage} className="relative flex items-center">
@@ -268,10 +252,13 @@ export default function CampaignModePage() {
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
                         placeholder="Type your message..."
+                        aria-label="Message to the AI tutor"
+                        maxLength={4000}
                         className="w-full py-4 pl-6 pr-14 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
                       />
                       <button
                         type="submit"
+                        aria-label="Send message"
                         disabled={!chatInput.trim() || isChatLoading}
                         className="absolute right-2 p-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:dark:bg-zinc-700 text-white rounded-full transition-colors"
                       >
@@ -284,16 +271,16 @@ export default function CampaignModePage() {
                 </div>
               )}
             </div>
-            
+
             <div className="lg:col-span-1 bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-100 dark:border-zinc-800 shadow-sm flex flex-col relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 to-violet-500"></div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Module Overview</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-8 flex-grow leading-relaxed">
                 {activeModule.description}
               </p>
-              
+
               <div className="flex flex-col gap-4 mt-auto">
-                <button 
+                <button
                   onClick={() => setSessionState('studying')}
                   disabled={sessionState === 'studying'}
                   className="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-2xl shadow-lg shadow-indigo-500/30 disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2 group"
@@ -346,8 +333,10 @@ export default function CampaignModePage() {
             <p className="text-gray-500 dark:text-gray-400 mb-6">
               Paste your syllabus or type your study goals below. Our AI will architect a custom learning roadmap for you.
             </p>
-            
+
             <textarea
+              aria-label="Syllabus or study goals"
+              maxLength={20000}
               className="w-full min-h-[200px] p-5 rounded-2xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 resize-y mb-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Paste your syllabus or topic here... e.g. I want to learn about Neural Networks and Computer Vision."
               value={syllabus}
@@ -356,7 +345,7 @@ export default function CampaignModePage() {
             />
 
             {error && (
-              <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 flex items-start gap-3">
+              <div role="alert" className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 flex items-start gap-3">
                 <svg className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -395,7 +384,15 @@ export default function CampaignModePage() {
             <div className="absolute left-[24px] top-8 bottom-8 w-1 bg-gray-200 dark:bg-zinc-800 rounded-full transform -translate-x-1/2"></div>
 
             <div className="flex flex-col gap-8 md:gap-10">
-            {modules.filter(m => !m.title.includes('Remediation') && !m.title.toLowerCase().includes('capstone')).map((module, index) => {
+            {/* One card per roadmap slot. After a failed assessment the slot shows its
+                newest remediation module, so the simplified material is what gets studied. */}
+            {Object.values(
+              modules.reduce((slots: Record<number, any>, m: any) => {
+                const current = slots[m.order_index];
+                if (!current || m.id > current.id) slots[m.order_index] = m;
+                return slots;
+              }, {})
+            ).sort((a: any, b: any) => a.order_index - b.order_index).map((module: any, index: number) => {
               // User explicitly requested: NO change when completed, everything always purple/active
               const isCompleted = false;
               const isActive = true;
@@ -518,7 +515,7 @@ export default function CampaignModePage() {
                       </div>
 
                       {isActive && (
-                        <button 
+                        <button
                           onClick={() => setActiveModule(module)}
                           className="flex-shrink-0 w-full lg:w-auto px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-2xl shadow-lg shadow-indigo-500/30 transition-all active:scale-95 flex items-center justify-center gap-2 group/btn"
                         >

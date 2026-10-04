@@ -1,10 +1,13 @@
+<p align="center"><em>Abhyas is built on the open-source <a href="https://github.com/learnhouse/learnhouse">LearnHouse</a> platform.</em></p>
+
 <p align="center">
-  <a href="https://learnhouse.app">
-    <img src=".github/images/learnhouse-github.png" alt="LearnHouse" width="600" />
-  </a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/web/public/brand/abhyas-logo-light.png" />
+    <img src="apps/web/public/brand/abhyas-logo-dark.png" alt="Abhyas - Adaptive Learning" width="420" />
+  </picture>
 </p>
 
-<h1 align="center">🧠 Adaptive AI Learning Platform</h1>
+<h1 align="center">🧠 Abhyas — Adaptive Learning</h1>
 <h3 align="center">An Intelligent Learning Management System powered by Large Language Models (LLMs), Dynamic Difficulty Adjustment, and the Ebbinghaus Forgetting Curve.</h3>
 
 <p align="center">
@@ -14,7 +17,7 @@
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript" />
   <img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql" />
   <img src="https://img.shields.io/badge/Gemini-LLM-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-AGPL--3.0-success?style=for-the-badge" />
 </p>
 
 ---
@@ -139,7 +142,9 @@ https://github.com/user-attachments/assets/2ebf8acf-c8fa-4750-a847-0797b05b4819
 
 ## 📜 License
 
-This project features the MIT License for custom modifications. The core LearnHouse enterprise/open-source features remain under their respective [AGPL-3.0 License](https://github.com/learnhouse/learnhouse/blob/main/LICENSE).
+Abhyas is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE), the same license as the LearnHouse platform it is built on.
+
+Source code: [github.com/ACUTE02/adaptive-learning-platform](https://github.com/ACUTE02/adaptive-learning-platform)
 
 <div align="center">
   <h3><em>"Learning that evolves with every student."</em></h3>

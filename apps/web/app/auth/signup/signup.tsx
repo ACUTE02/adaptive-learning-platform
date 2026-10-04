@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AlertTriangle, CheckCircle, Loader2, Mail, Ticket, UserPlus, X } from 'lucide-react'
 import { useOrg } from '@components/Contexts/OrgContext'
 import UserAvatar from '@components/Objects/UserAvatar'
+import AuthFormLogo from '@components/Auth/AuthFormLogo'
 import OpenSignUpComponent from './OpenSignup'
 import InviteOnlySignUpComponent from './InviteOnlySignUp'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -15,7 +16,7 @@ import AuthLayout from '@components/Auth/AuthLayout'
 import FormLayout, {
   FormField,
   FormLabelAndMessage,
-  Input,
+  AuthInput as Input,
 } from '@components/Objects/StyledElements/Form/Form'
 import * as Form from '@radix-ui/react-form'
 
@@ -144,6 +145,7 @@ const LoggedInJoinScreen = ({ inviteCode, org }: JoinScreenProps) => {
 
       <div className="flex-1 flex flex-row">
         <div className="m-auto w-full max-w-sm px-6 py-8 sm:py-0">
+          <AuthFormLogo align="center" />
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-gray-900">{t('auth.join_organization')}</h1>
@@ -260,6 +262,7 @@ const NoTokenScreen = ({ org }: NoTokenScreenProps) => {
 
       <div className="flex-1 flex flex-row">
         <div className="m-auto w-full max-w-sm px-6 py-8 sm:py-0">
+          <AuthFormLogo align="center" />
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-gray-900">{t('auth.invite_required')}</h1>

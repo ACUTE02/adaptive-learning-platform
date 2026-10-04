@@ -5,10 +5,11 @@ import React, { useEffect } from 'react'
 import FormLayout, {
   FormField,
   FormLabelAndMessage,
-  Input,
-  Textarea,
+  AuthInput as Input,
+  AuthTextarea as Textarea,
 } from '@components/Objects/StyledElements/Form/Form'
 import * as Form from '@radix-ui/react-form'
+import AuthFormLogo from '@components/Auth/AuthFormLogo'
 import { AlertTriangle, Mail, User } from 'lucide-react'
 import Link from 'next/link'
 import { signUpWithInviteCode } from '@services/auth/auth'
@@ -114,6 +115,7 @@ function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
 
   return (
     <div className="m-auto w-full max-w-sm px-6 py-8 sm:py-0">
+      <AuthFormLogo />
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">{t('auth.create_account')}</h1>

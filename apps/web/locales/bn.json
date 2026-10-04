@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "সমস্যা বা মতামত জানান",
       "feedback_title": "মতামত পাঠান",
-      "feedback_description": "আপনার মতামত শেয়ার করে, বাগ রিপোর্ট করে, অথবা নতুন ফিচার সাজেস্ট করে LearnHouse উন্নত করতে সাহায্য করুন।",
+      "feedback_description": "আপনার মতামত শেয়ার করে, বাগ রিপোর্ট করে, অথবা নতুন ফিচার সাজেস্ট করে Abhyas উন্নত করতে সাহায্য করুন।",
       "feedback_placeholder": "আপনার মনে কী আছে বলুন...",
       "feedback_success": "আপনার মতামতের জন্য ধন্যবাদ!",
       "send_feedback": "মতামত পাঠান",
@@ -537,14 +537,14 @@
     "import": {
       "scorm_package": "SCORM প্যাকেজ",
       "scorm_description": "SCORM 1.2 বা SCORM 2004 প্যাকেজ আমদানি করুন",
-      "learnhouse_courses": "LearnHouse কোর্স",
-      "learnhouse_description": "LearnHouse থেকে রপ্তানি করা কোর্স আমদানি করুন",
+      "learnhouse_courses": "Abhyas কোর্স",
+      "learnhouse_description": "Abhyas থেকে রপ্তানি করা কোর্স আমদানি করুন",
       "upload_package": "প্যাকেজ আপলোড করুন",
       "configure": "কনফিগার করুন",
       "complete": "সম্পূর্ণ",
       "click_to_upload": "আপলোড করতে ক্লিক করুন বা টেনে আনুন",
-      "learnhouse_format": "LearnHouse কোর্স রপ্তানি (.zip)",
-      "learnhouse_info": "LearnHouse কোর্স রপ্তানি প্যাকেজ (.zip) আপলোড করুন। আপনি কোন কোর্স আমদানি করবেন তা নির্বাচন করতে এবং আমদানি বিকল্পগুলি কনফিগার করতে পারবেন।",
+      "learnhouse_format": "Abhyas কোর্স রপ্তানি (.zip)",
+      "learnhouse_info": "Abhyas কোর্স রপ্তানি প্যাকেজ (.zip) আপলোড করুন। আপনি কোন কোর্স আমদানি করবেন তা নির্বাচন করতে এবং আমদানি বিকল্পগুলি কনফিগার করতে পারবেন।",
       "analyze_package": "প্যাকেজ বিশ্লেষণ করুন",
       "ready_to_analyze": "বিশ্লেষণের জন্য প্রস্তুত",
       "invalid_file_format": "অনুগ্রহ করে একটি .zip ফাইল আপলোড করুন",
@@ -1442,8 +1442,8 @@
       "import_course": "কোর্স আমদানি করুন",
       "import_scorm": "SCORM প্যাকেজ আমদানি করুন",
       "import_scorm_description": "নতুন কোর্স তৈরি করতে SCORM প্যাকেজ আমদানি করুন",
-      "import_learnhouse": "LearnHouse কোর্স আমদানি করুন",
-      "import_learnhouse_description": "LearnHouse রপ্তানি প্যাকেজ থেকে কোর্স আমদানি করুন",
+      "import_learnhouse": "Abhyas কোর্স আমদানি করুন",
+      "import_learnhouse_description": "Abhyas রপ্তানি প্যাকেজ থেকে কোর্স আমদানি করুন",
       "import_select_type": "আমদানি করতে প্যাকেজের ধরন নির্বাচন করুন",
       "no_courses": "এখনও কোনো কোর্স নেই",
       "create_course_placeholder": "কন্টেন্ট যোগ করতে কোর্স তৈরি করুন",
@@ -2274,9 +2274,9 @@
         "footer_text_desc": "আপনার সংস্থার পৃষ্ঠাগুলির নীচে প্রদর্শিত কাস্টম টেক্সট",
         "default_language": "ডিফল্ট ভাষা",
         "default_language_desc": "নতুন ভিজিটররা ডিফল্টভাবে যে ভাষায় সাইটটি দেখেন এবং এই সংস্থার পক্ষ থেকে পাঠানো ইমেইলে যে ভাষা ব্যবহৃত হয়। সদস্যরা এখনও নিজেদের UI ভাষা পরিবর্তন করতে পারেন।",
-        "watermark_desc": "আপনার সংস্থা পেজে LearnHouse ব্র্যান্ডিং ওয়াটারমার্ক দেখান",
+        "watermark_desc": "আপনার সংস্থা পেজে Abhyas ব্র্যান্ডিং ওয়াটারমার্ক দেখান",
         "watermark_free_plan": "ফ্রি প্ল্যানে ওয়াটারমার্ক সর্বদা প্রদর্শিত হয়",
-        "watermark_label": "\"Made with LearnHouse\" ওয়াটারমার্ক",
+        "watermark_label": "\"Made with Abhyas\" ওয়াটারমার্ক",
         "watermark_ee": "আপনার এন্টারপ্রাইজ এডিশন লাইসেন্স দ্বারা লুকানো"
       },
       "images": {
@@ -4801,7 +4801,7 @@
       },
       "teach_the_world": {
         "title": "শিখুন ও বেড়ে উঠুন",
-        "description": "LearnHouse থেকে সর্বাধিক সুবিধা পেতে সহায়ক রিসোর্স।",
+        "description": "Abhyas থেকে সর্বাধিক সুবিধা পেতে সহায়ক রিসোর্স।",
         "classroom": "ক্লাসরুম",
         "classroom_desc": "আপনার কোর্স বৃদ্ধি ও পরিচালনা করতে শিখুন",
         "university": "LearnHouse বিশ্ববিদ্যালয়",
@@ -4809,7 +4809,7 @@
       }
     },
     "welcome": {
-      "title": "LearnHouse-এ স্বাগতম",
+      "title": "Abhyas-এ স্বাগতম",
       "subtitle": "কোর্স তৈরি করুন, শিক্ষার্থীদের আমন্ত্রণ জানান এবং বিশ্বের সাথে জ্ঞান ভাগ করুন।",
       "get_started": "শুরু করুন",
       "features_title": "আপনার যা দরকার সব আছে",
@@ -4845,7 +4845,7 @@
   "embed": {
     "not_supported_description": "এই ধরনের কার্যক্রমের জন্য অথেন্টিকেশন প্রয়োজন এবং এটি এমবেড করা যায় না।",
     "not_supported_title": "এই কার্যক্রম সমর্থিত নয়",
-    "powered_by": "Powered by LearnHouse",
+    "powered_by": "Powered by Abhyas",
     "visit_activity": "কার্যক্রম পেজে যান"
   },
   "migration": {

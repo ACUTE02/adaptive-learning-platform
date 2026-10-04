@@ -33,12 +33,24 @@ from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from starlette.requests import Request
 
-    Activity,
-    ActivitySubTypeEnum,
-    ActivityTypeEnum,
-)
+# This fork removed LearnHouse's course modules (src.db.courses.*). Fixtures
+# that need them skip instead of breaking collection for the whole suite.
+try:
+    from src.db.courses.activities import (
+        Activity,
+        ActivitySubTypeEnum,
+        ActivityTypeEnum,
+    )
+    from src.db.courses.chapter_activities import ChapterActivity
+    from src.db.courses.chapters import Chapter
+    from src.db.courses.course_chapters import CourseChapter
+    from src.db.courses.courses import Course
+    from src.db.collections_courses import CollectionCourse
+except ImportError:
+    Activity = ActivitySubTypeEnum = ActivityTypeEnum = None
+    ChapterActivity = Chapter = CourseChapter = Course = None
+    CollectionCourse = None
 from src.db.collections import Collection
-from src.db.collections_courses import CollectionCourse
 from src.db.organizations import Organization
 from src.db.roles import (
     DashboardPermission,
@@ -335,6 +347,8 @@ def anonymous_user():
 @pytest.fixture
 async def course(db, org):
     """A published, public course in the test org."""
+    if Course is None:
+        pytest.skip("LearnHouse course models were removed in this fork")
     c = Course(
         id=1,
         name="Test Course",

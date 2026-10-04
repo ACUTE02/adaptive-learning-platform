@@ -326,7 +326,7 @@ async def send_test_event(
     await dispatch_webhooks(
         event_name="ping",
         org_id=org_id,
-        data={"message": "This is a test webhook event from LearnHouse."},
+        data={"message": "This is a test webhook event from Abhyas."},
         webhook_ids=[endpoint.id],  # type: ignore
     )
 

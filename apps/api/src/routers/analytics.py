@@ -941,8 +941,9 @@ async def get_analytics_overview(
     active_modules = (await db_session.execute(active_modules_stmt)).scalars().all()
     
     if len(active_modules) == 0:
+        # No data yet: report "no value" rather than an invented number.
         return {
-            "average_retention": 82,
+            "average_retention": None,
             "remediation_modules": remediation_modules
         }
         
@@ -954,7 +955,7 @@ async def get_analytics_overview(
         display_score = int(raw_score * 100) if raw_score <= 1.0 else int(raw_score)
         total_score += display_score
         
-    average_retention = int(total_score / count) if count > 0 else 82
+    average_retention = int(total_score / count)
     
     return {
         "average_retention": average_retention,

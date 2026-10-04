@@ -50,7 +50,7 @@
       "discord": "Discord",
       "report_feedback": "Report Issue or Feedback",
       "feedback_title": "Send Feedback",
-      "feedback_description": "Help us improve LearnHouse by sharing your thoughts, reporting bugs, or suggesting new features.",
+      "feedback_description": "Help us improve Abhyas by sharing your thoughts, reporting bugs, or suggesting new features.",
       "feedback_placeholder": "Tell us what's on your mind...",
       "feedback_success": "Thank you for your feedback!",
       "send_feedback": "Send Feedback",
@@ -505,14 +505,14 @@
     "import": {
       "scorm_package": "SCORM Package",
       "scorm_description": "Import SCORM 1.2 or SCORM 2004 packages",
-      "learnhouse_courses": "LearnHouse Courses",
-      "learnhouse_description": "Import courses exported from LearnHouse",
+      "learnhouse_courses": "Abhyas Courses",
+      "learnhouse_description": "Import courses exported from Abhyas",
       "upload_package": "Upload Package",
       "configure": "Configure",
       "complete": "Complete",
       "click_to_upload": "Click to upload or drag and drop",
-      "learnhouse_format": "LearnHouse course export (.zip)",
-      "learnhouse_info": "Upload a LearnHouse course export package (.zip). You'll be able to select which courses to import and configure import options.",
+      "learnhouse_format": "Abhyas course export (.zip)",
+      "learnhouse_info": "Upload a Abhyas course export package (.zip). You'll be able to select which courses to import and configure import options.",
       "analyze_package": "Analyze Package",
       "ready_to_analyze": "Ready to analyze",
       "invalid_file_format": "Please upload a .zip file",
@@ -1225,7 +1225,7 @@
     "not_supported_title": "This activity is not supported",
     "not_supported_description": "This type of activity requires authentication and cannot be embedded.",
     "visit_activity": "Visit Activity Page",
-    "powered_by": "Powered by LearnHouse"
+    "powered_by": "Powered by Abhyas"
   },
   "assignments": {
     "submit_assignment": "Submit Assignment",
@@ -1696,8 +1696,8 @@
       "import_course": "Import Course",
       "import_scorm": "Import SCORM",
       "import_scorm_description": "Import a SCORM package to create a new course",
-      "import_learnhouse": "Import LearnHouse Course",
-      "import_learnhouse_description": "Import a course exported from LearnHouse",
+      "import_learnhouse": "Import Abhyas Course",
+      "import_learnhouse_description": "Import a course exported from Abhyas",
       "import_select_type": "Select the type of course to import",
       "no_courses": "No courses yet",
       "create_course_placeholder": "Create a course to add content",
@@ -2533,8 +2533,8 @@
         "footer_text_desc": "Custom text displayed at the bottom of your organization pages",
         "default_language": "Default Language",
         "default_language_desc": "The language new visitors see by default and the language used for emails sent on behalf of this organization. Members can still switch their own UI language.",
-        "watermark_label": "\"Made with LearnHouse\" watermark",
-        "watermark_desc": "Show the LearnHouse branding watermark on your organization pages",
+        "watermark_label": "\"Made with Abhyas\" watermark",
+        "watermark_desc": "Show the Abhyas branding watermark on your organization pages",
         "watermark_free_plan": "Watermark is always shown on the free plan",
         "watermark_ee": "Hidden by your Enterprise Edition license"
       },
@@ -4965,7 +4965,7 @@
       },
       "teach_the_world": {
         "title": "Learn & grow",
-        "description": "Resources to help you get the most out of LearnHouse.",
+        "description": "Resources to help you get the most out of Abhyas.",
         "classroom": "The Classroom",
         "classroom_desc": "Learn how to grow and manage your courses",
         "university": "LearnHouse University",
@@ -4973,7 +4973,7 @@
       }
     },
     "welcome": {
-      "title": "Welcome to LearnHouse",
+      "title": "Welcome to Abhyas",
       "subtitle": "Create courses, invite learners and share knowledge with the world.",
       "get_started": "Get Started",
       "features_title": "Everything you need",

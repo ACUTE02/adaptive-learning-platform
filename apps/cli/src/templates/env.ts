@@ -99,7 +99,7 @@ export function generateEnvFile(config: SetupConfig): string {
     `LEARNHOUSE_AUTH_JWT_SECRET_KEY=${jwtSecret}`,
     `LEARNHOUSE_INITIAL_ADMIN_EMAIL=${quoteEnvValue(config.adminEmail)}`,
     `LEARNHOUSE_INITIAL_ADMIN_PASSWORD=${quoteEnvValue(config.adminPassword)}`,
-    `LEARNHOUSE_INITIAL_ORG_NAME=${quoteEnvValue(config.orgName || 'Default Organization')}`,
+    `LEARNHOUSE_INITIAL_ORG_NAME=${quoteEnvValue(config.orgName || 'Abhyas')}`,
     `LEARNHOUSE_INITIAL_ORG_SLUG=${quoteEnvValue(config.orgSlug || 'default')}`,
     '',
     '# =============================================================================',

@@ -119,9 +119,17 @@ def get_learnhouse_config() -> LearnHouseConfig:
     # Get the YAML file
     yaml_path = os.path.join(os.path.dirname(__file__), "config.yaml")
 
-    # Load the YAML file
-    with open(yaml_path, "r") as f:
-        yaml_config = yaml.safe_load(f)
+    # Load the YAML file. config.yaml holds local settings and is not part of the
+    # repository, so a fresh clone, CI or a container built from git falls back to
+    # the committed config.example.yaml (no secrets); LEARNHOUSE_* environment
+    # variables override either file.
+    if not os.path.exists(yaml_path):
+        yaml_path = os.path.join(os.path.dirname(__file__), "config.example.yaml")
+    if os.path.exists(yaml_path):
+        with open(yaml_path, "r") as f:
+            yaml_config = yaml.safe_load(f)
+    else:
+        yaml_config = {}
     
     # Ensure yaml_config is not None (defensive programming)
     if yaml_config is None:

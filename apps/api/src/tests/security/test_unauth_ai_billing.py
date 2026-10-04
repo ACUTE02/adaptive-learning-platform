@@ -1,4 +1,4 @@
-﻿"""Regression: anonymous callers cannot trigger AI-billed or migration endpoints.
+"""Regression: anonymous callers cannot trigger AI-billed endpoints.
 
 See C-02. Without these guards, anyone on the internet can drain any
 organisation's AI credits or trigger disk/LLM work on its behalf by hitting
@@ -71,26 +71,6 @@ UNAUTH_BILLING_ROUTES = [
     ),
     (
         "POST",
-        "/api/v1/ai/start/activity_chat_session",
-        {"activity_uuid": "x", "message": "x"},
-    ),
-    (
-        "POST",
-        "/api/v1/ai/send/activity_chat_message",
-        {"aichat_uuid": "x", "activity_uuid": "x", "message": "x"},
-    ),
-    (
-        "POST",
-        "/api/v1/ai/stream/start/activity_chat_session",
-        {"activity_uuid": "x", "message": "x"},
-    ),
-    (
-        "POST",
-        "/api/v1/ai/stream/send/activity_chat_message",
-        {"aichat_uuid": "x", "activity_uuid": "x", "message": "x"},
-    ),
-    (
-        "POST",
         "/api/v1/ai/stream/editor/start",
         {
             "activity_uuid": "x",
@@ -108,11 +88,6 @@ UNAUTH_BILLING_ROUTES = [
             "current_content": {"type": "doc", "content": []},
         },
     ),
-    (
-        "POST",
-        "/api/v1/courses/migrate/suggest?org_id=1",
-        {"temp_id": "x", "course_name": "x", "description": "x"},
-    ),
 ]
 
 
@@ -124,9 +99,6 @@ def app(db):
     app.include_router(rag_router_module.router, prefix="/api/v1/ai")
     app.include_router(
         boards_playground_router_module.router, prefix="/api/v1/boards"
-    )
-    app.include_router(
-        migration_router_module.router, prefix="/api/v1/courses"
     )
     app.dependency_overrides[get_db_session] = lambda: db
     yield app
@@ -146,17 +118,4 @@ async def test_unauth_billing_rejected(client, method, path, body):
     resp = await client.request(method, path, json=body)
     assert resp.status_code == 401, (
         f"{method} {path} returned {resp.status_code}; expected 401 for anon caller"
-    )
-
-
-async def test_unauth_migrate_upload_rejected(client):
-    # Multipart request, not JSON â€” exercised separately so FastAPI does not
-    # 422 on the missing file body before the auth dep runs.
-    resp = await client.post(
-        "/api/v1/courses/migrate/upload?org_id=1",
-        files={"files": ("poc.txt", b"poc", "text/plain")},
-    )
-    assert resp.status_code == 401, (
-        f"/api/v1/courses/migrate/upload returned {resp.status_code}; "
-        "expected 401 for anon caller"
     )

@@ -6,6 +6,27 @@ from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import JSONB
 
 
+class ModuleStatus:
+    """Allowed values of CampaignModuleDB.status."""
+    ACTIVE = "active"
+    COMPLETED = "completed"
+    LOCKED = "locked"
+
+
+class AssessmentStatus:
+    """Allowed values of Assessment.status.
+
+    locked      -> placeholder, no questions generated yet
+    in_progress -> questions generated, attempt running
+    completed   -> graded by the server
+    cancelled   -> aborted for a proctoring violation (see cancelled_count)
+    """
+    LOCKED = "locked"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"
+
+
 class StudentRating(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: str = Field(index=True)
@@ -48,7 +69,7 @@ class CampaignModuleDB(SQLModel, table=True):
     description: str
     teaching_prompt: str
     subtopics: Optional[str] = Field(default=None)
-    status: str
+    status: str  # see ModuleStatus
     order_index: int
     is_remediation: bool = Field(default=False)
     requires_remediation: bool = Field(default=False)
@@ -62,10 +83,12 @@ class Assessment(SQLModel, table=True):
     campaign_id: int = Field(foreign_key="campaign.id", ondelete="CASCADE")
     module_id: Optional[int] = Field(default=None, foreign_key="campaign_module.id", ondelete="SET NULL")
     type: str  # 'module_quiz' or 'capstone'
-    status: str  # 'locked', 'available', 'completed'
+    status: str  # see AssessmentStatus
     score: Optional[int] = Field(default=None)
+    # Holds the answer key ("correct_answer" per question). Never return this
+    # column to a client as-is; use adaptive_engine._public_assessment().
     exam_data: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSONB))
-    
+
     cancelled_count: int = Field(default=0)
     total_marks: int = Field(default=50)
     time_allowed_mins: int = Field(default=30)

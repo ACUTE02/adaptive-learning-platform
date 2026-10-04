@@ -21,18 +21,29 @@ from config.config import LearnHouseConfig, get_learnhouse_config
 from src.core.ee_hooks import register_ee_middlewares
 from src.core.events.events import shutdown_app, startup_app
 from src.core.middleware.cors import configure_cors
+from src.core.production_guards import api_docs_enabled
 from src.router import v1_router
 
 from src.routers.local_content import router as local_content_router
 from src.routers import adaptive_engine
+from datetime import datetime, timedelta, timezone
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src.services.analytics_engine import evaluate_user_decay
+from src.services.analytics_engine import run_knowledge_decay_job
 from src.core.events.database import _async_session_factory
-from src.db.users import User
-from sqlmodel import select
 
 
 learnhouse_config: LearnHouseConfig = get_learnhouse_config()
+
+# Without a configured root logger, INFO records (scheduler runs, engine
+# operations, LLM timings) are silently dropped and only bare warnings print.
+if not logging.getLogger().handlers:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
+# Per-request client logs are noise and can carry request URLs.
+for _noisy in ("httpx", "httpcore", "google_genai"):
+    logging.getLogger(_noisy).setLevel(logging.WARNING)
 
 if learnhouse_config.general_config.sentry_config.dsn:
     sentry_sdk.init(
@@ -51,11 +62,16 @@ if learnhouse_config.general_config.sentry_config.dsn:
         ],
     )
 
+# Swagger UI / ReDoc / openapi.json describe every endpoint. They are on in
+# development and off in production (override: LEARNHOUSE_ENABLE_API_DOCS).
+_docs_enabled = api_docs_enabled()
+
 app = FastAPI(
     title=learnhouse_config.site_name,
     description=learnhouse_config.site_description,
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url="/docs" if _docs_enabled else None,
+    redoc_url="/redoc" if _docs_enabled else None,
+    openapi_url="/openapi.json" if _docs_enabled else None,
     version="1.2.3",
 )
 
@@ -69,29 +85,35 @@ app.add_event_handler("startup", startup_app(app))
 app.add_event_handler("shutdown", shutdown_app(app))
 
 # APScheduler Background Jobs
-scheduler = AsyncIOScheduler()
+scheduler = AsyncIOScheduler(timezone="UTC")
 
-async def run_knowledge_decay_job():
-    logging.info("Starting midnight knowledge decay job for all users...")
-    async with _async_session_factory() as session:
-        statement = select(User.email).where(User.email != 'admin@school.dev')
-        users = (await session.execute(statement)).scalars().all()
-        await session.rollback() # Explicitly close transaction to free PgBouncer connection
-        
-    for user_email in users:
-        try:
-            async with _async_session_factory() as user_session:
-                await evaluate_user_decay(user_session, user_email)
-        except Exception as e:
-            logging.error(f"Error evaluating decay for user {user_email}: {e}")
+async def knowledge_decay_job():
+    try:
+        await run_knowledge_decay_job(_async_session_factory)
+    except Exception:
+        logging.exception("Knowledge decay job crashed")
 
 async def start_scheduler():
-    scheduler.add_job(run_knowledge_decay_job, 'interval', hours=24)
+    job_defaults = dict(coalesce=True, max_instances=1, replace_existing=True)
+    # Every worker schedules the job; a database advisory lock inside it makes
+    # sure only one of them actually runs a given pass.
+    scheduler.add_job(
+        knowledge_decay_job, 'cron', hour=0, minute=0,
+        id="knowledge_decay", misfire_grace_time=3600, **job_defaults,
+    )
+    # Catch-up pass shortly after boot, so a deployment that is restarted (or
+    # asleep) around midnight UTC still gets its daily evaluation.
+    scheduler.add_job(
+        knowledge_decay_job, 'date',
+        run_date=datetime.now(timezone.utc) + timedelta(minutes=2),
+        id="knowledge_decay_catchup", misfire_grace_time=600, **job_defaults,
+    )
     scheduler.start()
-    print("[SCHEDULER] APScheduler started successfully. Job will run every 24 hours.", flush=True)
+    logging.info("Scheduler started: knowledge decay runs daily at 00:00 UTC")
 
 async def stop_scheduler():
-    scheduler.shutdown()
+    if scheduler.running:
+        scheduler.shutdown(wait=False)
 
 app.add_event_handler("startup", start_scheduler)
 app.add_event_handler("shutdown", stop_scheduler)
@@ -105,7 +127,7 @@ app.include_router(adaptive_engine.router)
 
 @app.get("/")
 async def root():
-    return {"Message": "Welcome to LearnHouse ✨"}
+    return {"Message": "Welcome to Abhyas ✨"}
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import learnhouseIcon from 'public/learnhouse_bigicon_1.png'
+import learnhouseIcon from 'public/brand/abhyas-icon.png'
 import { getOrgLogoMediaDirectory, getOrgAuthBackgroundMediaDirectory } from '@services/media/media'
 import { getUriWithOrg } from '@services/config/config'
 import { cn } from '@/lib/utils'
@@ -74,21 +74,16 @@ export default function AuthBrandingPanel({ org, welcomeText }: AuthBrandingPane
 
       {/* Content */}
       <div className="relative z-10 flex flex-col h-full p-10">
-        {/* Top bar with LearnHouse lrn.svg logo - hidden for enterprise users */}
+        {/* Top bar with the Abhyas icon - hidden for enterprise users */}
         {!isEnterprise && (
           <div className="login-topbar">
-            <Link prefetch href="https://learnhouse.app" target="_blank">
-              <img
-                src="/lrn.svg"
-                alt="LearnHouse"
-                width={30}
-                height={30}
-                className={cn(
-                  "transition-opacity hover:opacity-100",
-                  text_color === 'light' ? "opacity-60 invert" : "opacity-40"
-                )}
-              />
-            </Link>
+            <img
+              src="/brand/abhyas-icon.png"
+              alt="Abhyas"
+              width={30}
+              height={30}
+              className="rounded-md"
+            />
           </div>
         )}
 
@@ -113,7 +108,7 @@ export default function AuthBrandingPanel({ org, welcomeText }: AuthBrandingPane
                     width={96}
                     height={96}
                     src={learnhouseIcon}
-                    alt="LearnHouse"
+                    alt="Abhyas"
                     className="object-contain"
                   />
                 )}

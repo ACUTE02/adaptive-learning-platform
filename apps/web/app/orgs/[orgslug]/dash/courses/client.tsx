@@ -25,7 +25,7 @@ function CoursesHome(params: CourseProps) {
   const { data: campaignsData, refetch: refetchCampaigns, isLoading } = useQuery({
     queryKey: ['campaigns', orgslug, userId],
     queryFn: async () => {
-      const url = `${getAPIUrl()}engine/campaigns?user_id=${userId}`;
+      const url = `${getAPIUrl()}engine/campaigns`;
       const res = await fetch(url, RequestBodyWithAuthHeader('GET', null, null, access_token))
       if (!res.ok) throw new Error('Failed to fetch campaigns')
       return res.json()
@@ -41,8 +41,8 @@ function CoursesHome(params: CourseProps) {
 
   const filteredCampaigns = React.useMemo(() => {
     if (!searchQuery.trim()) return campaigns;
-    return campaigns.filter((c: any) => 
-      c.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    return campaigns.filter((c: any) =>
+      c.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.syllabus_text?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [campaigns, searchQuery]);
@@ -81,7 +81,7 @@ function CoursesHome(params: CourseProps) {
           <div className="flex items-center space-x-4">
             <h1 className="text-3xl font-bold mb-4 sm:mb-0">Courses</h1>
           </div>
-          <button 
+          <button
             onClick={() => router.push(`/dash/campaign`)}
             className="rounded-lg bg-indigo-600 transition-all duration-100 ease-linear antialiased p-2 px-5 my-auto font text-sm font-bold text-white nice-shadow flex space-x-2 items-center hover:scale-105"
           >
@@ -123,16 +123,16 @@ function CoursesHome(params: CourseProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredCampaigns.map((campaign: any) => (
-          <div 
-            key={campaign.id} 
-            className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition-shadow cursor-pointer relative group" 
+          <div
+            key={campaign.id}
+            className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition-shadow cursor-pointer relative group"
             onClick={() => router.push(`/dash/campaign?id=${campaign.id}`)}
           >
             <div className="h-1.5 bg-gradient-to-r from-indigo-500 to-violet-500" />
             <div className="p-5 flex-grow flex flex-col">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-gray-900 line-clamp-2">{campaign.title}</h3>
-                <button 
+                <button
                   onClick={async (e) => {
                     e.stopPropagation();
                     if (confirm('Are you sure you want to delete this course?')) {
@@ -182,7 +182,7 @@ function CoursesHome(params: CourseProps) {
             <p className="text-lg text-gray-400 mb-6">
               Create your first AI-generated course by launching a new Campaign.
             </p>
-            <button 
+            <button
               onClick={() => router.push(`/dash/campaign`)}
               className="mx-auto rounded-lg bg-indigo-600 transition-all duration-100 ease-linear antialiased p-3 px-6 font text-sm font-bold text-white nice-shadow flex space-x-2 items-center hover:scale-105"
             >

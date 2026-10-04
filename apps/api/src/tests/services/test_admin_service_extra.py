@@ -1,4 +1,4 @@
-﻿"""Extra tests for src.services.admin.admin to improve coverage.
+"""Extra tests for src.services.admin.admin to improve coverage.
 
 Targets:
   Lines 847-848, 852-853 - remove_user_from_org_admin exception swallowing
@@ -92,70 +92,6 @@ async def _create_user(db, *, user_id: int, username: str, email: str) -> User:
     return u
 
 
-async def _create_certification(db, course, *, cert_id: int = 10) -> Certifications:
-    cert = Certifications(
-        id=cert_id,
-        course_id=course.id,
-        config={},
-        certification_uuid=f"cert_{cert_id}",
-        creation_date=str(datetime.now()),
-        update_date=str(datetime.now()),
-    )
-    db.add(cert)
-    await db.commit()
-    await db.refresh(cert)
-    return cert
-
-
-async def _create_certificate_user(
-    db,
-    certification: Certifications,
-    user: User,
-    *,
-    cu_id: int = 20,
-    uuid: str = "cert-user-uuid-extra",
-) -> CertificateUser:
-    cu = CertificateUser(
-        id=cu_id,
-        user_id=user.id,
-        certification_id=certification.id,
-        user_certification_uuid=uuid,
-        created_at=str(datetime.now()),
-        updated_at=str(datetime.now()),
-    )
-    db.add(cu)
-    await db.commit()
-    await db.refresh(cu)
-    return cu
-
-
-async def _create_trail_run(db, user: User, course: Course, org) -> TrailRun:
-    trail = Trail(
-        org_id=org.id,
-        user_id=user.id,
-        trail_uuid=f"trail_{user.id}",
-        creation_date=str(datetime.now()),
-        update_date=str(datetime.now()),
-    )
-    db.add(trail)
-    await db.commit()
-    await db.refresh(trail)
-
-    tr = TrailRun(
-        trail_id=trail.id,
-        course_id=course.id,
-        org_id=org.id,
-        user_id=user.id,
-        status=StatusEnum.STATUS_IN_PROGRESS,
-        creation_date=str(datetime.now()),
-        update_date=str(datetime.now()),
-    )
-    db.add(tr)
-    await db.commit()
-    await db.refresh(tr)
-    return tr
-
-
 # ---------------------------------------------------------------------------
 # Line 899 â€” _validate_magic_link_redirect whitespace-only
 # ---------------------------------------------------------------------------
@@ -202,95 +138,14 @@ async def test_consume_magic_link_token_ghost_user_raises_410(db):
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
-async def test_list_course_enrollments_course_not_found(db, org):
-    token_user = _make_token_user(org.id)
-    with pytest.raises(HTTPException) as exc_info:
-        await list_course_enrollments(token_user, "nonexistent-uuid", db)
-    assert exc_info.value.status_code == 404
-    assert "course not found" in exc_info.value.detail.lower()
-
-
 # ---------------------------------------------------------------------------
 # Line 1227 â€” award_certificate course not found
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
-async def test_award_certificate_course_not_found(db, org, user_role):
-    token_user = _make_token_user(org.id)
-    user = await _create_user(db, user_id=50, username="awardee", email="awardee@test.com")
-    await _add_user_to_org(db, user, org, role_id=user_role.id)
-
-    mock_request = object()
-    with pytest.raises(HTTPException) as exc_info:
-        await award_certificate(token_user, user.id, "no-such-course", mock_request, db)
-    assert exc_info.value.status_code == 404
-    assert "course not found" in exc_info.value.detail.lower()
-
-
 # ---------------------------------------------------------------------------
 # Lines 1276, 1282 â€” revoke_certificate boundary checks
 # ---------------------------------------------------------------------------
-
-
-@pytest.mark.asyncio
-async def test_revoke_certificate_certifications_row_missing_raises_404(db, org, course, user_role):
-    """Line 1276: cert_user exists but Certifications row doesn't â†’ 404."""
-    token_user = _make_token_user(org.id)
-    user = await _create_user(db, user_id=51, username="revokee1", email="revokee1@test.com")
-    await _add_user_to_org(db, user, org, role_id=user_role.id)
-
-    # Create a CertificateUser that points to a certification_id that doesn't exist
-    # We do this via a raw insert to avoid FK enforcement on SQLite
-    cu = CertificateUser(
-        id=30,
-        user_id=user.id,
-        certification_id=999,  # no matching Certifications row
-        user_certification_uuid="orphan-cert-user-uuid",
-        created_at=str(datetime.now()),
-        updated_at=str(datetime.now()),
-    )
-    db.add(cu)
-    await db.commit()
-
-    with patch("src.services.admin.admin.dispatch_webhooks", new_callable=AsyncMock):
-        with pytest.raises(HTTPException) as exc_info:
-            await revoke_certificate(token_user, user.id, "orphan-cert-user-uuid", db)
-    assert exc_info.value.status_code == 404
-
-
-@pytest.mark.asyncio
-async def test_revoke_certificate_course_wrong_org_raises_404(db, org, course, user_role):
-    """Line 1282: course.org_id != token_user.org_id â†’ 404."""
-    token_user = _make_token_user(org.id)
-    user = await _create_user(db, user_id=52, username="revokee2", email="revokee2@test.com")
-    await _add_user_to_org(db, user, org, role_id=user_role.id)
-
-    # Create a course that belongs to a *different* org (id=999)
-    other_course = Course(
-        id=50,
-        name="Other Org Course",
-        description="A course from another org",
-        public=True,
-        published=True,
-        open_to_contributors=False,
-        org_id=999,
-        course_uuid="course_other_org",
-        creation_date=str(datetime.now()),
-        update_date=str(datetime.now()),
-    )
-    db.add(other_course)
-    await db.commit()
-    await db.refresh(other_course)
-
-    cert = await _create_certification(db, other_course, cert_id=11)
-    await _create_certificate_user(db, cert, user, cu_id=31, uuid="wrong-org-cert-uuid")
-
-    with patch("src.services.admin.admin.dispatch_webhooks", new_callable=AsyncMock):
-        with pytest.raises(HTTPException) as exc_info:
-            await revoke_certificate(token_user, user.id, "wrong-org-cert-uuid", db)
-    assert exc_info.value.status_code == 404
 
 
 # ---------------------------------------------------------------------------
@@ -460,22 +315,6 @@ async def test_anonymize_user_invalidate_cache_raises_is_swallowed(db, org, user
 # ---------------------------------------------------------------------------
 # Line 2058 â€” get_course_analytics certification + CertificateUser count > 0
 # ---------------------------------------------------------------------------
-
-
-@pytest.mark.asyncio
-async def test_get_course_analytics_with_certification_and_cert_users(db, org, course, user_role):
-    """Line 2058: certification exists and CertificateUser count > 0."""
-    token_user = _make_token_user(org.id)
-    user = await _create_user(db, user_id=110, username="certuser110", email="certuser110@test.com")
-    await _add_user_to_org(db, user, org, role_id=user_role.id)
-
-    cert = await _create_certification(db, course, cert_id=12)
-    await _create_certificate_user(db, cert, user, cu_id=40, uuid="analytics-cert-uuid")
-
-    result = await get_course_analytics(token_user, course.course_uuid, db)
-
-    assert result["course_uuid"] == course.course_uuid
-    assert result["certificate_count"] == 1
 
 
 # ---------------------------------------------------------------------------

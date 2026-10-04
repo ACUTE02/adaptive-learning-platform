@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "الإبلاغ عن مشكلة أو ملاحظات",
       "feedback_title": "إرسال ملاحظات",
-      "feedback_description": "ساعدنا في تحسين LearnHouse من خلال مشاركة أفكارك أو الإبلاغ عن الأخطاء أو اقتراح ميزات جديدة.",
+      "feedback_description": "ساعدنا في تحسين Abhyas من خلال مشاركة أفكارك أو الإبلاغ عن الأخطاء أو اقتراح ميزات جديدة.",
       "feedback_placeholder": "أخبرنا بما يدور في ذهنك...",
       "feedback_success": "شكراً لملاحظاتك!",
       "send_feedback": "إرسال ملاحظات",
@@ -524,14 +524,14 @@
     "import": {
       "scorm_package": "حزمة SCORM",
       "scorm_description": "استيراد حزم SCORM 1.2 أو SCORM 2004",
-      "learnhouse_courses": "دورات LearnHouse",
-      "learnhouse_description": "استيراد الدورات المصدرة من LearnHouse",
+      "learnhouse_courses": "دورات Abhyas",
+      "learnhouse_description": "استيراد الدورات المصدرة من Abhyas",
       "upload_package": "رفع الحزمة",
       "configure": "تكوين",
       "complete": "مكتمل",
       "click_to_upload": "انقر للرفع أو اسحب وأفلت",
-      "learnhouse_format": "تصدير دورة LearnHouse (.zip)",
-      "learnhouse_info": "ارفع حزمة تصدير دورات LearnHouse (.zip). ستتمكن من اختيار الدورات للاستيراد وتكوين خيارات الاستيراد.",
+      "learnhouse_format": "تصدير دورة Abhyas (.zip)",
+      "learnhouse_info": "ارفع حزمة تصدير دورات Abhyas (.zip). ستتمكن من اختيار الدورات للاستيراد وتكوين خيارات الاستيراد.",
       "analyze_package": "تحليل الحزمة",
       "ready_to_analyze": "جاهز للتحليل",
       "invalid_file_format": "يرجى رفع ملف .zip",
@@ -1432,8 +1432,8 @@
       "import_course": "استيراد دورة",
       "import_scorm": "استيراد حزمة SCORM",
       "import_scorm_description": "استيراد حزمة SCORM لإنشاء دورة جديدة",
-      "import_learnhouse": "استيراد دورات LearnHouse",
-      "import_learnhouse_description": "استيراد الدورات من حزمة تصدير LearnHouse",
+      "import_learnhouse": "استيراد دورات Abhyas",
+      "import_learnhouse_description": "استيراد الدورات من حزمة تصدير Abhyas",
       "import_select_type": "اختر نوع الحزمة التي تريد استيرادها",
       "no_courses": "لا توجد دورات بعد",
       "create_course_placeholder": "أنشئ دورة لإضافة محتوى",
@@ -2265,9 +2265,9 @@
         "footer_text_desc": "نص مخصص يظهر في أسفل صفحات منظمتك",
         "default_language": "اللغة الافتراضية",
         "default_language_desc": "اللغة التي يراها الزوار الجدد افتراضيًا واللغة المستخدمة للرسائل المُرسَلة باسم هذه المؤسسة. لا يزال بإمكان الأعضاء تغيير لغة واجهتهم.",
-        "watermark_desc": "إظهار علامة LearnHouse المائية على صفحات منظمتك",
+        "watermark_desc": "إظهار علامة Abhyas المائية على صفحات منظمتك",
         "watermark_free_plan": "يتم عرض العلامة المائية دائمًا في الخطة المجانية",
-        "watermark_label": "علامة \"صنع بواسطة LearnHouse\" المائية",
+        "watermark_label": "علامة \"صنع بواسطة Abhyas\" المائية",
         "watermark_ee": "مخفي بترخيص الإصدار المؤسسي"
       },
       "images": {
@@ -4094,7 +4094,7 @@
   "embed": {
     "not_supported_description": "هذا النوع من النشاط يتطلب المصادقة ولا يمكن تضمينه.",
     "not_supported_title": "هذا النشاط غير مدعوم",
-    "powered_by": "مدعوم من LearnHouse",
+    "powered_by": "مدعوم من Abhyas",
     "visit_activity": "زيارة صفحة النشاط"
   },
   "analytics": {
@@ -4798,7 +4798,7 @@
       },
       "teach_the_world": {
         "title": "تعلّم وانمُ",
-        "description": "موارد لمساعدتك في الاستفادة القصوى من LearnHouse.",
+        "description": "موارد لمساعدتك في الاستفادة القصوى من Abhyas.",
         "classroom": "الفصل الدراسي",
         "classroom_desc": "تعلم كيفية تنمية وإدارة دوراتك",
         "university": "جامعة LearnHouse",
@@ -4806,7 +4806,7 @@
       }
     },
     "welcome": {
-      "title": "مرحبًا بك في LearnHouse",
+      "title": "مرحبًا بك في Abhyas",
       "subtitle": "أنشئ دورات، وادعُ المتعلمين، وشارك المعرفة مع العالم.",
       "get_started": "ابدأ الآن",
       "features_title": "كل ما تحتاجه",

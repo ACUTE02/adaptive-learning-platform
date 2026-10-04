@@ -949,7 +949,7 @@ async def api_invite_batch_users(
 async def api_get_org_users_invites(
     request: Request,
     org_id: int,
-    current_user: PublicUser = Depends(get_current_user),
+    current_user: PublicUser = Depends(get_authenticated_user),
     db_session: AsyncSession = Depends(get_db_session),
 ):
     """

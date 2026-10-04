@@ -7,7 +7,7 @@ import { motion } from 'motion/react'
 import toast from 'react-hot-toast'
 import { verifyStripeConnection } from '@services/payments/providers/stripe'
 import Image from 'next/image'
-import learnhouseIcon from 'public/learnhouse_bigicon_1.png'
+import learnhouseIcon from 'public/brand/abhyas-icon.png'
 import { useTranslation } from 'react-i18next'
 
 function StripeConnectCallbackInner() {

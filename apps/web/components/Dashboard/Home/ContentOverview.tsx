@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import { isFeatureHidden } from '@/lib/hiddenFeatures'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/keys'
@@ -30,6 +31,7 @@ export default function ContentOverview() {
   const rf = org?.config?.config?.resolved_features
   const features = org?.config?.config?.features
   const isEnabled = (feature: string, defaultDisabled = false) => {
+    if (isFeatureHidden(feature)) return false
     if (rf?.[feature]) return rf[feature].enabled
     const v1 = features?.[feature]
     return defaultDisabled ? v1?.enabled === true : v1?.enabled !== false

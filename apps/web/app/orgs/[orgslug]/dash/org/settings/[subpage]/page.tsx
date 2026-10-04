@@ -1,5 +1,6 @@
 'use client'
 import { Breadcrumbs } from '@components/Objects/Breadcrumbs/Breadcrumbs'
+import { isOrgSettingsTabHidden } from '@/lib/hiddenFeatures'
 import { getUriWithOrg } from '@services/config/config'
 import { TextIcon, LucideIcon, LayoutDashboardIcon, CodeIcon, KeyIcon, Palette, School, ToggleRight, Shield, Globe, Search, BarChart3, Zap } from 'lucide-react'
 import React, { useEffect, use } from 'react';
@@ -100,7 +101,7 @@ function OrgPage(props: { params: Promise<OrgParams> }) {
     handleLabels()
   }, [params.subpage, params, t])
 
-  const tabs: DashTabItem[] = SETTING_TABS.map((tab) => ({
+  const tabs: DashTabItem[] = SETTING_TABS.filter((tab) => !isOrgSettingsTabHidden(tab.id)).map((tab) => ({
     key: tab.id,
     label: tab.label,
     icon: tab.customIcon

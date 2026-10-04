@@ -53,7 +53,7 @@ router = APIRouter()
 @router.get(
     "/{org_id}/webhooks/events",
     summary="List available webhook event types",
-    description="Returns the catalogue of webhook event types supported by LearnHouse along with their descriptions.",
+    description="Returns the catalogue of webhook event types supported by Abhyas along with their descriptions.",
     responses={
         200: {"description": "Dictionary of event types and their descriptions"},
     },

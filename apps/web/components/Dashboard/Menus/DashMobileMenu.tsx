@@ -1,5 +1,6 @@
 'use client'
 import { createPortal } from 'react-dom'
+import { isFeatureHidden } from '@/lib/hiddenFeatures'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { signOut } from '@components/Contexts/AuthContext'
 import {
@@ -69,7 +70,7 @@ function DashMobileMenu() {
     plan
 
   const rf = org?.config?.config?.resolved_features
-  const isEnabled = (f: string) => rf?.[f]?.enabled === true
+  const isEnabled = (f: string) => !isFeatureHidden(f) && rf?.[f]?.enabled === true
 
   const isActive = (path: string) => {
     if (path === '/dash') return pathname === '/dash' || pathname === '/dash/'
@@ -94,17 +95,16 @@ function DashMobileMenu() {
           className="flex items-center gap-0.5 px-1.5 py-1.5 bg-[#111113]/90 backdrop-blur-xl rounded-full"
           style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}
         >
-          {/* LearnHouse logo — links to home */}
+          {/* Abhyas logo — links to home */}
           <Link
             href="/dash"
             className="flex items-center justify-center px-2.5 py-2.5 rounded-full transition-all duration-200"
             aria-label="Home"
           >
             <img
-              src="/lrn-dash.svg"
-              alt="LearnHouse"
-              className="h-[18px] w-[18px] opacity-60 hover:opacity-90 transition-opacity"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              src="/brand/abhyas-icon.png"
+              alt="Abhyas"
+              className="h-[20px] w-[20px] rounded-[5px] opacity-80 hover:opacity-100 transition-opacity"
             />
           </Link>
           {/* Progressive reveal — more icons as viewport widens */}
@@ -203,7 +203,7 @@ function DashMobileMenu() {
                   />
                 ) : (
                   <div className="h-7 w-7 flex items-center justify-center bg-white/[0.06] rounded-lg">
-                    <img src="/lrn-dash.svg" alt="LearnHouse" className="h-4 w-4" style={{ filter: 'brightness(0) invert(1)' }} />
+                    <img src="/brand/abhyas-icon.png" alt="Abhyas" className="h-5 w-5 rounded-[5px]" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">

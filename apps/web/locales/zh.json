@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "报告问题或反馈",
       "feedback_title": "发送反馈",
-      "feedback_description": "通过分享您的想法、报告错误或建议新功能来帮助我们改进 LearnHouse。",
+      "feedback_description": "通过分享您的想法、报告错误或建议新功能来帮助我们改进 Abhyas。",
       "feedback_placeholder": "告诉我们您的想法...",
       "feedback_success": "感谢您的反馈！",
       "send_feedback": "发送反馈",
@@ -524,14 +524,14 @@
     "import": {
       "scorm_package": "SCORM 包",
       "scorm_description": "导入 SCORM 1.2 或 SCORM 2004 包",
-      "learnhouse_courses": "LearnHouse 课程",
-      "learnhouse_description": "导入从 LearnHouse 导出的课程",
+      "learnhouse_courses": "Abhyas 课程",
+      "learnhouse_description": "导入从 Abhyas 导出的课程",
       "upload_package": "上传包",
       "configure": "配置",
       "complete": "完成",
       "click_to_upload": "点击上传或拖放",
-      "learnhouse_format": "LearnHouse 课程导出 (.zip)",
-      "learnhouse_info": "上传 LearnHouse 课程导出包 (.zip)。您可以选择要导入的课程并配置导入选项。",
+      "learnhouse_format": "Abhyas 课程导出 (.zip)",
+      "learnhouse_info": "上传 Abhyas 课程导出包 (.zip)。您可以选择要导入的课程并配置导入选项。",
       "analyze_package": "分析包",
       "ready_to_analyze": "准备分析",
       "invalid_file_format": "请上传 .zip 文件",
@@ -1429,8 +1429,8 @@
       "import_course": "导入课程",
       "import_scorm": "导入 SCORM 包",
       "import_scorm_description": "导入 SCORM 包以创建新课程",
-      "import_learnhouse": "导入 LearnHouse 课程",
-      "import_learnhouse_description": "从 LearnHouse 导出包中导入课程",
+      "import_learnhouse": "导入 Abhyas 课程",
+      "import_learnhouse_description": "从 Abhyas 导出包中导入课程",
       "import_select_type": "选择要导入的包类型",
       "no_courses": "尚无课程",
       "create_course_placeholder": "创建课程以添加内容",
@@ -2251,8 +2251,8 @@
         "label_placeholder": "选择组织标签",
         "about": "关于组织",
         "about_placeholder": "关于您组织的详细描述",
-        "showcase_explore": "在 LearnHouse Explore 中展示",
-        "showcase_description": "与 LearnHouse 社区分享您组织的课程和内容。开启此项以帮助学习者发现您的宝贵教育资源。",
+        "showcase_explore": "在 Abhyas Explore 中展示",
+        "showcase_description": "与 Abhyas 社区分享您组织的课程和内容。开启此项以帮助学习者发现您的宝贵教育资源。",
         "save_changes": "保存更改",
         "saving": "保存中...",
         "update_success": "组织已更新",
@@ -2263,9 +2263,9 @@
         "footer_text_desc": "显示在组织页面底部的自定义文本",
         "default_language": "默认语言",
         "default_language_desc": "新访客默认看到的语言，也是代表此组织发出的邮件所使用的语言。成员仍可切换自己的界面语言。",
-        "watermark_desc": "在您的组织页面上显示 LearnHouse 品牌水印",
+        "watermark_desc": "在您的组织页面上显示 Abhyas 品牌水印",
         "watermark_free_plan": "免费方案始终显示水印",
-        "watermark_label": "\"Made with LearnHouse\" 水印",
+        "watermark_label": "\"Made with Abhyas\" 水印",
         "watermark_ee": "已被您的企业版许可证隐藏"
       },
       "images": {
@@ -4534,7 +4534,7 @@
       },
       "teach_the_world": {
         "title": "学习与成长",
-        "description": "帮助您充分利用 LearnHouse 的资源。",
+        "description": "帮助您充分利用 Abhyas 的资源。",
         "classroom": "课堂",
         "classroom_desc": "了解如何扩展和管理您的课程",
         "university": "LearnHouse 大学",
@@ -4542,7 +4542,7 @@
       }
     },
     "welcome": {
-      "title": "欢迎来到 LearnHouse",
+      "title": "欢迎来到 Abhyas",
       "subtitle": "创建课程、邀请学员，与世界分享知识。",
       "get_started": "开始",
       "features_title": "您需要的一切",
@@ -4834,7 +4834,7 @@
   "embed": {
     "not_supported_description": "此类活动需要认证，无法嵌入。",
     "not_supported_title": "不支持此活动",
-    "powered_by": "由 LearnHouse 提供支持",
+    "powered_by": "由 Abhyas 提供支持",
     "visit_activity": "访问活动页面"
   },
   "migration": {

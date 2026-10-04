@@ -1,4 +1,4 @@
-﻿"""
+"""
 Regression tests for the F-02 cross-org RBAC fix.
 
 Before the fix, ``authorization_verify_based_on_roles`` loaded every role the
@@ -8,6 +8,10 @@ mutate resources in Org B simply by supplying the target resource's UUID.
 
 These tests assert that role-based fallback only considers roles that apply
 to the *target* resource's organization.
+
+The original tests used courses as the target resource. This fork removed the
+course models, so the same checks now use user groups, which resolve their
+organization through the same ``get_element_organization_id`` path.
 """
 
 from datetime import datetime
@@ -15,17 +19,17 @@ from unittest.mock import Mock
 
 import pytest
 from fastapi import Request
-from sqlmodel import Session
 
 from src.db.roles import Role, RoleTypeEnum
 from src.db.user_organizations import UserOrganization
+from src.db.usergroups import UserGroup
 from src.db.users import User
 from src.security.rbac.rbac import authorization_verify_based_on_roles
 
 from src.tests.conftest import ADMIN_RIGHTS
 
 
-def _mk_user(db: Session, *, uid: int, username: str, email: str) -> User:
+async def _mk_user(db, *, uid: int, username: str, email: str) -> User:
     u = User(
         id=uid,
         username=username,
@@ -38,31 +42,28 @@ def _mk_user(db: Session, *, uid: int, username: str, email: str) -> User:
         update_date=str(datetime.now()),
     )
     db.add(u)
-    db.commit()
-    db.refresh(u)
+    await db.commit()
+    await db.refresh(u)
     return u
 
 
-def _mk_course(db: Session, *, cid: int, org_id: int, uuid: str, public: bool = False) -> Course:
-    c = Course(
-        id=cid,
-        name=f"Course {cid}",
+async def _mk_group(db, *, gid: int, org_id: int, uuid: str) -> UserGroup:
+    g = UserGroup(
+        id=gid,
+        name=f"Group {gid}",
         description="x",
-        public=public,
-        published=True,
-        open_to_contributors=False,
         org_id=org_id,
-        course_uuid=uuid,
+        usergroup_uuid=uuid,
         creation_date=str(datetime.now()),
         update_date=str(datetime.now()),
     )
-    db.add(c)
-    db.commit()
-    db.refresh(c)
-    return c
+    db.add(g)
+    await db.commit()
+    await db.refresh(g)
+    return g
 
 
-def _attach_role(db: Session, *, user_id: int, org_id: int, role_id: int) -> None:
+async def _attach_role(db, *, user_id: int, org_id: int, role_id: int) -> None:
     db.add(
         UserOrganization(
             user_id=user_id,
@@ -72,7 +73,7 @@ def _attach_role(db: Session, *, user_id: int, org_id: int, role_id: int) -> Non
             update_date=str(datetime.now()),
         )
     )
-    db.commit()
+    await db.commit()
 
 
 @pytest.fixture
@@ -84,38 +85,38 @@ class TestCrossOrgRoleFallback:
     """Cross-org isolation for role-based authorization fallback."""
 
     @pytest.mark.asyncio
-    async def test_admin_in_org_a_cannot_update_course_in_org_b(
+    async def test_admin_in_org_a_cannot_update_resource_in_org_b(
         self, db, org, other_org, admin_role, mock_request
     ):
-        """Alice is admin in org-A. A course in org-B must not be writable by her."""
-        alice = _mk_user(db, uid=42, username="alice", email="alice@test.com")
-        _attach_role(db, user_id=alice.id, org_id=org.id, role_id=admin_role.id)
+        """Alice is admin in org-A. A resource in org-B must not be writable by her."""
+        alice = await _mk_user(db, uid=42, username="alice", email="alice@test.com")
+        await _attach_role(db, user_id=alice.id, org_id=org.id, role_id=admin_role.id)
 
-        org_b_course = _mk_course(
-            db, cid=100, org_id=other_org.id, uuid="course_org_b", public=False
+        org_b_group = await _mk_group(
+            db, gid=100, org_id=other_org.id, uuid="usergroup_org_b"
         )
 
         allowed = await authorization_verify_based_on_roles(
-            mock_request, alice.id, "update", org_b_course.course_uuid, db
+            mock_request, alice.id, "update", org_b_group.usergroup_uuid, db
         )
         assert allowed is False, (
-            "admin-in-org-A must not be granted role-based update on a course in org-B"
+            "admin-in-org-A must not be granted role-based update on a resource in org-B"
         )
 
     @pytest.mark.asyncio
-    async def test_admin_can_still_update_own_org_course(
+    async def test_admin_can_still_update_own_org_resource(
         self, db, org, admin_role, mock_request
     ):
         """The same admin retains her legitimate permissions inside her own org."""
-        alice = _mk_user(db, uid=43, username="alice_own", email="alice2@test.com")
-        _attach_role(db, user_id=alice.id, org_id=org.id, role_id=admin_role.id)
+        alice = await _mk_user(db, uid=43, username="alice_own", email="alice2@test.com")
+        await _attach_role(db, user_id=alice.id, org_id=org.id, role_id=admin_role.id)
 
-        own_course = _mk_course(
-            db, cid=101, org_id=org.id, uuid="course_own", public=False
+        own_group = await _mk_group(
+            db, gid=101, org_id=org.id, uuid="usergroup_own"
         )
 
         allowed = await authorization_verify_based_on_roles(
-            mock_request, alice.id, "update", own_course.course_uuid, db
+            mock_request, alice.id, "update", own_group.usergroup_uuid, db
         )
         assert allowed is True
 
@@ -124,16 +125,16 @@ class TestCrossOrgRoleFallback:
         self, db, org, other_org, admin_role, mock_request
     ):
         """A user with an admin role on org-A but no membership link to org-B."""
-        bob = _mk_user(db, uid=44, username="bob", email="bob@test.com")
-        _attach_role(db, user_id=bob.id, org_id=org.id, role_id=admin_role.id)
+        bob = await _mk_user(db, uid=44, username="bob", email="bob@test.com")
+        await _attach_role(db, user_id=bob.id, org_id=org.id, role_id=admin_role.id)
 
-        victim_course = _mk_course(
-            db, cid=102, org_id=other_org.id, uuid="course_victim", public=False
+        victim_group = await _mk_group(
+            db, gid=102, org_id=other_org.id, uuid="usergroup_victim"
         )
 
         for action in ("read", "update", "delete"):
             allowed = await authorization_verify_based_on_roles(
-                mock_request, bob.id, action, victim_course.course_uuid, db
+                mock_request, bob.id, action, victim_group.usergroup_uuid, db
             )
             assert allowed is False, f"cross-org {action} must be denied"
 
@@ -159,18 +160,18 @@ class TestCrossOrgRoleFallback:
             update_date=str(datetime.now()),
         )
         db.add(global_role)
-        db.commit()
+        await db.commit()
 
         # Carol holds the global role via membership in org-A only.
-        carol = _mk_user(db, uid=45, username="carol", email="carol@test.com")
-        _attach_role(db, user_id=carol.id, org_id=org.id, role_id=global_role.id)
+        carol = await _mk_user(db, uid=45, username="carol", email="carol@test.com")
+        await _attach_role(db, user_id=carol.id, org_id=org.id, role_id=global_role.id)
 
-        org_b_course = _mk_course(
-            db, cid=103, org_id=other_org.id, uuid="course_global_victim", public=False
+        org_b_group = await _mk_group(
+            db, gid=103, org_id=other_org.id, uuid="usergroup_global_victim"
         )
 
         allowed = await authorization_verify_based_on_roles(
-            mock_request, carol.id, "update", org_b_course.course_uuid, db
+            mock_request, carol.id, "update", org_b_group.usergroup_uuid, db
         )
         assert allowed is False
 
@@ -179,14 +180,14 @@ class TestCrossOrgRoleFallback:
         self, db, org, admin_role, mock_request
     ):
         """
-        For top-level create placeholders (``course_x``) ``target_org_id`` is
-        ``None``; role-based checks must still work so create flows are
+        For top-level create placeholders (``usergroup_x``) ``target_org_id``
+        is ``None``; role-based checks must still work so create flows are
         unaffected by the cross-org fix.
         """
-        alice = _mk_user(db, uid=46, username="alice_create", email="alice3@test.com")
-        _attach_role(db, user_id=alice.id, org_id=org.id, role_id=admin_role.id)
+        alice = await _mk_user(db, uid=46, username="alice_create", email="alice3@test.com")
+        await _attach_role(db, user_id=alice.id, org_id=org.id, role_id=admin_role.id)
 
         allowed = await authorization_verify_based_on_roles(
-            mock_request, alice.id, "create", "course_x", db
+            mock_request, alice.id, "create", "usergroup_x", db
         )
         assert allowed is True

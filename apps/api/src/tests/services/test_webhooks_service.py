@@ -482,7 +482,7 @@ class TestWebhookCrud:
         mock_dispatch.assert_awaited_once_with(
             event_name="ping",
             org_id=org.id,
-            data={"message": "This is a test webhook event from LearnHouse."},
+            data={"message": "This is a test webhook event from Abhyas."},
             webhook_ids=[endpoint.id],
         )
         assert response == {"detail": "Test event dispatched"}

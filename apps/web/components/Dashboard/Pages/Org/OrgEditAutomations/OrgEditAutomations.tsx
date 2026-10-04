@@ -363,7 +363,7 @@ const OrgEditAutomations: React.FC = () => {
                 )}
               </div>
               <p className="text-gray-500 text-xs mt-0.5">
-                Connect LearnHouse to thousands of apps without writing code.
+                Connect Abhyas to thousands of apps without writing code.
               </p>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">

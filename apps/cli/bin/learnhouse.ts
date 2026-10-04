@@ -66,7 +66,7 @@ program
   .option('--port <port>', 'HTTP port (default: 80)', parseInt)
   .option('--admin-email <email>', 'Admin email (default: "admin@school.dev")')
   .option('--admin-password <password>', 'Admin password (required in --ci mode)')
-  .option('--org-name <name>', 'Organization display name (default: "Default Organization")')
+  .option('--org-name <name>', 'Organization display name (default: "Abhyas")')
   .option('--org-slug <slug>', 'Organization slug used in URLs (default: "default")')
   .option('--channel <channel>', 'Release channel: stable or dev (default: "stable")')
   .option('--no-start', 'Skip starting services after setup')

@@ -7,6 +7,7 @@ from src.core.events.autoinstall import auto_install
 from src.core.events.content import check_content_directory
 from src.core.events.database import close_database, connect_to_db
 from src.core.events.logs import create_logs_dir
+from src.core.production_guards import validate_production_config
 from src.core.ee_hooks import run_ee_startup
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,9 @@ def startup_app(app: FastAPI) -> Callable:
         # Get LearnHouse Config
         learnhouse_config: LearnHouseConfig = get_learnhouse_config()
         app.learnhouse_config = learnhouse_config  # type: ignore
+
+        # Stop here, before touching the database, if production is configured unsafely.
+        validate_production_config()
 
         # Connect to database
         await connect_to_db(app)

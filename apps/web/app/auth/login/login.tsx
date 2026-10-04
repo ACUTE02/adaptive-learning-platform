@@ -2,9 +2,10 @@
 import FormLayout, {
   FormField,
   FormLabelAndMessage,
-  Input,
+  AuthInput as Input,
 } from '@components/Objects/StyledElements/Form/Form'
 import * as Form from '@radix-ui/react-form'
+import AuthFormLogo from '@components/Auth/AuthFormLogo'
 import { useFormik } from 'formik'
 import React, { useState, useEffect } from 'react'
 import { AlertTriangle, Lock, Mail, Shield, X, Clock } from 'lucide-react'
@@ -271,6 +272,7 @@ const LoginClient = (props: LoginClientProps) => {
 
         <div className="flex-1 flex flex-row">
         <div className="m-auto w-full max-w-sm px-6 py-8 sm:py-0">
+          <AuthFormLogo />
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">{t('auth.welcome_back')}</h1>

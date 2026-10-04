@@ -579,8 +579,8 @@ const EditorLearnHouseLogo = () => {
         transition={animation.transition}
       >
         <Image
-          src="/lrn.svg"
-          alt="LearnHouse"
+          src="/brand/abhyas-icon.png"
+          alt="Abhyas"
           width={14}
           height={14}
           className="invert"
