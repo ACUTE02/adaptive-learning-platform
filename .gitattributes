@@ -1,0 +1,6 @@
+# Scripts and Dockerfiles run inside Linux containers. A CRLF line ending breaks the
+# shebang ("exec ./docker-entrypoint.sh: no such file or directory"), so they are
+# always checked out with LF, also on Windows where core.autocrlf=true.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.Dockerfile text eol=lf
