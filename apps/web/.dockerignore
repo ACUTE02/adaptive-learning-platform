@@ -1,0 +1,7 @@
+# Keep local state and secrets out of the image
+node_modules
+.next
+.env
+.env.*
+!.env.example
+public/runtime-config.js

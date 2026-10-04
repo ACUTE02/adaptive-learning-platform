@@ -1,0 +1,12 @@
+# Keep local state and secrets out of the image
+config/config.yaml
+.env
+.env.*
+!.env.example
+node_modules
+.venv
+__pycache__
+*.pyc
+content
+logs
+.pytest_cache

@@ -18,6 +18,17 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN rm -f .env*
 
+# Next.js inlines process.env.NEXT_PUBLIC_* at build time, also in server code
+# (lib/auth/server.ts, orgResolution.ts, sentry configs). Everything else reads
+# the same values at runtime via server-wrapper.js. Pass these as build args so
+# the inlined copies match the runtime values; empty means "use the code default".
+ARG NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL=""
+ARG NEXT_PUBLIC_LEARNHOUSE_DOMAIN=""
+ARG NEXT_PUBLIC_LEARNHOUSE_ENV=""
+ENV NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL=$NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL \
+    NEXT_PUBLIC_LEARNHOUSE_DOMAIN=$NEXT_PUBLIC_LEARNHOUSE_DOMAIN \
+    NEXT_PUBLIC_LEARNHOUSE_ENV=$NEXT_PUBLIC_LEARNHOUSE_ENV
+
 # Remove Enterprise Edition folder for public/OSS builds
 ARG LEARNHOUSE_PUBLIC=false
 RUN if [ "$LEARNHOUSE_PUBLIC" = "true" ]; then rm -rf /app/ee; fi
