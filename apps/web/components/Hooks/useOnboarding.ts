@@ -57,7 +57,7 @@ const DEFAULT_STEPS: Omit<OnboardingStep, 'completed'>[] = [
   {
     id: 'teach_the_world',
     title: 'Learn & grow',
-    description: 'Resources to help you get the most out of LearnHouse.',
+    description: 'Resources to help you get the most out of Sopan.',
   },
 ]
 

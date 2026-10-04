@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "Báo cáo vấn đề hoặc phản hồi",
       "feedback_title": "Gửi Phản hồi",
-      "feedback_description": "Giúp chúng tôi cải thiện LearnHouse bằng cách chia sẻ suy nghĩ, báo cáo lỗi hoặc đề xuất tính năng mới.",
+      "feedback_description": "Giúp chúng tôi cải thiện Sopan bằng cách chia sẻ suy nghĩ, báo cáo lỗi hoặc đề xuất tính năng mới.",
       "feedback_placeholder": "Cho chúng tôi biết bạn đang nghĩ gì...",
       "feedback_success": "Cảm ơn phản hồi của bạn!",
       "send_feedback": "Gửi Phản hồi",
@@ -537,14 +537,14 @@
     "import": {
       "scorm_package": "Gói SCORM",
       "scorm_description": "Nhập các gói SCORM 1.2 hoặc SCORM 2004",
-      "learnhouse_courses": "Khóa học LearnHouse",
-      "learnhouse_description": "Nhập các khóa học đã xuất từ LearnHouse",
+      "learnhouse_courses": "Khóa học Sopan",
+      "learnhouse_description": "Nhập các khóa học đã xuất từ Sopan",
       "upload_package": "Tải lên Gói",
       "configure": "Cấu hình",
       "complete": "Hoàn thành",
       "click_to_upload": "Nhấp để tải lên hoặc kéo và thả",
-      "learnhouse_format": "Xuất khóa học LearnHouse (.zip)",
-      "learnhouse_info": "Tải lên gói xuất khóa học LearnHouse (.zip). Bạn có thể chọn khóa học nào cần nhập và cấu hình các tùy chọn nhập.",
+      "learnhouse_format": "Xuất khóa học Sopan (.zip)",
+      "learnhouse_info": "Tải lên gói xuất khóa học Sopan (.zip). Bạn có thể chọn khóa học nào cần nhập và cấu hình các tùy chọn nhập.",
       "analyze_package": "Phân tích Gói",
       "ready_to_analyze": "Sẵn sàng phân tích",
       "invalid_file_format": "Vui lòng tải lên tệp .zip",
@@ -1442,8 +1442,8 @@
       "import_course": "Nhập khóa học",
       "import_scorm": "Nhập Gói SCORM",
       "import_scorm_description": "Nhập gói SCORM để tạo khóa học mới",
-      "import_learnhouse": "Nhập Khóa học LearnHouse",
-      "import_learnhouse_description": "Nhập khóa học từ gói xuất LearnHouse",
+      "import_learnhouse": "Nhập Khóa học Sopan",
+      "import_learnhouse_description": "Nhập khóa học từ gói xuất Sopan",
       "import_select_type": "Chọn loại gói bạn muốn nhập",
       "no_courses": "Chưa có khóa học nào",
       "create_course_placeholder": "Tạo khóa học để thêm nội dung",
@@ -2264,8 +2264,8 @@
         "label_placeholder": "Chọn một nhãn tổ chức",
         "about": "Giới thiệu tổ chức",
         "about_placeholder": "Mô tả chi tiết về tổ chức của bạn",
-        "showcase_explore": "Hiển thị trong LearnHouse Explore",
-        "showcase_description": "Chia sẻ các khóa học và nội dung của tổ chức bạn với cộng đồng LearnHouse. Bật tính năng này để giúp người học khám phá các tài nguyên giáo dục giá trị.",
+        "showcase_explore": "Hiển thị trong Sopan Explore",
+        "showcase_description": "Chia sẻ các khóa học và nội dung của tổ chức bạn với cộng đồng Sopan. Bật tính năng này để giúp người học khám phá các tài nguyên giáo dục giá trị.",
         "save_changes": "Lưu thay đổi",
         "saving": "Đang lưu...",
         "update_success": "Thông tin tổ chức đã được cập nhật",
@@ -2276,9 +2276,9 @@
         "footer_text_desc": "Văn bản tùy chỉnh hiển thị ở cuối các trang của tổ chức",
         "default_language": "Ngôn ngữ mặc định",
         "default_language_desc": "Ngôn ngữ mà khách truy cập mới sẽ thấy theo mặc định và được dùng cho các email gửi thay mặt tổ chức này. Thành viên vẫn có thể thay đổi ngôn ngữ giao diện của mình.",
-        "watermark_desc": "Hiển thị watermark thương hiệu LearnHouse trên các trang tổ chức của bạn",
+        "watermark_desc": "Hiển thị watermark thương hiệu Sopan trên các trang tổ chức của bạn",
         "watermark_free_plan": "Watermark luôn được hiển thị trên gói miễn phí",
-        "watermark_label": "Watermark \"Made with LearnHouse\"",
+        "watermark_label": "Watermark \"Made with Sopan\"",
         "watermark_ee": "Bị ẩn bởi giấy phép Enterprise Edition của bạn"
       },
       "images": {
@@ -4547,7 +4547,7 @@
       },
       "teach_the_world": {
         "title": "Học hỏi & phát triển",
-        "description": "Tài nguyên giúp bạn tận dụng tối đa LearnHouse.",
+        "description": "Tài nguyên giúp bạn tận dụng tối đa Sopan.",
         "classroom": "Lớp học",
         "classroom_desc": "Tìm hiểu cách phát triển và quản lý khóa học",
         "university": "Đại học LearnHouse",
@@ -4555,7 +4555,7 @@
       }
     },
     "welcome": {
-      "title": "Chào mừng đến với LearnHouse",
+      "title": "Chào mừng đến với Sopan",
       "subtitle": "Tạo khóa học, mời học viên và chia sẻ kiến thức với thế giới.",
       "get_started": "Bắt đầu",
       "features_title": "Mọi thứ bạn cần",
@@ -4847,7 +4847,7 @@
   "embed": {
     "not_supported_description": "Loại hoạt động này yêu cầu xác thực và không thể được nhúng.",
     "not_supported_title": "Hoạt động này không được hỗ trợ",
-    "powered_by": "Cung cấp bởi LearnHouse",
+    "powered_by": "Cung cấp bởi Sopan",
     "visit_activity": "Truy cập trang hoạt động"
   },
   "migration": {

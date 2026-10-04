@@ -121,7 +121,7 @@ app.include_router(adaptive_engine.router)
 
 @app.get("/")
 async def root():
-    return {"Message": "Welcome to LearnHouse ✨"}
+    return {"Message": "Welcome to Sopan ✨"}
 
 
 if __name__ == "__main__":

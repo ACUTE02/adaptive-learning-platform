@@ -84,9 +84,9 @@ async def _install_async(short: bool) -> None:
                 print("Default elements installed ✅")
 
                 # Honor LEARNHOUSE_INITIAL_ORG_NAME / LEARNHOUSE_INITIAL_ORG_SLUG when
-                # the CLI passes them — falls back to "Default Organization" / "default"
+                # the CLI passes them — falls back to "Sopan" / "default"
                 # so existing standalone deployments still work unchanged.
-                org_name = os.environ.get("LEARNHOUSE_INITIAL_ORG_NAME", "Default Organization")
+                org_name = os.environ.get("LEARNHOUSE_INITIAL_ORG_NAME", "Sopan")
                 org_slug = os.environ.get("LEARNHOUSE_INITIAL_ORG_SLUG", "default").lower()
 
                 # Create the Organization
@@ -147,7 +147,7 @@ async def _install_async(short: bool) -> None:
                 )
                 org = OrganizationCreate(
                     name=orgname,
-                    description="Default Organization",
+                    description="Sopan",
                     slug=slug.lower(),
                     email="",
                     logo_image="",

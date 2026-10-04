@@ -4,8 +4,8 @@ import React from 'react'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | LearnHouse Admin',
-    default: 'LearnHouse Admin',
+    template: '%s | Sopan Admin',
+    default: 'Sopan Admin',
   },
 }
 

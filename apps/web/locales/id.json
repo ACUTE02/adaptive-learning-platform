@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "Laporkan Masalah atau Umpan Balik",
       "feedback_title": "Kirim Umpan Balik",
-      "feedback_description": "Bantu kami meningkatkan LearnHouse dengan berbagi pemikiran Anda, melaporkan bug, atau menyarankan fitur baru.",
+      "feedback_description": "Bantu kami meningkatkan Sopan dengan berbagi pemikiran Anda, melaporkan bug, atau menyarankan fitur baru.",
       "feedback_placeholder": "Beritahu kami apa yang Anda pikirkan...",
       "feedback_success": "Terima kasih atas umpan balik Anda!",
       "send_feedback": "Kirim Umpan Balik",
@@ -537,14 +537,14 @@
     "import": {
       "scorm_package": "Paket SCORM",
       "scorm_description": "Impor paket SCORM 1.2 atau SCORM 2004",
-      "learnhouse_courses": "Kursus LearnHouse",
-      "learnhouse_description": "Impor kursus yang diekspor dari LearnHouse",
+      "learnhouse_courses": "Kursus Sopan",
+      "learnhouse_description": "Impor kursus yang diekspor dari Sopan",
       "upload_package": "Unggah Paket",
       "configure": "Konfigurasi",
       "complete": "Selesai",
       "click_to_upload": "Klik untuk mengunggah atau seret dan lepas",
-      "learnhouse_format": "Ekspor kursus LearnHouse (.zip)",
-      "learnhouse_info": "Unggah paket ekspor kursus LearnHouse (.zip). Anda dapat memilih kursus mana yang akan diimpor dan mengkonfigurasi opsi impor.",
+      "learnhouse_format": "Ekspor kursus Sopan (.zip)",
+      "learnhouse_info": "Unggah paket ekspor kursus Sopan (.zip). Anda dapat memilih kursus mana yang akan diimpor dan mengkonfigurasi opsi impor.",
       "analyze_package": "Analisis Paket",
       "ready_to_analyze": "Siap untuk dianalisis",
       "invalid_file_format": "Silakan unggah file .zip",
@@ -1442,8 +1442,8 @@
       "import_course": "Impor kursus",
       "import_scorm": "Impor Paket SCORM",
       "import_scorm_description": "Impor paket SCORM untuk membuat kursus baru",
-      "import_learnhouse": "Impor Kursus LearnHouse",
-      "import_learnhouse_description": "Impor kursus dari paket ekspor LearnHouse",
+      "import_learnhouse": "Impor Kursus Sopan",
+      "import_learnhouse_description": "Impor kursus dari paket ekspor Sopan",
       "import_select_type": "Pilih jenis paket yang ingin diimpor",
       "no_courses": "Belum ada kursus",
       "create_course_placeholder": "Buat kursus untuk menambahkan konten",
@@ -2274,9 +2274,9 @@
         "footer_text_desc": "Teks kustom yang ditampilkan di bagian bawah halaman organisasi Anda",
         "default_language": "Bahasa default",
         "default_language_desc": "Bahasa yang dilihat pengunjung baru secara default dan bahasa yang digunakan untuk email yang dikirim atas nama organisasi ini. Anggota tetap dapat mengganti bahasa antarmuka mereka.",
-        "watermark_desc": "Tampilkan watermark branding LearnHouse di halaman organisasi Anda",
+        "watermark_desc": "Tampilkan watermark branding Sopan di halaman organisasi Anda",
         "watermark_free_plan": "Watermark selalu ditampilkan pada paket gratis",
-        "watermark_label": "Watermark \"Made with LearnHouse\"",
+        "watermark_label": "Watermark \"Made with Sopan\"",
         "watermark_ee": "Disembunyikan oleh lisensi Enterprise Edition Anda"
       },
       "images": {
@@ -4801,7 +4801,7 @@
       },
       "teach_the_world": {
         "title": "Belajar & berkembang",
-        "description": "Sumber daya untuk membantu Anda memaksimalkan LearnHouse.",
+        "description": "Sumber daya untuk membantu Anda memaksimalkan Sopan.",
         "classroom": "Kelas",
         "classroom_desc": "Pelajari cara mengembangkan dan mengelola kursus Anda",
         "university": "Universitas LearnHouse",
@@ -4809,7 +4809,7 @@
       }
     },
     "welcome": {
-      "title": "Selamat datang di LearnHouse",
+      "title": "Selamat datang di Sopan",
       "subtitle": "Buat kursus, undang pembelajar, dan bagikan pengetahuan dengan dunia.",
       "get_started": "Mulai",
       "features_title": "Semua yang Anda butuhkan",
@@ -4845,7 +4845,7 @@
   "embed": {
     "not_supported_description": "Tipe aktivitas ini memerlukan autentikasi dan tidak dapat disematkan.",
     "not_supported_title": "Aktivitas ini tidak didukung",
-    "powered_by": "Didukung oleh LearnHouse",
+    "powered_by": "Didukung oleh Sopan",
     "visit_activity": "Kunjungi Halaman Aktivitas"
   },
   "migration": {

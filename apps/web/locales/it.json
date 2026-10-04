@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "Segnala problema o feedback",
       "feedback_title": "Invia Feedback",
-      "feedback_description": "Aiutaci a migliorare LearnHouse condividendo i tuoi pensieri, segnalando bug o suggerendo nuove funzionalità.",
+      "feedback_description": "Aiutaci a migliorare Sopan condividendo i tuoi pensieri, segnalando bug o suggerendo nuove funzionalità.",
       "feedback_placeholder": "Dicci cosa pensi...",
       "feedback_success": "Grazie per il tuo feedback!",
       "send_feedback": "Invia Feedback",
@@ -514,14 +514,14 @@
     "import": {
       "scorm_package": "Pacchetto SCORM",
       "scorm_description": "Importa pacchetti SCORM 1.2 o SCORM 2004",
-      "learnhouse_courses": "Corsi LearnHouse",
-      "learnhouse_description": "Importa corsi esportati da LearnHouse",
+      "learnhouse_courses": "Corsi Sopan",
+      "learnhouse_description": "Importa corsi esportati da Sopan",
       "upload_package": "Carica Pacchetto",
       "configure": "Configura",
       "complete": "Completato",
       "click_to_upload": "Clicca per caricare o trascina",
-      "learnhouse_format": "Esportazione corso LearnHouse (.zip)",
-      "learnhouse_info": "Carica un pacchetto di esportazione corsi LearnHouse (.zip). Potrai selezionare quali corsi importare e configurare le opzioni di importazione.",
+      "learnhouse_format": "Esportazione corso Sopan (.zip)",
+      "learnhouse_info": "Carica un pacchetto di esportazione corsi Sopan (.zip). Potrai selezionare quali corsi importare e configurare le opzioni di importazione.",
       "analyze_package": "Analizza Pacchetto",
       "ready_to_analyze": "Pronto per l'analisi",
       "invalid_file_format": "Carica un file .zip",
@@ -1419,8 +1419,8 @@
       "import_course": "Importa corso",
       "import_scorm": "Importa Pacchetto SCORM",
       "import_scorm_description": "Importa un pacchetto SCORM per creare un nuovo corso",
-      "import_learnhouse": "Importa Corsi LearnHouse",
-      "import_learnhouse_description": "Importa corsi da un pacchetto di esportazione LearnHouse",
+      "import_learnhouse": "Importa Corsi Sopan",
+      "import_learnhouse_description": "Importa corsi da un pacchetto di esportazione Sopan",
       "import_select_type": "Seleziona il tipo di pacchetto che vuoi importare",
       "no_courses": "Ancora nessun corso",
       "create_course_placeholder": "Crea un corso per aggiungere contenuti",
@@ -2251,9 +2251,9 @@
         "footer_text_desc": "Testo personalizzato visualizzato in fondo alle pagine della tua organizzazione",
         "default_language": "Lingua predefinita",
         "default_language_desc": "La lingua mostrata per impostazione predefinita ai nuovi visitatori e usata per le email inviate per conto di questa organizzazione. I membri possono comunque cambiare la propria lingua dell'interfaccia.",
-        "watermark_desc": "Mostra il watermark LearnHouse sulle pagine della tua organizzazione",
+        "watermark_desc": "Mostra il watermark Sopan sulle pagine della tua organizzazione",
         "watermark_free_plan": "Il watermark è sempre mostrato nel piano gratuito",
-        "watermark_label": "Watermark \"Made with LearnHouse\"",
+        "watermark_label": "Watermark \"Made with Sopan\"",
         "watermark_ee": "Nascosto dalla tua licenza Enterprise Edition"
       },
       "images": {
@@ -4854,7 +4854,7 @@
       },
       "teach_the_world": {
         "title": "Impara e cresci",
-        "description": "Risorse per aiutarti a ottenere il massimo da LearnHouse.",
+        "description": "Risorse per aiutarti a ottenere il massimo da Sopan.",
         "classroom": "L'aula",
         "classroom_desc": "Impara a far crescere e gestire i tuoi corsi",
         "university": "Università LearnHouse",
@@ -4862,7 +4862,7 @@
       }
     },
     "welcome": {
-      "title": "Benvenuto su LearnHouse",
+      "title": "Benvenuto su Sopan",
       "subtitle": "Crea corsi, invita studenti e condividi la conoscenza con il mondo.",
       "get_started": "Inizia",
       "features_title": "Tutto ciò di cui hai bisogno",
@@ -4898,7 +4898,7 @@
   "embed": {
     "not_supported_description": "Questo tipo di attività richiede l'autenticazione e non può essere incorporato.",
     "not_supported_title": "Questa attività non è supportata",
-    "powered_by": "Powered by LearnHouse",
+    "powered_by": "Powered by Sopan",
     "visit_activity": "Visita la pagina dell'attività"
   },
   "migration": {

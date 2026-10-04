@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "Signaler un problème",
       "feedback_title": "Envoyer un commentaire",
-      "feedback_description": "Aidez-nous à améliorer LearnHouse en partageant vos impressions, signalant des bugs ou suggérant de nouvelles fonctionnalités.",
+      "feedback_description": "Aidez-nous à améliorer Sopan en partageant vos impressions, signalant des bugs ou suggérant de nouvelles fonctionnalités.",
       "feedback_placeholder": "Dites-nous ce que vous en pensez...",
       "feedback_success": "Merci pour votre retour !",
       "send_feedback": "Envoyer",
@@ -514,14 +514,14 @@
     "import": {
       "scorm_package": "Package SCORM",
       "scorm_description": "Importer des packages SCORM 1.2 ou SCORM 2004",
-      "learnhouse_courses": "Cours LearnHouse",
-      "learnhouse_description": "Importer des cours exportés depuis LearnHouse",
+      "learnhouse_courses": "Cours Sopan",
+      "learnhouse_description": "Importer des cours exportés depuis Sopan",
       "upload_package": "Téléverser le package",
       "configure": "Configurer",
       "complete": "Terminé",
       "click_to_upload": "Cliquez pour téléverser ou glissez-déposez",
-      "learnhouse_format": "Export de cours LearnHouse (.zip)",
-      "learnhouse_info": "Téléversez un package d'export LearnHouse (.zip). Vous pourrez sélectionner les cours à importer et configurer les options d'import.",
+      "learnhouse_format": "Export de cours Sopan (.zip)",
+      "learnhouse_info": "Téléversez un package d'export Sopan (.zip). Vous pourrez sélectionner les cours à importer et configurer les options d'import.",
       "analyze_package": "Analyser le package",
       "ready_to_analyze": "Prêt à analyser",
       "invalid_file_format": "Veuillez téléverser un fichier .zip",
@@ -1419,8 +1419,8 @@
       "import_course": "Importer un cours",
       "import_scorm": "Importer un package SCORM",
       "import_scorm_description": "Importer un package SCORM pour créer un nouveau cours",
-      "import_learnhouse": "Importer des cours LearnHouse",
-      "import_learnhouse_description": "Importer des cours depuis un export LearnHouse",
+      "import_learnhouse": "Importer des cours Sopan",
+      "import_learnhouse_description": "Importer des cours depuis un export Sopan",
       "import_select_type": "Sélectionnez le type de package à importer",
       "no_courses": "Aucun cours pour le moment",
       "create_course_placeholder": "Créez un cours pour ajouter du contenu",
@@ -2251,9 +2251,9 @@
         "footer_text_desc": "Texte personnalisé affiché en bas des pages de votre organisation",
         "default_language": "Langue par défaut",
         "default_language_desc": "La langue affichée par défaut aux nouveaux visiteurs et utilisée pour les e-mails envoyés au nom de cette organisation. Les membres peuvent toujours changer leur propre langue d'interface.",
-        "watermark_desc": "Afficher le filigrane LearnHouse sur les pages de votre organisation",
+        "watermark_desc": "Afficher le filigrane Sopan sur les pages de votre organisation",
         "watermark_free_plan": "Le filigrane est toujours affiché sur le plan gratuit",
-        "watermark_label": "Filigrane \"Made with LearnHouse\"",
+        "watermark_label": "Filigrane \"Made with Sopan\"",
         "watermark_ee": "Masqué par votre licence Enterprise Edition"
       },
       "images": {
@@ -4854,7 +4854,7 @@
       },
       "teach_the_world": {
         "title": "Apprenez et progressez",
-        "description": "Des ressources pour vous aider à tirer le meilleur parti de LearnHouse.",
+        "description": "Des ressources pour vous aider à tirer le meilleur parti de Sopan.",
         "classroom": "La salle de classe",
         "classroom_desc": "Apprenez à développer et gérer vos cours",
         "university": "Université LearnHouse",
@@ -4862,7 +4862,7 @@
       }
     },
     "welcome": {
-      "title": "Bienvenue sur LearnHouse",
+      "title": "Bienvenue sur Sopan",
       "subtitle": "Créez des cours, invitez des apprenants et partagez le savoir avec le monde.",
       "get_started": "Commencer",
       "features_title": "Tout ce dont vous avez besoin",
@@ -4934,7 +4934,7 @@
   "embed": {
     "not_supported_description": "Ce type d'activité nécessite une authentification et ne peut pas être intégré.",
     "not_supported_title": "Cette activité n'est pas prise en charge",
-    "powered_by": "Propulsé par LearnHouse",
+    "powered_by": "Propulsé par Sopan",
     "visit_activity": "Visiter la page de l'activité"
   },
   "upgrade_modal": {

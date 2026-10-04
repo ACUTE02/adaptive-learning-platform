@@ -162,14 +162,20 @@ function DashLeftMenu() {
               alt={org?.name}
               className="h-9 w-9 object-contain rounded-lg"
             />
+          ) : isCollapsed ? (
+            <img
+              src="/brand/sopan-icon.png"
+              alt="Sopan"
+              className="h-8 w-8 rounded-lg"
+            />
           ) : (
             <img
-              src="/lrn-dash.svg"
-              alt="Learnhouse logo"
-              className="h-8 w-8"
+              src="/brand/sopan-logo-light.png"
+              alt="Sopan - Adaptive Learning"
+              className="h-10 w-auto"
             />
           )}
-          {!isCollapsed && (
+          {!isCollapsed && plan === 'enterprise' && org?.logo_image && (
             <div className="flex flex-col min-w-0">
               <span className="font-semibold text-sm text-white truncate">
                 {org?.name}

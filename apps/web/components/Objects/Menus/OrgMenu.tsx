@@ -156,7 +156,7 @@ export const OrgMenu = (props: any) => {
                   {org?.logo_image ? (
                     <img
                       src={`${getOrgLogoMediaDirectory(org.org_uuid, org?.logo_image)}`}
-                      alt="Learnhouse"
+                      alt={org?.name || 'Sopan'}
                       style={{ width: 'auto', height: '100%' }}
                       className="rounded-md"
                     />
@@ -529,14 +529,18 @@ const CopilotMenuButton = ({
   )
 }
 
+// Sopan wordmark. The menu colours set `logoFilter`: 'none' on light menus
+// (use the green-text logo) and an invert filter on dark menus (use the
+// cream-text logo), so each variant is picked instead of filtering one image.
 const LearnHouseLogo = ({ logoFilter }: { logoFilter: string }) => {
+  const onDarkMenu = !!logoFilter && logoFilter !== 'none'
   return (
     <Image
-      src="/lrn-text.svg"
-      alt="LearnHouse logo"
-      width={133}
-      height={40}
-      style={{ height: 'auto', filter: logoFilter }}
+      src={onDarkMenu ? '/brand/sopan-logo-light.png' : '/brand/sopan-logo-dark.png'}
+      alt="Sopan - Adaptive Learning"
+      width={140}
+      height={39}
+      style={{ height: 'auto' }}
     />
   )
 }

@@ -1,10 +1,13 @@
+<p align="center"><em>Sopan is built on the open-source <a href="https://github.com/learnhouse/learnhouse">LearnHouse</a> platform.</em></p>
+
 <p align="center">
-  <a href="https://learnhouse.app">
-    <img src=".github/images/learnhouse-github.png" alt="LearnHouse" width="600" />
-  </a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/web/public/brand/sopan-logo-light.png" />
+    <img src="apps/web/public/brand/sopan-logo-dark.png" alt="Sopan - Adaptive Learning" width="420" />
+  </picture>
 </p>
 
-<h1 align="center">🧠 Adaptive AI Learning Platform</h1>
+<h1 align="center">🧠 Sopan — Adaptive Learning</h1>
 <h3 align="center">An Intelligent Learning Management System powered by Large Language Models (LLMs), Dynamic Difficulty Adjustment, and the Ebbinghaus Forgetting Curve.</h3>
 
 <p align="center">
