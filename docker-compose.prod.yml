@@ -55,8 +55,6 @@ services:
   api:
     build:
       context: ./apps/api
-      args:
-        LEARNHOUSE_PUBLIC: "true"
     restart: unless-stopped
     depends_on:
       postgres: { condition: service_healthy }
@@ -97,7 +95,6 @@ services:
     build:
       context: ./apps/web
       args:
-        LEARNHOUSE_PUBLIC: "true"
         # Inlined by Next.js at build time, must equal the runtime values below.
         NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL: ${NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL:?set NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL in .env}
         NEXT_PUBLIC_LEARNHOUSE_DOMAIN: ${NEXT_PUBLIC_LEARNHOUSE_DOMAIN:?set NEXT_PUBLIC_LEARNHOUSE_DOMAIN in .env}
