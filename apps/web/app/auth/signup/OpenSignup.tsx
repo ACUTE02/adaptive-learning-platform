@@ -5,8 +5,8 @@ import React, { useEffect } from 'react'
 import FormLayout, {
   FormField,
   FormLabelAndMessage,
-  Input,
-  Textarea,
+  AuthInput as Input,
+  AuthTextarea as Textarea,
 } from '@components/Objects/StyledElements/Form/Form'
 import * as Form from '@radix-ui/react-form'
 import { AlertTriangle, Mail, User } from 'lucide-react'

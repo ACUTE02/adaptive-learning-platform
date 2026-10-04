@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import { isFeatureHidden } from '@/lib/hiddenFeatures'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { useLHSession } from '@components/Contexts/LHSessionContext'
 import { toast } from 'react-hot-toast'
@@ -223,6 +224,7 @@ const OrgEditFeatures: React.FC = () => {
           )}
 
           {/* Collections Toggle */}
+          {!isFeatureHidden('collections') && (
           <FeatureToggle
             id="collections"
             title={t('dashboard.organization.features.toggles.collections.title')}
@@ -235,8 +237,10 @@ const OrgEditFeatures: React.FC = () => {
             icon={<FolderOpen size={20} className="text-gray-600" />}
             onToggle={handleCollectionsToggle}
           />
+          )}
 
           {/* Communities Toggle */}
+          {!isFeatureHidden('communities') && (
           <FeatureToggle
             id="communities"
             title={t('dashboard.organization.features.toggles.communities.title')}
@@ -249,8 +253,10 @@ const OrgEditFeatures: React.FC = () => {
             icon={<Users size={20} className="text-gray-600" />}
             onToggle={handleCommunitiesToggle}
           />
+          )}
 
           {/* Payments Toggle */}
+          {!isFeatureHidden('payments') && (
           <FeatureToggle
             id="payments"
             title={t('dashboard.organization.features.toggles.payments.title')}
@@ -263,8 +269,10 @@ const OrgEditFeatures: React.FC = () => {
             icon={<CreditCard size={20} className="text-gray-600" />}
             onToggle={handlePaymentsToggle}
           />
+          )}
 
           {/* Podcasts Toggle */}
+          {!isFeatureHidden('podcasts') && (
           <FeatureToggle
             id="podcasts"
             title={t('dashboard.organization.features.toggles.podcasts.title')}
@@ -277,6 +285,7 @@ const OrgEditFeatures: React.FC = () => {
             icon={<Headphones size={20} className="text-gray-600" />}
             onToggle={handlePodcastsToggle}
           />
+          )}
 
           {/* Boards Toggle */}
           <FeatureToggle
@@ -293,6 +302,7 @@ const OrgEditFeatures: React.FC = () => {
           />
 
           {/* Playgrounds Toggle */}
+          {!isFeatureHidden('playgrounds') && (
           <FeatureToggle
             id="playgrounds"
             title={t('dashboard.organization.features.toggles.playgrounds.title')}
@@ -305,6 +315,7 @@ const OrgEditFeatures: React.FC = () => {
             icon={<Cube size={20} className="text-gray-600" />}
             onToggle={handlePlaygroundsToggle}
           />
+          )}
         </div>
       </div>
     </div>

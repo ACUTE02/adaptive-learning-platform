@@ -2,7 +2,7 @@
 import FormLayout, {
   FormField,
   FormLabelAndMessage,
-  Input,
+  AuthInput as Input,
 } from '@components/Objects/StyledElements/Form/Form'
 import * as Form from '@radix-ui/react-form'
 import { useFormik } from 'formik'

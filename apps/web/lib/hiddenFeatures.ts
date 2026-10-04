@@ -17,12 +17,20 @@ export const HIDDEN_FEATURES = [
   'collections',
 ] as const
 
+// Organization settings tabs that cannot work in this fork:
+//  - usage: its backend endpoint (/orgs/{id}/usage) fails with a 500.
+export const HIDDEN_ORG_SETTINGS_TABS = ['usage'] as const
+
+export function isOrgSettingsTabHidden(tabId: string): boolean {
+  return (HIDDEN_ORG_SETTINGS_TABS as readonly string[]).includes(tabId)
+}
+
 export function isFeatureHidden(feature: string): boolean {
   return (HIDDEN_FEATURES as readonly string[]).includes(feature)
 }
 
 // Dashboard and public URL prefixes that belong to hidden features, plus the
-// organization "Usage" settings page, whose backend endpoint also fails.
+// hidden organization settings tabs (see HIDDEN_ORG_SETTINGS_TABS).
 // Used by the middleware to send direct visits back to the dashboard.
 export const HIDDEN_ROUTE_PREFIXES = [
   '/dash/communities',

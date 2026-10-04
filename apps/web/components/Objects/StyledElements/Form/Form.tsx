@@ -77,6 +77,31 @@ export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttribute
 )
 Input.displayName = 'Input'
 
+// Input for the login and signup pages. The shared Input above has gray text
+// and a one-pixel near-white outline, which is hard to see on these pages.
+// The auth card is always white, so this stays light in dark mode as well.
+export const AuthInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  ({ className, ...props }, ref) => (
+    <input
+      ref={ref}
+      className={`box-border w-full h-11 rounded-lg px-3 text-[15px] leading-none text-gray-900 placeholder:text-gray-500 bg-white border border-gray-500 hover:border-gray-700 focus:border-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30 selection:bg-black selection:text-white [&:-webkit-autofill]:[-webkit-text-fill-color:#111827] [&:-webkit-autofill]:[box-shadow:inset_0_0_0_1000px_#ffffff] ${className || ''}`}
+      {...props}
+    />
+  )
+)
+AuthInput.displayName = 'AuthInput'
+
+export const AuthTextarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
+  ({ className, ...props }, ref) => (
+    <textarea
+      ref={ref}
+      className={`box-border w-full rounded-lg resize-none p-3 text-[15px] text-gray-900 placeholder:text-gray-500 bg-white border border-gray-500 hover:border-gray-700 focus:border-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30 selection:bg-black selection:text-white ${className || ''}`}
+      {...props}
+    />
+  )
+)
+AuthTextarea.displayName = 'AuthTextarea'
+
 export const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
   ({ className, ...props }, ref) => (
     <textarea
