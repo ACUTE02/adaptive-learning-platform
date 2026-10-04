@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import learnhouseIcon from 'public/brand/sopan-icon.png'
+import learnhouseIcon from 'public/brand/abhyas-icon.png'
 import { getOrgLogoMediaDirectory, getOrgAuthBackgroundMediaDirectory } from '@services/media/media'
 import { getUriWithOrg } from '@services/config/config'
 import { cn } from '@/lib/utils'
@@ -74,12 +74,12 @@ export default function AuthBrandingPanel({ org, welcomeText }: AuthBrandingPane
 
       {/* Content */}
       <div className="relative z-10 flex flex-col h-full p-10">
-        {/* Top bar with the Sopan icon - hidden for enterprise users */}
+        {/* Top bar with the Abhyas icon - hidden for enterprise users */}
         {!isEnterprise && (
           <div className="login-topbar">
             <img
-              src="/brand/sopan-icon.png"
-              alt="Sopan"
+              src="/brand/abhyas-icon.png"
+              alt="Abhyas"
               width={30}
               height={30}
               className="rounded-md"
@@ -108,7 +108,7 @@ export default function AuthBrandingPanel({ org, welcomeText }: AuthBrandingPane
                     width={96}
                     height={96}
                     src={learnhouseIcon}
-                    alt="Sopan"
+                    alt="Abhyas"
                     className="object-contain"
                   />
                 )}

@@ -23,8 +23,8 @@ def _require_superadmin(current_user: PublicUser):
 
 @router.get(
     "/config",
-    summary="Get Sopan runtime config",
-    description="Returns the current Sopan configuration with sensitive values redacted. Restricted to superadmin users.",
+    summary="Get Abhyas runtime config",
+    description="Returns the current Abhyas configuration with sensitive values redacted. Restricted to superadmin users.",
     responses={
         200: {"description": "Configuration dictionary with secrets redacted"},
         401: {"description": "Authentication required"},

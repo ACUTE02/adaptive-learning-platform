@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "Sorun veya Geri Bildirim Bildir",
       "feedback_title": "Geri Bildirim Gönder",
-      "feedback_description": "Düşüncelerinizi paylaşarak, hata bildirerek veya yeni özellikler önererek Sopan'u geliştirmemize yardımcı olun.",
+      "feedback_description": "Düşüncelerinizi paylaşarak, hata bildirerek veya yeni özellikler önererek Abhyas'u geliştirmemize yardımcı olun.",
       "feedback_placeholder": "Aklınızdakileri bize söyleyin...",
       "feedback_success": "Geri bildiriminiz için teşekkürler!",
       "send_feedback": "Geri Bildirim Gönder",
@@ -537,14 +537,14 @@
     "import": {
       "scorm_package": "SCORM Paketi",
       "scorm_description": "SCORM 1.2 veya SCORM 2004 paketlerini içe aktar",
-      "learnhouse_courses": "Sopan Kursları",
-      "learnhouse_description": "Sopan'dan dışa aktarılan kursları içe aktar",
+      "learnhouse_courses": "Abhyas Kursları",
+      "learnhouse_description": "Abhyas'dan dışa aktarılan kursları içe aktar",
       "upload_package": "Paket Yükle",
       "configure": "Yapılandır",
       "complete": "Tamamlandı",
       "click_to_upload": "Yüklemek için tıklayın veya sürükleyip bırakın",
-      "learnhouse_format": "Sopan kurs dışa aktarımı (.zip)",
-      "learnhouse_info": "Sopan kurs dışa aktarma paketi (.zip) yükleyin. Hangi kursların içe aktarılacağını seçebilir ve içe aktarma seçeneklerini yapılandırabilirsiniz.",
+      "learnhouse_format": "Abhyas kurs dışa aktarımı (.zip)",
+      "learnhouse_info": "Abhyas kurs dışa aktarma paketi (.zip) yükleyin. Hangi kursların içe aktarılacağını seçebilir ve içe aktarma seçeneklerini yapılandırabilirsiniz.",
       "analyze_package": "Paketi Analiz Et",
       "ready_to_analyze": "Analiz için hazır",
       "invalid_file_format": "Lütfen bir .zip dosyası yükleyin",
@@ -1442,8 +1442,8 @@
       "import_course": "Kurs içe aktar",
       "import_scorm": "SCORM Paketi İçe Aktar",
       "import_scorm_description": "Yeni bir kurs oluşturmak için bir SCORM paketi içe aktarın",
-      "import_learnhouse": "Sopan Kurslarını İçe Aktar",
-      "import_learnhouse_description": "Sopan dışa aktarma paketinden kursları içe aktarın",
+      "import_learnhouse": "Abhyas Kurslarını İçe Aktar",
+      "import_learnhouse_description": "Abhyas dışa aktarma paketinden kursları içe aktarın",
       "import_select_type": "İçe aktarmak istediğiniz paket türünü seçin",
       "no_courses": "Henüz kurs yok",
       "create_course_placeholder": "İçerik eklemek için bir kurs oluşturun",
@@ -2264,8 +2264,8 @@
         "label_placeholder": "Bir organizasyon etiketi seçin",
         "about": "Organizasyon Hakkında",
         "about_placeholder": "Organizasyonunuzun detaylı açıklaması",
-        "showcase_explore": "Sopan Explore'da göster",
-        "showcase_description": "Organizasyonunuzun kurslarını ve içeriklerini Sopan topluluğuyla paylaşın. Öğrencilerin değerli eğitim kaynaklarını keşfetmelerine yardımcı olmak için bunu etkinleştirin.",
+        "showcase_explore": "Abhyas Explore'da göster",
+        "showcase_description": "Organizasyonunuzun kurslarını ve içeriklerini Abhyas topluluğuyla paylaşın. Öğrencilerin değerli eğitim kaynaklarını keşfetmelerine yardımcı olmak için bunu etkinleştirin.",
         "save_changes": "Değişiklikleri Kaydet",
         "saving": "Kaydediliyor...",
         "update_success": "Organizasyon bilgileri güncellendi",
@@ -2276,9 +2276,9 @@
         "footer_text_desc": "Kuruluş sayfalarınızın altında görüntülenen özel metin",
         "default_language": "Varsayılan dil",
         "default_language_desc": "Yeni ziyaretçilerin varsayılan olarak gördüğü ve bu kuruluş adına gönderilen e-postalarda kullanılan dil. Üyeler kendi arayüz dillerini değiştirmeye devam edebilir.",
-        "watermark_desc": "Organizasyon sayfalarınızda Sopan marka filigranını gösterin",
+        "watermark_desc": "Organizasyon sayfalarınızda Abhyas marka filigranını gösterin",
         "watermark_free_plan": "Filigran ücretsiz planda her zaman gösterilir",
-        "watermark_label": "\"Made with Sopan\" filigranı",
+        "watermark_label": "\"Made with Abhyas\" filigranı",
         "watermark_ee": "Enterprise Edition lisansınız tarafından gizlendi"
       },
       "images": {
@@ -4547,7 +4547,7 @@
       },
       "teach_the_world": {
         "title": "Öğrenin ve büyüyün",
-        "description": "Sopan'dan en iyi şekilde yararlanmanıza yardımcı olacak kaynaklar.",
+        "description": "Abhyas'dan en iyi şekilde yararlanmanıza yardımcı olacak kaynaklar.",
         "classroom": "Sınıf",
         "classroom_desc": "Kurslarınızı nasıl büyüteceğinizi ve yöneteceğinizi öğrenin",
         "university": "LearnHouse Üniversitesi",
@@ -4555,7 +4555,7 @@
       }
     },
     "welcome": {
-      "title": "Sopan'a hoş geldiniz",
+      "title": "Abhyas'a hoş geldiniz",
       "subtitle": "Kurslar oluşturun, öğrencileri davet edin ve bilgiyi dünyayla paylaşın.",
       "get_started": "Başla",
       "features_title": "İhtiyacınız olan her şey",
@@ -4847,7 +4847,7 @@
   "embed": {
     "not_supported_description": "Bu tür etkinlik kimlik doğrulama gerektirir ve yerleştirilemez.",
     "not_supported_title": "Bu etkinlik desteklenmiyor",
-    "powered_by": "Sopan tarafından desteklenmektedir",
+    "powered_by": "Abhyas tarafından desteklenmektedir",
     "visit_activity": "Etkinlik Sayfasını Ziyaret Et"
   },
   "migration": {

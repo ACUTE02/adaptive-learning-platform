@@ -145,8 +145,8 @@ export default function WelcomeModal() {
                 >
                   <div className="px-10 pt-10 pb-2 text-center">
                     <motion.img
-                      src="/brand/sopan-logo-dark.png"
-                      alt="Sopan - Adaptive Learning"
+                      src="/brand/abhyas-logo-dark.png"
+                      alt="Abhyas - Adaptive Learning"
                       className="h-14 w-auto mx-auto mb-5"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}

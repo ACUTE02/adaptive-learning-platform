@@ -184,7 +184,7 @@ export async function setupCommand(options: SetupOptions) {
       dbPassword,
       useAiDatabase: false,
       useExternalRedis: false,
-      orgName: options.orgName || 'Sopan',
+      orgName: options.orgName || 'Abhyas',
       orgSlug: (options.orgSlug || 'default').toLowerCase(),
       adminEmail: options.adminEmail || 'admin@school.dev',
       adminPassword: options.adminPassword,

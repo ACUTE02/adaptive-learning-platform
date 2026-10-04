@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "Zgłoś problem lub opinię",
       "feedback_title": "Wyślij Opinię",
-      "feedback_description": "Pomóż nam ulepszyć Sopan, dzieląc się swoimi przemyśleniami, zgłaszając błędy lub sugerując nowe funkcje.",
+      "feedback_description": "Pomóż nam ulepszyć Abhyas, dzieląc się swoimi przemyśleniami, zgłaszając błędy lub sugerując nowe funkcje.",
       "feedback_placeholder": "Powiedz nam, co myślisz...",
       "feedback_success": "Dziękujemy za opinię!",
       "send_feedback": "Wyślij Opinię",
@@ -537,14 +537,14 @@
     "import": {
       "scorm_package": "Pakiet SCORM",
       "scorm_description": "Importuj pakiety SCORM 1.2 lub SCORM 2004",
-      "learnhouse_courses": "Kursy Sopan",
-      "learnhouse_description": "Importuj kursy wyeksportowane z Sopan",
+      "learnhouse_courses": "Kursy Abhyas",
+      "learnhouse_description": "Importuj kursy wyeksportowane z Abhyas",
       "upload_package": "Prześlij Pakiet",
       "configure": "Konfiguruj",
       "complete": "Zakończono",
       "click_to_upload": "Kliknij, aby przesłać lub przeciągnij i upuść",
-      "learnhouse_format": "Eksport kursu Sopan (.zip)",
-      "learnhouse_info": "Prześlij pakiet eksportu kursów Sopan (.zip). Będziesz mógł wybrać, które kursy zaimportować i skonfigurować opcje importu.",
+      "learnhouse_format": "Eksport kursu Abhyas (.zip)",
+      "learnhouse_info": "Prześlij pakiet eksportu kursów Abhyas (.zip). Będziesz mógł wybrać, które kursy zaimportować i skonfigurować opcje importu.",
       "analyze_package": "Analizuj Pakiet",
       "ready_to_analyze": "Gotowy do analizy",
       "invalid_file_format": "Prześlij plik .zip",
@@ -1442,8 +1442,8 @@
       "import_course": "Importuj kurs",
       "import_scorm": "Importuj Pakiet SCORM",
       "import_scorm_description": "Importuj pakiet SCORM, aby utworzyć nowy kurs",
-      "import_learnhouse": "Importuj Kursy Sopan",
-      "import_learnhouse_description": "Importuj kursy z pakietu eksportu Sopan",
+      "import_learnhouse": "Importuj Kursy Abhyas",
+      "import_learnhouse_description": "Importuj kursy z pakietu eksportu Abhyas",
       "import_select_type": "Wybierz typ pakietu, który chcesz zaimportować",
       "no_courses": "Brak kursów",
       "create_course_placeholder": "Utwórz kurs, aby dodać zawartość",
@@ -2264,8 +2264,8 @@
         "label_placeholder": "Wybierz etykietę organizacji",
         "about": "O organizacji",
         "about_placeholder": "Szczegółowy opis Twojej organizacji",
-        "showcase_explore": "Pokaż w Sopan Explore",
-        "showcase_description": "Udostępnij kursy i treści swojej organizacji społeczności Sopan. Włącz to, aby pomóc uczniom znaleźć wartościowe zasoby edukacyjne.",
+        "showcase_explore": "Pokaż w Abhyas Explore",
+        "showcase_description": "Udostępnij kursy i treści swojej organizacji społeczności Abhyas. Włącz to, aby pomóc uczniom znaleźć wartościowe zasoby edukacyjne.",
         "save_changes": "Zapisz zmiany",
         "saving": "Zapisywanie...",
         "update_success": "Informacje o organizacji zostały zaktualizowane",
@@ -2276,9 +2276,9 @@
         "footer_text_desc": "Niestandardowy tekst wyświetlany na dole stron Twojej organizacji",
         "default_language": "Język domyślny",
         "default_language_desc": "Język, który nowi odwiedzający widzą domyślnie i którego używają e-maile wysyłane w imieniu tej organizacji. Członkowie nadal mogą zmienić własny język interfejsu.",
-        "watermark_desc": "Pokaż znak wodny Sopan na stronach organizacji",
+        "watermark_desc": "Pokaż znak wodny Abhyas na stronach organizacji",
         "watermark_free_plan": "Znak wodny jest zawsze widoczny w planie darmowym",
-        "watermark_label": "Znak wodny \"Made with Sopan\"",
+        "watermark_label": "Znak wodny \"Made with Abhyas\"",
         "watermark_ee": "Ukryte przez licencję Enterprise Edition"
       },
       "images": {
@@ -4623,7 +4623,7 @@
       },
       "teach_the_world": {
         "title": "Ucz się i rozwijaj",
-        "description": "Zasoby, które pomogą Ci w pełni wykorzystać Sopan.",
+        "description": "Zasoby, które pomogą Ci w pełni wykorzystać Abhyas.",
         "classroom": "Klasa",
         "classroom_desc": "Naucz się rozwijać i zarządzać swoimi kursami",
         "university": "Uniwersytet LearnHouse",
@@ -4631,7 +4631,7 @@
       }
     },
     "welcome": {
-      "title": "Witaj w Sopan",
+      "title": "Witaj w Abhyas",
       "subtitle": "Twórz kursy, zapraszaj uczniów i dziel się wiedzą ze światem.",
       "get_started": "Rozpocznij",
       "features_title": "Wszystko, czego potrzebujesz",
@@ -4923,7 +4923,7 @@
   "embed": {
     "not_supported_description": "Ten typ aktywności wymaga uwierzytelniania i nie może być osadzony.",
     "not_supported_title": "Ta aktywność nie jest obsługiwana",
-    "powered_by": "Powered by Sopan",
+    "powered_by": "Powered by Abhyas",
     "visit_activity": "Odwiedź stronę aktywności"
   },
   "migration": {

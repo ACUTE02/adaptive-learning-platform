@@ -548,7 +548,7 @@ const CertificatePreview: React.FC<CertificatePreviewProps> = ({
                 )}
               </div>
               <div className={`text-xs ${theme.secondary} font-medium`}>
-                {org?.name || 'Sopan'}
+                {org?.name || 'Abhyas'}
               </div>
             </div>
 

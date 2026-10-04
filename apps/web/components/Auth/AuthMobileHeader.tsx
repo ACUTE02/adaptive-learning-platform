@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import learnhouseIcon from 'public/brand/sopan-icon.png'
+import learnhouseIcon from 'public/brand/abhyas-icon.png'
 import { getOrgLogoMediaDirectory, getOrgAuthBackgroundMediaDirectory } from '@services/media/media'
 import { getUriWithOrg } from '@services/config/config'
 
@@ -72,7 +72,7 @@ export default function AuthMobileHeader({ org }: AuthMobileHeaderProps) {
               width={40}
               height={40}
               src={learnhouseIcon}
-              alt="Sopan"
+              alt="Abhyas"
               className="object-contain"
             />
           )}

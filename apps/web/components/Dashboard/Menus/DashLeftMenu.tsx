@@ -164,14 +164,14 @@ function DashLeftMenu() {
             />
           ) : isCollapsed ? (
             <img
-              src="/brand/sopan-icon.png"
-              alt="Sopan"
+              src="/brand/abhyas-icon.png"
+              alt="Abhyas"
               className="h-8 w-8 rounded-lg"
             />
           ) : (
             <img
-              src="/brand/sopan-logo-light.png"
-              alt="Sopan - Adaptive Learning"
+              src="/brand/abhyas-logo-light.png"
+              alt="Abhyas - Adaptive Learning"
               className="h-10 w-auto"
             />
           )}

@@ -261,7 +261,7 @@ export default function CommandPalette() {
                 />
               </div>
               <img
-                src="/brand/sopan-icon.png"
+                src="/brand/abhyas-icon.png"
                 alt=""
                 aria-hidden="true"
                 draggable={false}

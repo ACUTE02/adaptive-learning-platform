@@ -38,8 +38,8 @@ function OrgFooter() {
         {footerText && <p className="text-sm text-gray-500">{footerText}</p>}
         {showWatermark && (
           <Image
-            src="/brand/sopan-icon.png"
-            alt="Sopan"
+            src="/brand/abhyas-icon.png"
+            alt="Abhyas"
             width={24}
             height={24}
             style={{ height: 'auto' }}

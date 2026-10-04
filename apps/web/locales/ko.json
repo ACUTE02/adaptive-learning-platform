@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "문제 신고 또는 피드백",
       "feedback_title": "피드백 보내기",
-      "feedback_description": "의견 공유, 버그 신고, 새 기능 제안을 통해 Sopan 개선에 도움을 주세요.",
+      "feedback_description": "의견 공유, 버그 신고, 새 기능 제안을 통해 Abhyas 개선에 도움을 주세요.",
       "feedback_placeholder": "생각을 알려주세요...",
       "feedback_success": "피드백 감사합니다!",
       "send_feedback": "피드백 보내기",
@@ -524,14 +524,14 @@
     "import": {
       "scorm_package": "SCORM 패키지",
       "scorm_description": "SCORM 1.2 또는 SCORM 2004 패키지 가져오기",
-      "learnhouse_courses": "Sopan 코스",
-      "learnhouse_description": "Sopan에서 내보낸 코스 가져오기",
+      "learnhouse_courses": "Abhyas 코스",
+      "learnhouse_description": "Abhyas에서 내보낸 코스 가져오기",
       "upload_package": "패키지 업로드",
       "configure": "구성",
       "complete": "완료",
       "click_to_upload": "클릭하여 업로드하거나 드래그 앤 드롭",
-      "learnhouse_format": "Sopan 코스 내보내기 (.zip)",
-      "learnhouse_info": "Sopan 코스 내보내기 패키지 (.zip)를 업로드하세요. 가져올 코스를 선택하고 가져오기 옵션을 구성할 수 있습니다.",
+      "learnhouse_format": "Abhyas 코스 내보내기 (.zip)",
+      "learnhouse_info": "Abhyas 코스 내보내기 패키지 (.zip)를 업로드하세요. 가져올 코스를 선택하고 가져오기 옵션을 구성할 수 있습니다.",
       "analyze_package": "패키지 분석",
       "ready_to_analyze": "분석 준비 완료",
       "invalid_file_format": ".zip 파일을 업로드해 주세요",
@@ -1429,8 +1429,8 @@
       "import_course": "코스 가져오기",
       "import_scorm": "SCORM 패키지 가져오기",
       "import_scorm_description": "SCORM 패키지를 가져와 새 코스 만들기",
-      "import_learnhouse": "Sopan 코스 가져오기",
-      "import_learnhouse_description": "Sopan 내보내기 패키지에서 코스 가져오기",
+      "import_learnhouse": "Abhyas 코스 가져오기",
+      "import_learnhouse_description": "Abhyas 내보내기 패키지에서 코스 가져오기",
       "import_select_type": "가져올 패키지 유형 선택",
       "no_courses": "아직 코스가 없습니다",
       "create_course_placeholder": "코스를 생성하여 콘텐츠를 추가해 보세요",
@@ -2251,8 +2251,8 @@
         "label_placeholder": "조직 레이블 선택",
         "about": "조직 정보",
         "about_placeholder": "조직에 대한 상세 설명",
-        "showcase_explore": "Sopan Explore에 표시",
-        "showcase_description": "조직의 코스 및 콘텐츠를 Sopan 커뮤니티와 공유합니다. 이를 활성화하여 학습자가 귀중한 교육 리소스를 찾을 수 있도록 도와주세요.",
+        "showcase_explore": "Abhyas Explore에 표시",
+        "showcase_description": "조직의 코스 및 콘텐츠를 Abhyas 커뮤니티와 공유합니다. 이를 활성화하여 학습자가 귀중한 교육 리소스를 찾을 수 있도록 도와주세요.",
         "save_changes": "변경 사항 저장",
         "saving": "저장 중...",
         "update_success": "조직 정보가 업데이트되었습니다",
@@ -2263,9 +2263,9 @@
         "footer_text_desc": "조직 페이지 하단에 표시되는 사용자 지정 텍스트",
         "default_language": "기본 언어",
         "default_language_desc": "새 방문자에게 기본으로 표시되는 언어이며, 이 조직을 대신해 발송되는 이메일에 사용되는 언어입니다. 구성원은 자신의 UI 언어를 계속 전환할 수 있습니다.",
-        "watermark_desc": "조직 페이지에 Sopan 브랜드 워터마크 표시",
+        "watermark_desc": "조직 페이지에 Abhyas 브랜드 워터마크 표시",
         "watermark_free_plan": "무료 플랜에서는 워터마크가 항상 표시됩니다",
-        "watermark_label": "\"Made with Sopan\" 워터마크",
+        "watermark_label": "\"Made with Abhyas\" 워터마크",
         "watermark_ee": "Enterprise Edition 라이선스에 의해 숨겨짐"
       },
       "images": {
@@ -4534,7 +4534,7 @@
       },
       "teach_the_world": {
         "title": "배우고 성장하기",
-        "description": "Sopan를 최대한 활용하기 위한 리소스.",
+        "description": "Abhyas를 최대한 활용하기 위한 리소스.",
         "classroom": "클래스룸",
         "classroom_desc": "코스를 성장시키고 관리하는 방법을 배우세요",
         "university": "LearnHouse 대학교",
@@ -4542,7 +4542,7 @@
       }
     },
     "welcome": {
-      "title": "Sopan에 오신 것을 환영합니다",
+      "title": "Abhyas에 오신 것을 환영합니다",
       "subtitle": "코스를 만들고, 학습자를 초대하고, 세계와 지식을 공유하세요.",
       "get_started": "시작하기",
       "features_title": "필요한 모든 것",
@@ -4834,7 +4834,7 @@
   "embed": {
     "not_supported_description": "이 유형의 활동은 인증이 필요하며 임베드할 수 없습니다.",
     "not_supported_title": "이 활동은 지원되지 않습니다",
-    "powered_by": "Powered by Sopan",
+    "powered_by": "Powered by Abhyas",
     "visit_activity": "활동 페이지 방문"
   },
   "migration": {

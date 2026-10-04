@@ -95,15 +95,15 @@ function DashMobileMenu() {
           className="flex items-center gap-0.5 px-1.5 py-1.5 bg-[#111113]/90 backdrop-blur-xl rounded-full"
           style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}
         >
-          {/* Sopan logo — links to home */}
+          {/* Abhyas logo — links to home */}
           <Link
             href="/dash"
             className="flex items-center justify-center px-2.5 py-2.5 rounded-full transition-all duration-200"
             aria-label="Home"
           >
             <img
-              src="/brand/sopan-icon.png"
-              alt="Sopan"
+              src="/brand/abhyas-icon.png"
+              alt="Abhyas"
               className="h-[20px] w-[20px] rounded-[5px] opacity-80 hover:opacity-100 transition-opacity"
             />
           </Link>
@@ -203,7 +203,7 @@ function DashMobileMenu() {
                   />
                 ) : (
                   <div className="h-7 w-7 flex items-center justify-center bg-white/[0.06] rounded-lg">
-                    <img src="/brand/sopan-icon.png" alt="Sopan" className="h-5 w-5 rounded-[5px]" />
+                    <img src="/brand/abhyas-icon.png" alt="Abhyas" className="h-5 w-5 rounded-[5px]" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">

@@ -3,7 +3,7 @@ import React from 'react'
 import ClientAdminLayout from './ClientAdminLayout'
 
 export const metadata: Metadata = {
-  title: 'Sopan - Adaptive Learning',
+  title: 'Abhyas - Adaptive Learning',
 }
 
 async function DashboardLayout(

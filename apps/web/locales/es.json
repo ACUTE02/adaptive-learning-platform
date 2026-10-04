@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "Reportar problema o comentario",
       "feedback_title": "Enviar comentarios",
-      "feedback_description": "Ayúdanos a mejorar Sopan compartiendo tus opiniones, reportando errores o sugiriendo nuevas funciones.",
+      "feedback_description": "Ayúdanos a mejorar Abhyas compartiendo tus opiniones, reportando errores o sugiriendo nuevas funciones.",
       "feedback_placeholder": "Cuéntanos qué piensas...",
       "feedback_success": "¡Gracias por tu comentario!",
       "send_feedback": "Enviar comentarios",
@@ -514,14 +514,14 @@
     "import": {
       "scorm_package": "Paquete SCORM",
       "scorm_description": "Importar paquetes SCORM 1.2 o SCORM 2004",
-      "learnhouse_courses": "Cursos de Sopan",
-      "learnhouse_description": "Importar cursos exportados desde Sopan",
+      "learnhouse_courses": "Cursos de Abhyas",
+      "learnhouse_description": "Importar cursos exportados desde Abhyas",
       "upload_package": "Subir paquete",
       "configure": "Configurar",
       "complete": "Completado",
       "click_to_upload": "Haz clic para subir o arrastra y suelta",
-      "learnhouse_format": "Exportación de curso Sopan (.zip)",
-      "learnhouse_info": "Sube un paquete de exportación de cursos Sopan (.zip). Podrás seleccionar qué cursos importar y configurar las opciones de importación.",
+      "learnhouse_format": "Exportación de curso Abhyas (.zip)",
+      "learnhouse_info": "Sube un paquete de exportación de cursos Abhyas (.zip). Podrás seleccionar qué cursos importar y configurar las opciones de importación.",
       "analyze_package": "Analizar paquete",
       "ready_to_analyze": "Listo para analizar",
       "invalid_file_format": "Por favor sube un archivo .zip",
@@ -1419,8 +1419,8 @@
       "import_course": "Importar curso",
       "import_scorm": "Importar paquete SCORM",
       "import_scorm_description": "Importar un paquete SCORM para crear un nuevo curso",
-      "import_learnhouse": "Importar cursos de Sopan",
-      "import_learnhouse_description": "Importar cursos desde un paquete de exportación de Sopan",
+      "import_learnhouse": "Importar cursos de Abhyas",
+      "import_learnhouse_description": "Importar cursos desde un paquete de exportación de Abhyas",
       "import_select_type": "Selecciona el tipo de paquete que deseas importar",
       "no_courses": "Aún no hay cursos",
       "create_course_placeholder": "Crea un curso para añadir contenido",
@@ -2251,9 +2251,9 @@
         "footer_text_desc": "Texto personalizado que se muestra en la parte inferior de las páginas de tu organización",
         "default_language": "Idioma predeterminado",
         "default_language_desc": "El idioma que ven los nuevos visitantes por defecto y el que se utiliza para los correos enviados en nombre de esta organización. Los miembros pueden cambiar su propio idioma de la interfaz.",
-        "watermark_desc": "Mostrar la marca de agua de Sopan en las páginas de tu organización",
+        "watermark_desc": "Mostrar la marca de agua de Abhyas en las páginas de tu organización",
         "watermark_free_plan": "La marca de agua siempre se muestra en el plan gratuito",
-        "watermark_label": "Marca de agua \"Hecho con Sopan\"",
+        "watermark_label": "Marca de agua \"Hecho con Abhyas\"",
         "watermark_ee": "Oculto por tu licencia Enterprise Edition"
       },
       "images": {
@@ -4156,7 +4156,7 @@
   "embed": {
     "not_supported_description": "Este tipo de actividad requiere autenticación y no puede ser incrustada.",
     "not_supported_title": "Esta actividad no es compatible",
-    "powered_by": "Desarrollado por Sopan",
+    "powered_by": "Desarrollado por Abhyas",
     "visit_activity": "Visitar página de actividad"
   },
   "analytics": {
@@ -4860,7 +4860,7 @@
       },
       "teach_the_world": {
         "title": "Aprende y crece",
-        "description": "Recursos para ayudarte a sacar el máximo provecho de Sopan.",
+        "description": "Recursos para ayudarte a sacar el máximo provecho de Abhyas.",
         "classroom": "El aula",
         "classroom_desc": "Aprende a hacer crecer y gestionar tus cursos",
         "university": "Universidad LearnHouse",
@@ -4868,7 +4868,7 @@
       }
     },
     "welcome": {
-      "title": "Bienvenido a Sopan",
+      "title": "Bienvenido a Abhyas",
       "subtitle": "Crea cursos, invita estudiantes y comparte conocimiento con el mundo.",
       "get_started": "Comenzar",
       "features_title": "Todo lo que necesitas",

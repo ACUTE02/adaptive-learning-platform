@@ -300,12 +300,12 @@ export default function AuthBrandingTab() {
                 <div className="absolute inset-0 bg-black/30" />
               )}
 
-              {/* Top Sopan icon - hidden for enterprise users */}
+              {/* Top Abhyas icon - hidden for enterprise users */}
               {!isEnterprise && (
                 <div className="relative z-10">
                   <div
                     className="w-4 h-4 bg-contain bg-no-repeat rounded-[3px]"
-                    style={{ backgroundImage: "url(/brand/sopan-icon.png)" }}
+                    style={{ backgroundImage: "url(/brand/abhyas-icon.png)" }}
                   />
                 </div>
               )}

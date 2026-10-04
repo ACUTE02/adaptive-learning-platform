@@ -93,8 +93,8 @@ export default function BoardToolbar({
       <Link href="/dash/boards">
         <div className="bg-black rounded-md w-[25px] h-[25px] flex items-center justify-center hover:opacity-80 transition-opacity">
           <Image
-            src="/brand/sopan-icon.png"
-            alt="Sopan"
+            src="/brand/abhyas-icon.png"
+            alt="Abhyas"
             width={25}
             height={25}
             className="rounded-md"

@@ -49,7 +49,7 @@
       "discord": "Discord",
       "report_feedback": "Nahlásiť problém alebo spätnú väzbu",
       "feedback_title": "Odoslať spätnú väzbu",
-      "feedback_description": "Pomôžte nám vylepšiť Sopan zdieľaním názorov, nahlásením chýb alebo návrhmi nových funkcií.",
+      "feedback_description": "Pomôžte nám vylepšiť Abhyas zdieľaním názorov, nahlásením chýb alebo návrhmi nových funkcií.",
       "feedback_placeholder": "Povedzte nám, čo máte na mysli...",
       "feedback_success": "Ďakujeme za vašu spätnú väzbu!",
       "send_feedback": "Odoslať spätnú väzbu",
@@ -501,14 +501,14 @@
     "import": {
       "scorm_package": "SCORM balík",
       "scorm_description": "Importovať SCORM 1.2 alebo SCORM 2004 balíky",
-      "learnhouse_courses": "Sopan kurzy",
-      "learnhouse_description": "Importovať kurzy exportované z Sopan",
+      "learnhouse_courses": "Abhyas kurzy",
+      "learnhouse_description": "Importovať kurzy exportované z Abhyas",
       "upload_package": "Nahrať balík",
       "configure": "Konfigurovať",
       "complete": "Dokončiť",
       "click_to_upload": "Kliknite pre nahranie alebo presuňte súbor",
-      "learnhouse_format": "Export kurzu Sopan (.zip)",
-      "learnhouse_info": "Nahrajte exportovaný balík kurzu Sopan (.zip). Budete môcť vybrať, ktoré kurzy importovať a nakonfigurovať možnosti importu.",
+      "learnhouse_format": "Export kurzu Abhyas (.zip)",
+      "learnhouse_info": "Nahrajte exportovaný balík kurzu Abhyas (.zip). Budete môcť vybrať, ktoré kurzy importovať a nakonfigurovať možnosti importu.",
       "analyze_package": "Analyzovať balík",
       "ready_to_analyze": "Pripravené na analýzu",
       "invalid_file_format": "Nahrajte súbor .zip",
@@ -1221,7 +1221,7 @@
     "not_supported_title": "Táto aktivita nie je podporovaná",
     "not_supported_description": "Tento typ aktivity vyžaduje autentifikáciu a nemôže byť vložený.",
     "visit_activity": "Navštíviť stránku aktivity",
-    "powered_by": "Poháňané Sopan"
+    "powered_by": "Poháňané Abhyas"
   },
   "assignments": {
     "submit_assignment": "Odovzdať úlohu",
@@ -1692,8 +1692,8 @@
       "import_course": "Importovať kurz",
       "import_scorm": "Importovať SCORM",
       "import_scorm_description": "Importovať SCORM balík pre vytvorenie nového kurzu",
-      "import_learnhouse": "Importovať Sopan kurz",
-      "import_learnhouse_description": "Importovať kurz exportovaný z Sopan",
+      "import_learnhouse": "Importovať Abhyas kurz",
+      "import_learnhouse_description": "Importovať kurz exportovaný z Abhyas",
       "import_select_type": "Vyberte typ kurzu na import",
       "no_courses": "Zatiaľ žiadne kurzy",
       "create_course_placeholder": "Vytvorte kurz pre pridanie obsahu",
@@ -2524,8 +2524,8 @@
         "footer_text_desc": "Vlastný text zobrazený v dolnej časti stránok organizácie",
         "default_language": "Predvolený jazyk",
         "default_language_desc": "Jazyk, ktorý noví návštevníci vidia predvolene, a jazyk používaný pre e-maily odosielané v mene tejto organizácie. Členovia môžu stále prepínať vlastný jazyk rozhrania.",
-        "watermark_label": "Vodoznak \"Made with Sopan\"",
-        "watermark_desc": "Zobraziť vodoznak Sopan na stránkach organizácie",
+        "watermark_label": "Vodoznak \"Made with Abhyas\"",
+        "watermark_desc": "Zobraziť vodoznak Abhyas na stránkach organizácie",
         "watermark_free_plan": "Vodoznak je vždy zobrazený na bezplatnom pláne",
         "watermark_ee": "Skrytý vaším Enterprise Edition licenciou"
       },
@@ -4912,7 +4912,7 @@
       },
       "teach_the_world": {
         "title": "Učte sa a rastite",
-        "description": "Zdroje, ktoré vám pomôžu využiť Sopan naplno.",
+        "description": "Zdroje, ktoré vám pomôžu využiť Abhyas naplno.",
         "classroom": "Učebňa",
         "classroom_desc": "Naučte sa, ako rozvíjať a spravovať kurzy",
         "university": "LearnHouse University",
@@ -4920,7 +4920,7 @@
       }
     },
     "welcome": {
-      "title": "Vitajte v Sopan",
+      "title": "Vitajte v Abhyas",
       "subtitle": "Vytvárajte kurzy, pozývajte študentov a zdieľajte vedomosti so svetom.",
       "get_started": "Začať",
       "features_title": "Všetko, čo potrebujete",

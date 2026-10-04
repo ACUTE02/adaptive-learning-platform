@@ -46,7 +46,7 @@
       "discord": "Discord",
       "report_feedback": "Сообщить о проблеме или оставить отзыв",
       "feedback_title": "Отправить отзыв",
-      "feedback_description": "Помогите нам улучшить Sopan, поделившись своими мыслями, сообщив об ошибках или предложив новые функции.",
+      "feedback_description": "Помогите нам улучшить Abhyas, поделившись своими мыслями, сообщив об ошибках или предложив новые функции.",
       "feedback_placeholder": "Расскажите, что вы думаете...",
       "feedback_success": "Спасибо за ваш отзыв!",
       "send_feedback": "Отправить отзыв",
@@ -537,14 +537,14 @@
     "import": {
       "scorm_package": "Пакет SCORM",
       "scorm_description": "Импортировать пакеты SCORM 1.2 или SCORM 2004",
-      "learnhouse_courses": "Курсы Sopan",
-      "learnhouse_description": "Импортировать курсы, экспортированные из Sopan",
+      "learnhouse_courses": "Курсы Abhyas",
+      "learnhouse_description": "Импортировать курсы, экспортированные из Abhyas",
       "upload_package": "Загрузить пакет",
       "configure": "Настроить",
       "complete": "Завершено",
       "click_to_upload": "Нажмите для загрузки или перетащите",
-      "learnhouse_format": "Экспорт курса Sopan (.zip)",
-      "learnhouse_info": "Загрузите пакет экспорта курсов Sopan (.zip). Вы сможете выбрать, какие курсы импортировать, и настроить параметры импорта.",
+      "learnhouse_format": "Экспорт курса Abhyas (.zip)",
+      "learnhouse_info": "Загрузите пакет экспорта курсов Abhyas (.zip). Вы сможете выбрать, какие курсы импортировать, и настроить параметры импорта.",
       "analyze_package": "Анализировать пакет",
       "ready_to_analyze": "Готов к анализу",
       "invalid_file_format": "Пожалуйста, загрузите файл .zip",
@@ -1442,8 +1442,8 @@
       "import_course": "Импортировать курс",
       "import_scorm": "Импортировать пакет SCORM",
       "import_scorm_description": "Импортировать пакет SCORM для создания нового курса",
-      "import_learnhouse": "Импортировать курсы Sopan",
-      "import_learnhouse_description": "Импортировать курсы из экспортного пакета Sopan",
+      "import_learnhouse": "Импортировать курсы Abhyas",
+      "import_learnhouse_description": "Импортировать курсы из экспортного пакета Abhyas",
       "import_select_type": "Выберите тип пакета, который хотите импортировать",
       "no_courses": "Курсов пока нет",
       "create_course_placeholder": "Создайте курс, чтобы добавить контент",
@@ -2264,8 +2264,8 @@
         "label_placeholder": "Выберите ярлык организации",
         "about": "Об организации",
         "about_placeholder": "Подробное описание вашей организации",
-        "showcase_explore": "Показать в Sopan Explore",
-        "showcase_description": "Поделитесь курсами и контентом вашей организации с сообществом Sopan. Включите это, чтобы помочь учащимся найти ваши ценные образовательные ресурсы.",
+        "showcase_explore": "Показать в Abhyas Explore",
+        "showcase_description": "Поделитесь курсами и контентом вашей организации с сообществом Abhyas. Включите это, чтобы помочь учащимся найти ваши ценные образовательные ресурсы.",
         "save_changes": "Сохранить изменения",
         "saving": "Сохранение...",
         "update_success": "Организация обновлена",
@@ -2276,9 +2276,9 @@
         "footer_text_desc": "Пользовательский текст, отображаемый внизу страниц вашей организации",
         "default_language": "Язык по умолчанию",
         "default_language_desc": "Язык, который новые посетители видят по умолчанию и который используется в письмах, отправляемых от имени этой организации. Участники по-прежнему могут менять язык своего интерфейса.",
-        "watermark_desc": "Показывать водяной знак Sopan на страницах организации",
+        "watermark_desc": "Показывать водяной знак Abhyas на страницах организации",
         "watermark_free_plan": "Водяной знак всегда отображается на бесплатном плане",
-        "watermark_label": "Водяной знак \"Made with Sopan\"",
+        "watermark_label": "Водяной знак \"Made with Abhyas\"",
         "watermark_ee": "Скрыто лицензией Enterprise Edition"
       },
       "images": {
@@ -4623,7 +4623,7 @@
       },
       "teach_the_world": {
         "title": "Учитесь и развивайтесь",
-        "description": "Ресурсы, которые помогут вам максимально использовать Sopan.",
+        "description": "Ресурсы, которые помогут вам максимально использовать Abhyas.",
         "classroom": "Классная комната",
         "classroom_desc": "Узнайте, как развивать и управлять курсами",
         "university": "Университет LearnHouse",
@@ -4631,7 +4631,7 @@
       }
     },
     "welcome": {
-      "title": "Добро пожаловать в Sopan",
+      "title": "Добро пожаловать в Abhyas",
       "subtitle": "Создавайте курсы, приглашайте учеников и делитесь знаниями со всем миром.",
       "get_started": "Начать",
       "features_title": "Всё, что вам нужно",
@@ -4923,7 +4923,7 @@
   "embed": {
     "not_supported_description": "Этот тип активности требует аутентификации и не может быть встроен.",
     "not_supported_title": "Эта активность не поддерживается",
-    "powered_by": "Работает на Sopan",
+    "powered_by": "Работает на Abhyas",
     "visit_activity": "Перейти на страницу активности"
   },
   "migration": {

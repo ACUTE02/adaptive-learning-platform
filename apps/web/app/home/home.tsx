@@ -72,8 +72,8 @@ function HomeClient() {
             <div className="flex flex-col items-center mb-10">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/brand/sopan-logo-dark.png"
-                alt="Sopan - Adaptive Learning"
+                src="/brand/abhyas-logo-dark.png"
+                alt="Abhyas - Adaptive Learning"
                 className="h-16 w-auto"
               />
               <h1 className="mt-6 font-black tracking-tight text-2xl text-gray-900 text-center">
@@ -232,7 +232,7 @@ function HomeClient() {
             {/* Footer */}
             <div className="mt-10 flex items-center gap-1.5 text-[11px] text-black/30">
               <span>{t('common.powered_by', { defaultValue: 'Powered by' })}</span>
-              <span className="font-semibold tracking-tight text-black/50">Sopan</span>
+              <span className="font-semibold tracking-tight text-black/50">Abhyas</span>
             </div>
           </div>
         </div>

@@ -15,9 +15,9 @@ const wixMadeforText = Wix_Madefor_Text({
 })
 
 export const metadata: Metadata = {
-  title: 'Sopan - Adaptive Learning',
-  description: 'Sopan is an adaptive learning platform.',
-  applicationName: 'Sopan',
+  title: 'Abhyas - Adaptive Learning',
+  description: 'Abhyas is an adaptive learning platform.',
+  applicationName: 'Abhyas',
   icons: {
     icon: [
       { url: '/brand/favicon.ico', sizes: 'any' },

@@ -48,7 +48,7 @@
       "discord": "Discord",
       "report_feedback": "問題の報告またはフィードバック",
       "feedback_title": "フィードバックを送信",
-      "feedback_description": "ご意見の共有、バグの報告、新機能のご提案で Sopan の改善にご協力ください。",
+      "feedback_description": "ご意見の共有、バグの報告、新機能のご提案で Abhyas の改善にご協力ください。",
       "feedback_placeholder": "お気づきの点をお聞かせください...",
       "feedback_success": "フィードバックありがとうございます！",
       "send_feedback": "フィードバックを送信",
@@ -524,14 +524,14 @@
     "import": {
       "scorm_package": "SCORMパッケージ",
       "scorm_description": "SCORM 1.2 または SCORM 2004 パッケージをインポート",
-      "learnhouse_courses": "Sopanコース",
-      "learnhouse_description": "Sopanからエクスポートしたコースをインポート",
+      "learnhouse_courses": "Abhyasコース",
+      "learnhouse_description": "Abhyasからエクスポートしたコースをインポート",
       "upload_package": "パッケージをアップロード",
       "configure": "設定",
       "complete": "完了",
       "click_to_upload": "クリックしてアップロードまたはドラッグ＆ドロップ",
-      "learnhouse_format": "Sopanコースエクスポート (.zip)",
-      "learnhouse_info": "Sopanコースエクスポートパッケージ (.zip) をアップロードします。インポートするコースを選択し、インポートオプションを設定できます。",
+      "learnhouse_format": "Abhyasコースエクスポート (.zip)",
+      "learnhouse_info": "Abhyasコースエクスポートパッケージ (.zip) をアップロードします。インポートするコースを選択し、インポートオプションを設定できます。",
       "analyze_package": "パッケージを分析",
       "ready_to_analyze": "分析準備完了",
       "invalid_file_format": ".zip ファイルをアップロードしてください",
@@ -1429,8 +1429,8 @@
       "import_course": "コースをインポート",
       "import_scorm": "SCORMパッケージをインポート",
       "import_scorm_description": "SCORMパッケージをインポートして新しいコースを作成",
-      "import_learnhouse": "Sopanコースをインポート",
-      "import_learnhouse_description": "Sopanエクスポートパッケージからコースをインポート",
+      "import_learnhouse": "Abhyasコースをインポート",
+      "import_learnhouse_description": "Abhyasエクスポートパッケージからコースをインポート",
       "import_select_type": "インポートするパッケージの種類を選択",
       "no_courses": "コースがまだありません",
       "create_course_placeholder": "コースを作成してコンテンツを追加しましょう",
@@ -2261,9 +2261,9 @@
         "footer_text_desc": "組織ページの下部に表示されるカスタムテキスト",
         "default_language": "デフォルト言語",
         "default_language_desc": "新しい訪問者にデフォルトで表示される言語であり、この組織を代表して送信されるメールに使用される言語です。メンバーは自分のUI言語を引き続き切り替えできます。",
-        "watermark_desc": "組織ページにSopanブランドの透かしを表示",
+        "watermark_desc": "組織ページにAbhyasブランドの透かしを表示",
         "watermark_free_plan": "無料プランでは透かしが常に表示されます",
-        "watermark_label": "\"Made with Sopan\"透かし",
+        "watermark_label": "\"Made with Abhyas\"透かし",
         "watermark_ee": "Enterprise Editionライセンスによって非表示になっています"
       },
       "images": {
@@ -4788,7 +4788,7 @@
       },
       "teach_the_world": {
         "title": "学んで成長する",
-        "description": "Sopanを最大限に活用するためのリソース。",
+        "description": "Abhyasを最大限に活用するためのリソース。",
         "classroom": "クラスルーム",
         "classroom_desc": "コースの成長と管理の方法を学ぶ",
         "university": "LearnHouse大学",
@@ -4796,7 +4796,7 @@
       }
     },
     "welcome": {
-      "title": "Sopanへようこそ",
+      "title": "Abhyasへようこそ",
       "subtitle": "コースを作成し、学習者を招待し、世界と知識を共有しましょう。",
       "get_started": "始める",
       "features_title": "必要なものがすべて揃っています",
@@ -4832,7 +4832,7 @@
   "embed": {
     "not_supported_description": "このタイプのアクティビティは認証が必要で、埋め込みできません。",
     "not_supported_title": "このアクティビティはサポートされていません",
-    "powered_by": "Powered by Sopan",
+    "powered_by": "Powered by Abhyas",
     "visit_activity": "アクティビティページを訪問"
   },
   "migration": {

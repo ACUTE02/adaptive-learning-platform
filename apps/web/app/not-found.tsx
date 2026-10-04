@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import learnhouseIcon from 'public/brand/sopan-logo-dark.png'
+import learnhouseIcon from 'public/brand/abhyas-logo-dark.png'
 
 export default function NotFound() {
   return (
@@ -12,7 +12,7 @@ export default function NotFound() {
           width={270}
           height={75}
           src={learnhouseIcon}
-          alt="Sopan"
+          alt="Abhyas"
           style={{ width: 'auto', height: 'auto' }}
         />
         </div>

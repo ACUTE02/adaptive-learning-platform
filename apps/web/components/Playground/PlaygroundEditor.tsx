@@ -68,7 +68,7 @@ const EditorLearnHouseLogo = () => {
         animate={animation.animate}
         transition={animation.transition}
       >
-        <Image src="/brand/sopan-icon.png" alt="Sopan" width={16} height={16} className="rounded-sm" />
+        <Image src="/brand/abhyas-icon.png" alt="Abhyas" width={16} height={16} className="rounded-sm" />
       </motion.div>
     </div>
   )
