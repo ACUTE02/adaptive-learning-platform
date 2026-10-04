@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useAuth } from '@components/Contexts/AuthContext';
+import { engineFetch, engineErrorMessage } from '@services/engine/engine';
 
 export function AITutorWidget() {
   const [studentInput, setStudentInput] = useState("");
@@ -11,15 +12,15 @@ export function AITutorWidget() {
   const [history, setHistory] = useState<any[]>([]);
   const [selectedSession, setSelectedSession] = useState<any>(null);
 
-  const { session, status } = useAuth();
-  const userId = session?.user?.email || session?.user?.id || session?.id || "unknown_user";
+  // The server identifies the student from the session; no user id is sent.
+  const { accessToken, status } = useAuth();
   const isAuthLoading = status === "loading";
   const isAuthenticated = status === "authenticated";
 
   const fetchHistory = async () => {
-    if (!userId) return;
+    if (!isAuthenticated) return;
     try {
-      const res = await fetch(`/api/v1/engine/history?student_id=${userId}`);
+      const res = await engineFetch(`history`, accessToken);
       if (res.ok) {
         const data = await res.json();
         setHistory(data);
@@ -30,19 +31,17 @@ export function AITutorWidget() {
   };
 
   useEffect(() => {
-    if (userId) {
-      fetchHistory();
-    }
-  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
+    fetchHistory();
+  }, [isAuthenticated, accessToken]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteSession = async (e: React.MouseEvent, sessionId: number) => {
     e.stopPropagation();
-    
+
     try {
-      const res = await fetch(`/api/v1/engine/history/${sessionId}`, {
+      const res = await engineFetch(`history/${sessionId}`, accessToken, {
         method: 'DELETE',
       });
-      
+
       if (res.ok) {
         setHistory(prev => prev.filter(session => session.id !== sessionId));
       } else {
@@ -56,23 +55,16 @@ export function AITutorWidget() {
   const getAITutorHelp = async () => {
     setIsLoading(true);
     setAiResponse(""); // Clear previous response when submitting
-    
-    console.log("Session object:", session);
-    
+
     try {
-      const response = await fetch("/api/v1/engine/remediate", {
+      const response = await engineFetch("remediate", accessToken, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          student_id: userId, 
-          struggle_area: studentInput
-        }),
+        body: JSON.stringify({ struggle_area: studentInput }),
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        setAiResponse(await engineErrorMessage(response, "The AI Tutor is currently unavailable. Please try again later."));
+        return;
       }
 
       let data;
@@ -83,10 +75,10 @@ export function AITutorWidget() {
       }
 
       setAiResponse(data.scaffolding_text);
-      
+
       // Refresh history after a successful new session
       await fetchHistory();
-      
+
     } catch (error) {
       console.error("Failed to reach AI Engine:", error);
       setAiResponse("The AI Tutor is currently unavailable. Please try again later.");
@@ -116,17 +108,19 @@ export function AITutorWidget() {
               </p>
             </div>
           </div>
-          
+
           <div className="relative group flex-grow flex flex-col">
             <textarea
               className="w-full flex-grow min-h-[200px] p-5 rounded-2xl border border-gray-200 dark:border-zinc-700 bg-gray-50/50 dark:bg-zinc-800/50 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-800 resize-y transition-all duration-200 shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Your question for the AI Tutor"
+              maxLength={4000}
               placeholder={isAuthLoading ? "Loading your profile..." : !isAuthenticated ? "Please sign in to ask the AI Tutor." : "What are you struggling with? e.g. I don't understand how photosynthesis works."}
               value={studentInput}
               onChange={(e) => setStudentInput(e.target.value)}
               disabled={!isAuthenticated || isAuthLoading}
             />
           </div>
-          
+
           <button
             onClick={getAITutorHelp}
             disabled={isLoading || !studentInput.trim() || !isAuthenticated}
@@ -157,14 +151,14 @@ export function AITutorWidget() {
         <div className={`flex flex-col h-full min-h-[300px] rounded-2xl transition-all duration-500 ${aiResponse || isLoading ? 'opacity-100' : 'opacity-40 grayscale-[50%] pointer-events-none'}`}>
           <div className="flex-grow p-6 md:p-8 rounded-2xl bg-gradient-to-br from-indigo-50/80 to-violet-50/80 dark:from-indigo-900/10 dark:to-violet-900/10 border border-indigo-100/50 dark:border-indigo-800/30 shadow-sm relative overflow-hidden h-full flex flex-col">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-indigo-500 to-violet-500"></div>
-            
+
             <h3 className="text-sm font-bold text-indigo-800 dark:text-indigo-300 mb-6 uppercase tracking-widest flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Tutor Response
             </h3>
-            
+
             <div className="flex-grow overflow-y-auto">
               {isLoading ? (
                 <div className="flex flex-col gap-4 animate-pulse">
@@ -199,14 +193,14 @@ export function AITutorWidget() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {history.map((session, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 onClick={() => setSelectedSession(session)}
                 className="relative p-5 bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors cursor-pointer group"
               >
                 <button
                   onClick={(e) => handleDeleteSession(e, session.id)}
-                  className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                  className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                   aria-label="Delete session"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -225,16 +219,17 @@ export function AITutorWidget() {
 
       {/* Modal Overlay */}
       {selectedSession && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedSession(null)}
         >
-          <div 
+          <div
             className="max-w-2xl w-full max-h-[80vh] overflow-y-auto bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-2xl relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <button
               onClick={() => setSelectedSession(null)}
+              aria-label="Close"
               className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

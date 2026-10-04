@@ -49,6 +49,7 @@ dependencies = [
     "langchain>=1.3.4",
     "langchain-core>=1.4.1",
     "langchain-openai>=1.2.2",
+    "langchain-google-genai==4.2.4",
     "apscheduler>=3.10.4",
 ]
 

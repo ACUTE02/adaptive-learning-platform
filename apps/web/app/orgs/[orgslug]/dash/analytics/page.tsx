@@ -125,7 +125,7 @@ export default function AnalyticsDashboard() {
                 {isLoading ? (
                   <span className="text-gray-400 font-medium">Loading...</span>
                 ) : (
-                  <span className="text-gray-800 font-bold text-4xl">{overview?.average_retention !== undefined ? `${overview.average_retention}%` : "N/A"}</span>
+                  <span className="text-gray-800 font-bold text-4xl">{overview?.average_retention != null ? `${overview.average_retention}%` : "N/A"}</span>
                 )}
               </div>
             </div>
