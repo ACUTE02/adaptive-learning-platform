@@ -422,3 +422,43 @@ def increment_rate_limit(key: str, window_seconds: int) -> None:
         r.incr(rate_limit_key)
     else:
         r.setex(rate_limit_key, window_seconds, 1)
+
+
+# ---------------------------------------------------------------------------
+# Per-key limit that keeps working when Redis is not reachable
+# ---------------------------------------------------------------------------
+import logging as _logging
+import time as _time
+from collections import defaultdict as _defaultdict, deque as _deque
+
+_logger = _logging.getLogger(__name__)
+_local_hits: dict = _defaultdict(_deque)
+_redis_down_until = 0.0
+
+
+def check_rate_limit_with_fallback(key: str, max_attempts: int, window_seconds: int) -> Tuple[bool, int]:
+    """Return ``(allowed, retry_after_seconds)``.
+
+    Uses Redis (shared by all workers) when it is reachable. If Redis is down
+    the limit still applies, but per process, so an outage never turns
+    rate limiting off. After a Redis failure it is not retried for 60 seconds.
+    """
+    global _redis_down_until
+    if _time.monotonic() >= _redis_down_until:
+        try:
+            r = _get_redis_pool_client()
+            if r is not None:
+                allowed, _count, retry_after = check_rate_limit(key, max_attempts, window_seconds, r=r)
+                return allowed, retry_after
+        except Exception as e:
+            _redis_down_until = _time.monotonic() + 60
+            _logger.warning("Rate limiter: Redis unavailable (%s); using per-process limits", type(e).__name__)
+
+    now = _time.monotonic()
+    hits = _local_hits[key]
+    while hits and hits[0] <= now - window_seconds:
+        hits.popleft()
+    if len(hits) >= max_attempts:
+        return False, int(window_seconds - (now - hits[0])) + 1
+    hits.append(now)
+    return True, 0

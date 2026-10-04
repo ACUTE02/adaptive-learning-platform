@@ -21,6 +21,7 @@ from config.config import LearnHouseConfig, get_learnhouse_config
 from src.core.ee_hooks import register_ee_middlewares
 from src.core.events.events import shutdown_app, startup_app
 from src.core.middleware.cors import configure_cors
+from src.core.production_guards import api_docs_enabled
 from src.router import v1_router
 
 from src.routers.local_content import router as local_content_router
@@ -61,11 +62,16 @@ if learnhouse_config.general_config.sentry_config.dsn:
         ],
     )
 
+# Swagger UI / ReDoc / openapi.json describe every endpoint. They are on in
+# development and off in production (override: LEARNHOUSE_ENABLE_API_DOCS).
+_docs_enabled = api_docs_enabled()
+
 app = FastAPI(
     title=learnhouse_config.site_name,
     description=learnhouse_config.site_description,
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url="/docs" if _docs_enabled else None,
+    redoc_url="/redoc" if _docs_enabled else None,
+    openapi_url="/openapi.json" if _docs_enabled else None,
     version="1.2.3",
 )
 
