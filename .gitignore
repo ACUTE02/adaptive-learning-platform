@@ -72,3 +72,10 @@ apps/api/ee
 
 # custom ignore
 apps/api/config/config.yaml
+
+# Private files that must never be committed
+Adaptive_Learning_Platform_Interview_Question_Bank.pdf
+docs/production-audit/
+
+# Keep the example environment files tracked (the rules above ignore .env.*)
+!.env.example
