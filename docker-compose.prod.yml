@@ -63,6 +63,8 @@ services:
       ENVIRONMENT: production
       LEARNHOUSE_ENV: production
       LEARNHOUSE_TENANCY: single
+      # The entrypoint binds to $HOSTNAME, which Docker sets to the container id. Bind all interfaces.
+      HOSTNAME: 0.0.0.0
       LEARNHOUSE_PORT: "1338"
       LEARNHOUSE_DOMAIN: ${DOMAIN:?set DOMAIN in .env}
       LEARNHOUSE_FRONTEND_DOMAIN: ${DOMAIN}
