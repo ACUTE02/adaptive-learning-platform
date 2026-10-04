@@ -60,7 +60,7 @@ export default function DAUChart({ days = '30' }: { days?: string }) {
                   boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                 }}
                 labelFormatter={(label) =>
-                  new Date(label).toLocaleDateString('en-US', {
+                  new Date(label as string).toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric',
