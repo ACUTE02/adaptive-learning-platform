@@ -17,13 +17,7 @@ from src.routers.boards import boards_playground
 from src.routers.orgs import ai_credits
 from src.routers.orgs import custom_domains
 from src.routers.orgs import packs
-from src.routers.communities import communities as communities_router_module
-from src.routers.communities import discussions as discussions_router_module
-from src.routers.podcasts import podcasts as podcasts_router_module
-from src.routers.podcasts import episodes as episodes_router_module
 from src.routers.boards import boards as boards_router_module
-from src.routers.playgrounds import playgrounds as playgrounds_router_module
-from src.routers.playgrounds import playgrounds_generator as playgrounds_generator_router
 from src.core.ee_hooks import register_ee_routers
 from src.services.dev.dev import isDevModeEnabledOrRaise
 from src.routers.utils import router as utils_router
@@ -141,27 +135,6 @@ v1_router.include_router(
 )
 v1_router.include_router(search.router, prefix="/search", tags=["search"])
 v1_router.include_router(
-    communities_router_module.router,
-    prefix="/communities",
-    tags=["communities"],
-    dependencies=[Depends(require_plan_for_community("standard", "Communities"))]
-)
-v1_router.include_router(
-    discussions_router_module.router,
-    tags=["discussions"],
-    dependencies=[Depends(require_plan_for_community("standard", "Communities"))]
-)
-v1_router.include_router(
-    podcasts_router_module.router,
-    prefix="/podcasts",
-    tags=["podcasts"]
-)
-v1_router.include_router(
-    episodes_router_module.router,
-    prefix="/podcasts",
-    tags=["podcasts", "episodes"]
-)
-v1_router.include_router(
     boards_router_module.router,
     prefix="/boards",
     tags=["boards"],
@@ -206,18 +179,10 @@ v1_router.include_router(
     tags=["boards", "boards-playground"],
     dependencies=[Depends(require_authenticated_user), Depends(require_plan_for_boards("personal", "Boards"))]
 )
-v1_router.include_router(
-    playgrounds_router_module.router,
-    prefix="/playgrounds",
-    tags=["playgrounds"],
-    dependencies=[Depends(require_authenticated_user), Depends(require_plan_for_playgrounds("personal", "Playgrounds"))]
-)
-v1_router.include_router(
-    playgrounds_generator_router.router,
-    prefix="/playgrounds",
-    tags=["playgrounds", "playgrounds-generator"],
-    dependencies=[Depends(require_authenticated_user), Depends(require_plan_for_playgrounds("personal", "Playgrounds"))]
-)
+# Unmounted (code kept in src/routers): communities, discussions, podcasts,
+# episodes, playgrounds. They depend on the course modules this fork removed
+# and fail at runtime (NameError). Payments and collections have no router in
+# this repository any more. Re-mount a router here only after repairing it.
 
 v1_router.include_router(
     analytics_router_module.router,
