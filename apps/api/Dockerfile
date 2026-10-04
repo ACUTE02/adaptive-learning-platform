@@ -14,6 +14,8 @@ RUN if [ "$LEARNHOUSE_PUBLIC" = "true" ]; then rm -rf /app/ee; fi
 
 # Sync the project into a new environment, using the frozen lockfile
 WORKDIR /app
+# Slow or busy networks (small EC2 box) can exceed uv's 30 s default download timeout
+ENV UV_HTTP_TIMEOUT=120
 RUN uv sync --frozen
 
 # Copy entrypoint script
