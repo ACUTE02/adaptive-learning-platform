@@ -1,0 +1,41 @@
+# Automatic HTTPS (Let's Encrypt) for the domain in .env. Ports 80 and 443 only.
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		-Server
+	}
+
+	# Python API and uploaded content. Exam generation can take up to 120 s,
+	# so the read and response-header timeouts are 180 s.
+	@api path /api/v1/* /content/*
+	handle @api {
+		reverse_proxy api:1338 {
+			transport http {
+				dial_timeout 10s
+				response_header_timeout 180s
+				read_timeout 180s
+				write_timeout 180s
+			}
+		}
+	}
+
+	# Everything else is the Next.js web app. That includes its own /api/auth/*,
+	# /api/revalidate and /api/health routes, which must NOT go to the Python API.
+	handle {
+		reverse_proxy web:3000 {
+			transport http {
+				dial_timeout 10s
+				response_header_timeout 180s
+				read_timeout 180s
+				write_timeout 180s
+			}
+		}
+	}
+}

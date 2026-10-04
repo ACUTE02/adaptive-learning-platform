@@ -1,0 +1,165 @@
+# Production stack for ONE small Ubuntu box (4 GB RAM) with automatic HTTPS.
+#   web (Next.js :3000)  api (FastAPI :1338)  postgres  redis  caddy (80/443)
+# Only caddy publishes ports. Collab server is intentionally not included.
+# Usage: see DEPLOY.md.  Config comes from .env (copy of .env.prod.example).
+
+name: abhyas
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: learnhouse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: learnhouse
+    # Small-box settings: ~256 MB shared buffers, few connections.
+    command: >
+      postgres
+      -c shared_buffers=256MB
+      -c effective_cache_size=768MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
+      -c max_connections=50
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U learnhouse -d learnhouse"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    mem_limit: 1g
+    logging: *logging
+
+  redis:
+    image: redis:7.2.3-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "128mb", "--maxmemory-policy", "volatile-lru"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    mem_limit: 192m
+    logging: *logging
+
+  api:
+    build:
+      context: ./apps/api
+      args:
+        LEARNHOUSE_PUBLIC: "true"
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      ENVIRONMENT: production
+      LEARNHOUSE_ENV: production
+      LEARNHOUSE_TENANCY: single
+      LEARNHOUSE_PORT: "1338"
+      LEARNHOUSE_DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+      LEARNHOUSE_FRONTEND_DOMAIN: ${DOMAIN}
+      LEARNHOUSE_SSL: "true"
+      LEARNHOUSE_ALLOWED_ORIGINS: ${LEARNHOUSE_ALLOWED_ORIGINS:?set LEARNHOUSE_ALLOWED_ORIGINS in .env}
+      LEARNHOUSE_AUTH_JWT_SECRET_KEY: ${LEARNHOUSE_AUTH_JWT_SECRET_KEY:?set LEARNHOUSE_AUTH_JWT_SECRET_KEY in .env}
+      COLLAB_INTERNAL_KEY: ${COLLAB_INTERNAL_KEY:?set COLLAB_INTERNAL_KEY in .env}
+      LEARNHOUSE_SQL_CONNECTION_STRING: postgresql://learnhouse:${POSTGRES_PASSWORD}@postgres:5432/learnhouse
+      LEARNHOUSE_REDIS_CONNECTION_STRING: redis://redis:6379/0
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?set GEMINI_API_KEY in .env}
+      LEARNHOUSE_IS_AI_ENABLED: "true"
+      DECAY_EXCLUDED_USERS: ${DECAY_EXCLUDED_USERS:-}
+      # First start creates the default org and this admin (see create_users.py for the rest).
+      LEARNHOUSE_INITIAL_ADMIN_EMAIL: ${LEARNHOUSE_INITIAL_ADMIN_EMAIL:?set LEARNHOUSE_INITIAL_ADMIN_EMAIL in .env}
+      LEARNHOUSE_INITIAL_ADMIN_PASSWORD: ${LEARNHOUSE_INITIAL_ADMIN_PASSWORD:?set LEARNHOUSE_INITIAL_ADMIN_PASSWORD in .env}
+      DEMO_STUDENT_EMAIL: ${DEMO_STUDENT_EMAIL:-}
+      DEMO_STUDENT_PASSWORD: ${DEMO_STUDENT_PASSWORD:-}
+    volumes:
+      - content_data:/app/content
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:1338/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    mem_limit: 1g
+    logging: *logging
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        LEARNHOUSE_PUBLIC: "true"
+        # Inlined by Next.js at build time, must equal the runtime values below.
+        NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL: ${NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL:?set NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL in .env}
+        NEXT_PUBLIC_LEARNHOUSE_DOMAIN: ${NEXT_PUBLIC_LEARNHOUSE_DOMAIN:?set NEXT_PUBLIC_LEARNHOUSE_DOMAIN in .env}
+        NEXT_PUBLIC_LEARNHOUSE_ENV: ${NEXT_PUBLIC_LEARNHOUSE_ENV:-production}
+    restart: unless-stopped
+    depends_on:
+      api: { condition: service_healthy }
+    environment:
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+      NODE_OPTIONS: --max-old-space-size=512
+      # Runtime values, written to runtime-config.js by server-wrapper.js.
+      NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL: ${NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL}
+      NEXT_PUBLIC_LEARNHOUSE_DOMAIN: ${NEXT_PUBLIC_LEARNHOUSE_DOMAIN}
+      NEXT_PUBLIC_LEARNHOUSE_TOP_DOMAIN: ${NEXT_PUBLIC_LEARNHOUSE_TOP_DOMAIN:-}
+      NEXT_PUBLIC_LEARNHOUSE_HTTPS: ${NEXT_PUBLIC_LEARNHOUSE_HTTPS:-true}
+      NEXT_PUBLIC_LEARNHOUSE_DEFAULT_ORG: ${NEXT_PUBLIC_LEARNHOUSE_DEFAULT_ORG:-default}
+      NEXT_PUBLIC_LEARNHOUSE_ENV: ${NEXT_PUBLIC_LEARNHOUSE_ENV:-production}
+      NEXT_PUBLIC_LEARNHOUSE_MULTI_ORG: "false"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    mem_limit: 768m
+    logging: *logging
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      web: { condition: service_healthy }
+      api: { condition: service_healthy }
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      default:
+        # The web container calls https://DOMAIN/ for server-side fetches. This alias
+        # keeps that traffic inside the Docker network (it ends up at caddy, with the
+        # real certificate) instead of going out to the public IP and back.
+        aliases:
+          - ${DOMAIN}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:2019/config/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    mem_limit: 128m
+    logging: *logging
+
+volumes:
+  pg_data:
+  redis_data:
+  content_data:
+  caddy_data:
+  caddy_config:

@@ -79,3 +79,9 @@ docs/production-audit/
 
 # Keep the example environment files tracked (the rules above ignore .env.*)
 !.env.example
+
+# Keep the production example tracked too
+!.env.prod.example
+
+# Database dumps from deploy/backup.sh
+backups/
