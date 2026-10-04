@@ -1,4 +1,5 @@
 import { useOrg } from '@components/Contexts/OrgContext'
+import { isFeatureHidden } from '@/lib/hiddenFeatures'
 import { getUriWithOrg } from '@services/config/config'
 import { Books, SquaresFour, ChatsCircle, Headphones, Cube, ShoppingBag, Target, Flag, House } from '@phosphor-icons/react'
 import Link from 'next/link'
@@ -13,7 +14,7 @@ function MenuLinks(props: { orgslug: string; primaryColor?: string }) {
 
   // Feature visibility: resolved_features from API is the source of truth
   const rf = org?.config?.config?.resolved_features
-  const isEnabled = (feature: string) => rf?.[feature]?.enabled === true
+  const isEnabled = (feature: string) => !isFeatureHidden(feature) && rf?.[feature]?.enabled === true
 
   const isCoursesEnabled = isEnabled('courses')
   const isCollectionsEnabled = isEnabled('collections')

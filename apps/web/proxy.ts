@@ -2,6 +2,7 @@ import { getAPIUrl } from './services/config/config'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { isLocalhost as isLocalhostCheck } from './services/utils/ts/hostUtils'
+import { isHiddenRoute } from './lib/hiddenFeatures'
 
 // =============================================================================
 // Tenancy
@@ -229,6 +230,13 @@ export default async function proxy(req: NextRequest) {
   const instance = await getInstanceInfo()
   const { pathname, search } = req.nextUrl
   const fullhost = req.headers.get('host')
+
+  // Features this fork cannot run are hidden; send direct visits to Campaign
+  // Mode. The inherited dashboard home (/dash) is hidden too: it is built
+  // around courses, and its course and usage requests fail in this fork.
+  if (isHiddenRoute(pathname) || pathname === '/dash') {
+    return NextResponse.redirect(new URL('/dash/campaign', req.url))
+  }
 
   // -------------------------------------------------------------------------
   // 1. Admin subdomain (multi only) → rewrite to /admin route group.

@@ -1,5 +1,6 @@
 'use client'
 import { createPortal } from 'react-dom'
+import { isFeatureHidden } from '@/lib/hiddenFeatures'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { signOut } from '@components/Contexts/AuthContext'
 import {
@@ -69,7 +70,7 @@ function DashMobileMenu() {
     plan
 
   const rf = org?.config?.config?.resolved_features
-  const isEnabled = (f: string) => rf?.[f]?.enabled === true
+  const isEnabled = (f: string) => !isFeatureHidden(f) && rf?.[f]?.enabled === true
 
   const isActive = (path: string) => {
     if (path === '/dash') return pathname === '/dash' || pathname === '/dash/'

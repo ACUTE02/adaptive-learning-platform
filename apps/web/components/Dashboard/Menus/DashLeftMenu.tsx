@@ -1,5 +1,6 @@
 'use client'
 import { useOrg } from '@components/Contexts/OrgContext'
+import { isFeatureHidden } from '@/lib/hiddenFeatures'
 import { signOut } from '@components/Contexts/AuthContext'
 import {
   House,
@@ -129,7 +130,7 @@ function DashLeftMenu() {
 
   // Feature visibility from API resolved_features
   const rf = org?.config?.config?.resolved_features
-  const isEnabled = (feature: string) => rf?.[feature]?.enabled === true
+  const isEnabled = (feature: string) => !isFeatureHidden(feature) && rf?.[feature]?.enabled === true
 
   const showCommunities = isEnabled('communities')
   const showPodcasts = isEnabled('podcasts')
@@ -532,12 +533,6 @@ function DashLeftMenu() {
                       </Link>
                     </HoverMenuItem>
                     <HoverMenuItem asChild>
-                      <Link href="/dash/org/settings/usage" className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors">
-                        <ChartBar size={16} weight="fill" />
-                        <span>{t('dashboard.organization.settings.tabs.usage') || 'Usage'}</span>
-                      </Link>
-                    </HoverMenuItem>
-                    <HoverMenuItem asChild>
                       <Link href="/dash/org/settings/other" className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors">
                         <Wrench size={16} weight="fill" />
                         <span>{t('dashboard.organization.settings.tabs.other')}</span>
@@ -585,7 +580,7 @@ function DashLeftMenu() {
               </HoverMenu>
 
               {/* Disabled features shown in an "Other" hover menu */}
-              {(!showCommunities || !showPodcasts || !showBoards || !showPlaygrounds || !showPayments) && (
+              {((!showCommunities && !isFeatureHidden('communities')) || (!showPodcasts && !isFeatureHidden('podcasts')) || !showBoards || (!showPlaygrounds && !isFeatureHidden('playgrounds')) || (!showPayments && !isFeatureHidden('payments'))) && (
                 <HoverMenu
                   content={
                     <HoverMenuContent className="w-64">
@@ -596,7 +591,7 @@ function DashLeftMenu() {
                         </span>
                       </HoverMenuLabel>
                       <HoverMenuSeparator />
-                      {!showCommunities && (
+                      {!showCommunities && !isFeatureHidden('communities') && (
                         <HoverMenuItem asChild>
                           <Link href="/dash/communities" className="flex items-center gap-2 px-3 py-2 text-sm text-white/30 hover:text-white/50 hover:bg-white/[0.05] cursor-pointer transition-colors">
                             <ChatsCircle size={16} weight="fill" />
@@ -604,7 +599,7 @@ function DashLeftMenu() {
                           </Link>
                         </HoverMenuItem>
                       )}
-                      {!showPodcasts && (
+                      {!showPodcasts && !isFeatureHidden('podcasts') && (
                         <HoverMenuItem asChild>
                           <Link href="/dash/podcasts" className="flex items-center gap-2 px-3 py-2 text-sm text-white/30 hover:text-white/50 hover:bg-white/[0.05] cursor-pointer transition-colors">
                             <Headphones size={16} weight="fill" />
@@ -620,7 +615,7 @@ function DashLeftMenu() {
                           </Link>
                         </HoverMenuItem>
                       )}
-                      {!showPlaygrounds && (
+                      {!showPlaygrounds && !isFeatureHidden('playgrounds') && (
                         <HoverMenuItem asChild>
                           <Link href="/dash/playgrounds" className="flex items-center gap-2 px-3 py-2 text-sm text-white/30 hover:text-white/50 hover:bg-white/[0.05] cursor-pointer transition-colors">
                             <Cube size={16} weight="fill" />
@@ -628,7 +623,7 @@ function DashLeftMenu() {
                           </Link>
                         </HoverMenuItem>
                       )}
-                      {!showPayments && (
+                      {!showPayments && !isFeatureHidden('payments') && (
                         <HoverMenuItem asChild>
                           <Link href="/dash/payments/overview" className="flex items-center gap-2 px-3 py-2 text-sm text-white/30 hover:text-white/50 hover:bg-white/[0.05] cursor-pointer transition-colors">
                             <CurrencyCircleDollar size={16} weight="fill" />
